@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "react-scripts start"
+    "start": "react-scripts start",
+    "seed:dev": "nodemon ./db/seed.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,9 @@
     "daisyui": "^2.51.5",
     "express": "^4.18.2",
     "morgan": "^1.10.0",
+    "node": "^19.8.1",
+    "nodemon": "^2.0.22",
+    "pg": "^8.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.9.0",
