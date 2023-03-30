@@ -1,5 +1,5 @@
 const {client} = require("./index")
-const {createUser, getAllUsers, getUserById} = require("./users")
+const {createUser, getAllUsers, getUserById, getUser} = require("./users")
 
 async function dropTables(){
     try {
@@ -176,8 +176,12 @@ async function testDB() {
         console.log("Result:", users)
 
         console.log("Calling getUserById")
-       const firstUser = await getUserById(users[0].id)
+        const firstUser = await getUserById(users[0].id)
         console.log("Result:", firstUser)
+
+        console.log("Calling getUser")
+        const tempUser = await getUser(firstUser.username)
+        console.log("Result:", tempUser)
 
     } catch (error) {
         console.log("Error during testDB")
