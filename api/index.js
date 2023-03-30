@@ -46,13 +46,13 @@ apiRouter.use(async (req,res,next) => {
 const usersRouter = require("./users");
 apiRouter.use("/users", usersRouter);
 
-const productsRouter = require("./products")
-apiRouter.use("/products", productsRouter)
+// const productsRouter = require("./products")
+// apiRouter.use("/products", productsRouter)
 
-const cartsRouter = require("./carts")
-apiRouter.use("/carts", cartsRouter)
+// const cartsRouter = require("./carts")
+// apiRouter.use("/carts", cartsRouter)
 
-const tags = require("./tags");
-apiRouter.use("/tags", tags);
+// const tags = require("./tags");
+// apiRouter.use("/tags", tags);
 
 module.exports = apiRouter

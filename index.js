@@ -4,6 +4,11 @@ require("dotenv").config();
 const { client } = require("./db");
 const PORT = 3000;
 
+client.connect();
+
+server.listen(PORT, () => {
+  console.log("The server is up on port", PORT);
+});
 
 const morgan = require("morgan");
 server.use(morgan("dev"));
@@ -25,7 +30,7 @@ const apiRouter = require("./api");
 server.use("/api", apiRouter);
 
 // 404 handler
-app.get("*", (req, res) => {
+server.get("*", (req, res) => {
     res.status(404).send({
       name: "404 - Not Found",
       message: "No route found for the requested URL",
@@ -33,14 +38,8 @@ app.get("*", (req, res) => {
   });
   
   // error handling middleware
-  app.use((error, req, res, next) => {
+  server.use((error, req, res, next) => {
     console.error("SERVER ERROR: ", error);
     if (res.statusCode < 400) res.status(500);
     res.send({ name: error.name, message: error.message });
   });
-
-client.connect();
-
-server.listen(PORT, () => {
-  console.log("The server is up on port", PORT);
-});

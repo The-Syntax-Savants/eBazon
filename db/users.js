@@ -6,7 +6,7 @@ async function createUser({username, password, email, first_name, last_name}){
             INSERT INTO users (username, password, email, first_name, last_name)
             VALUES ($1, $2, $3, $4, $5)
             ON CONFLICT (username) DO NOTHING
-            RETURNING *
+            RETURNING username, email, first_name, last_name
         `, [username, password, email, first_name, last_name])
     
         return user
@@ -42,10 +42,30 @@ async function getAllUsers(){
     }
 }
 
+async function getUser(username){
+    try {
+        const {
+            rows: [user],
+          } = await client.query(
+            `
+              SELECT *
+              FROM users
+              WHERE username=$1;
+              `,
+            [username]
+          );
+      
+          return user;
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     createUser,
     getUserById,
     getAllUsers,
+    getUser,
 }
 
 
