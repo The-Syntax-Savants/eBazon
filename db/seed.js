@@ -1,10 +1,11 @@
-const {client} = require("./index")
-const {createUser, getAllUsers, getUserById, getUser} = require("./users")
+const { client } = require("./index");
+const { createUser, getAllUsers, getUserById } = require("./users");
+const { createProduct, getAllProducts } = require("./products");
 
-async function dropTables(){
-    try {
-        console.log("Starting to drop tables...")
-        await client.query(`
+async function dropTables() {
+  try {
+    console.log("Starting to drop tables...");
+    await client.query(`
             DROP TABLE IF EXISTS product_reviews;
             DROP TABLE IF EXISTS user_reviews;
             DROP TABLE IF EXISTS product_tags;
@@ -13,19 +14,18 @@ async function dropTables(){
             DROP TABLE IF EXISTS carts;
             DROP TABLE IF EXISTS products;
             DROP TABLE IF EXISTS users;
-        `)
-    } catch (error) {
-        console.error("Error dropping tables!")
-        throw error
-    }
-
+        `);
+  } catch (error) {
+    console.error("Error dropping tables!");
+    throw error;
+  }
 }
 
-async function createTables(){
-    console.log("Starting to create tables....")
-    try{
-        console.log("creating USERS table...")
-        await client.query(`
+async function createTables() {
+  console.log("Starting to create tables....");
+  try {
+    console.log("creating USERS table...");
+    await client.query(`
         CREATE TABLE users(
             id SERIAL PRIMARY KEY,
             username VARCHAR(50) UNIQUE NOT NULL,
@@ -43,9 +43,9 @@ async function createTables(){
             is_admin BOOLEAN DEFAULT false,
             profile_picture VARCHAR(255),
             active BOOLEAN DEFAULT true
-        ); `)
-        console.log("creating PRODUCTS table...")
-        await client.query(`CREATE TABLE products(
+        ); `);
+    console.log("creating PRODUCTS table...");
+    await client.query(`CREATE TABLE products(
             id SERIAL PRIMARY KEY,
             name VARCHAR(50) NOT NULL,
             seller_name VARCHAR(50) NOT NULL,
@@ -56,10 +56,10 @@ async function createTables(){
             dimensions VARCHAR(255),
             quantity INTEGER NOT NULL,
             created_at TIMESTAMP DEFAULT NOW()
-        ); `)
-        
-        console.log("creating CARTS table...")
-        await client.query(`CREATE TABLE carts(
+        ); `);
+
+    console.log("creating CARTS table...");
+    await client.query(`CREATE TABLE carts(
             id SERIAL PRIMARY KEY,
             username VARCHAR(50) REFERENCES users(username),
             is_complete BOOLEAN default false,
@@ -70,126 +70,152 @@ async function createTables(){
             address_line_2 VARCHAR(50),
             price INTEGER NOT NULL,
             time_of_purchase TIMESTAMP DEFAULT NOW()
-        ); `)
-        
-        console.log("creating CART_PRODUCTS table...")
-        await client.query(`CREATE TABLE cart_products(
+        ); `);
+
+    console.log("creating CART_PRODUCTS table...");
+    await client.query(`CREATE TABLE cart_products(
             id SERIAL PRIMARY KEY,
             cart_id INTEGER REFERENCES carts(id),
             product_id INTEGER REFERENCES products(id),
             quantity INTEGER,
             price INTEGER
-        ); `)
+        ); `);
 
-        console.log(`creating TAGS table...`)
-        await client.query(`CREATE TABLE tags(
+    console.log(`creating TAGS table...`);
+    await client.query(`CREATE TABLE tags(
             id SERIAL PRIMARY KEY,
             name VARCHAR(50) UNIQUE NOT NULL
-        );`)
-        
-        console.log(`creating PRODUCT_TAGS table...`)
-        await client.query(`CREATE TABLE product_tags(
+        );`);
+
+    console.log(`creating PRODUCT_TAGS table...`);
+    await client.query(`CREATE TABLE product_tags(
             id SERIAL PRIMARY KEY,
             product_id INTEGER REFERENCES products(id),
             tag_id INTEGER REFERENCES tags(id)
-        );`)
+        );`);
 
-        console.log(`creating USER_REVIEWS table...`)
-        await client.query(`CREATE TABLE user_reviews(
+    console.log(`creating USER_REVIEWS table...`);
+    await client.query(`CREATE TABLE user_reviews(
             id SERIAL PRIMARY KEY,
             product_id INTEGER REFERENCES products(id),
             description VARCHAR(3000) NOT NULL,
             star_ratin INTEGER NOT NULL,
             reviewer_name VARCHAR(50) REFERENCES users(username) 
-        );`)
-        
-        console.log(`creating PRODUCT_REVIEWS table...`)
-        await client.query(`CREATE TABLE product_reviews(
+        );`);
+
+    console.log(`creating PRODUCT_REVIEWS table...`);
+    await client.query(`CREATE TABLE product_reviews(
             id SERIAL PRIMARY KEY,
             product_id INTEGER REFERENCES products(id),
             description VARCHAR(2000) NOT NULL,
             star_rating INTEGER NOT NULL,
             reviewer_name VARCHAR(50) REFERENCES users(username)
-        )`)
+        )`);
 
-        console.log("Finished building tables")
-    }
-    catch (error){
-        console.error("Error building tables!")
-        throw error
-    }
-
+    console.log("Finished building tables");
+  } catch (error) {
+    console.error("Error building tables!");
+    throw error;
+  }
 }
 
-async function createInitialUsers(){
-    try {
-        console.log("starting to create initial users")
-        const joel = createUser({
-            username: "DrizzyJ",
-            password: "password",
-            email: "blevins.j921@gmail.com",
-            first_name: "Joel",
-            last_name: "Blevins"
-        })
+async function createInitialUsers() {
+  try {
+    console.log("starting to create initial users");
+    const joel = createUser({
+      username: "DrizzyJ",
+      password: "password",
+      email: "blevins.j921@gmail.com",
+      first_name: "Joel",
+      last_name: "Blevins",
+    });
 
-        const random = createUser({
-            username: "randomTest",
-            password: "12345678",
-            email: "randomEmail@gmail.com",
-            first_name: "random",
-            last_name: "Test"
-        })
+    const random = createUser({
+      username: "randomTest",
+      password: "12345678",
+      email: "randomEmail@gmail.com",
+      first_name: "random",
+      last_name: "Test",
+    });
 
-        console.log("finished creating initial users!")
-    } catch (error) {
-        throw error
-    }
+    console.log("finished creating initial users!");
+  } catch (error) {
+    throw error;
+  }
 }
 
-async function createInitialProducts(){
-    try{
+async function createInitialProducts() {
+  try {
+    console.log("Creating Initial Products...");
+    createProduct({
+      name: "MLP Action Figure",
+      seller_name: "DrizzyJ",
+      price: 15000,
+      description: "Priceless Inheritance",
+      dimensions: "100x100x100",
+      quantity: 1,
+    });
 
-    }
-    catch{
+    createProduct({
+      name: "Bike",
+      seller_name: "DrizzyJ",
+      price: 100000,
+      description: "This is a bike",
+      dimensions: "10x10x10",
+      quantity: 10,
+    });
 
-    }
+    createProduct({
+      name: "Waffle Maker",
+      seller_name: "DrizzyJ",
+      price: 50000,
+      description: "This is a waffle maker",
+      dimensions: "10x10x10",
+      quantity: 5,
+    });
+
+    console.log("Finished creating initial products");
+  } catch (error) {
+    console.log("Failed to create initial products!");
+    throw error;
+  }
 }
 
 async function rebuildDB() {
-    try {
-        client.connect()
-        await dropTables()
-        await createTables()
-        await createInitialUsers()
-    } catch (error) {
-        console.log("Error during rebuildDB")
-        throw error
-    }
+  try {
+    client.connect();
+    await dropTables();
+    await createTables();
+    await createInitialUsers();
+    await createInitialProducts();
+  } catch (error) {
+    console.log("Error during rebuildDB");
+    throw error;
+  }
 }
 
 async function testDB() {
-    try {
-        console.log("Starting to test database...")
+  try {
+    console.log("Starting to test database...");
 
-        console.log("Getting all users")
-        const users = await getAllUsers()
-        console.log("Result:", users)
+    console.log("Getting all users");
+    const users = await getAllUsers();
+    console.log("Result:", users);
 
-        console.log("Calling getUserById")
-        const firstUser = await getUserById(users[0].id)
-        console.log("Result:", firstUser)
+    console.log("Calling getUserById");
+    const firstUser = await getUserById(users[0].id);
+    console.log("Result:", firstUser);
 
-        console.log("Calling getUser")
-        const tempUser = await getUser(firstUser.username)
-        console.log("Result:", tempUser)
-
-    } catch (error) {
-        console.log("Error during testDB")
-        throw error
-    }
+    console.log("Calling getAllProducts");
+    const products = await getAllProducts();
+    console.log("Result:", products);
+  } catch (error) {
+    console.log("Error during testDB");
+    throw error;
+  }
 }
 
 rebuildDB()
-    .then(testDB)
-    .catch(console.error)
-    .finally(() => client.end())
+  .then(testDB)
+  .catch(console.error)
+  .finally(() => client.end());
