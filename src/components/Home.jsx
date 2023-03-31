@@ -1,11 +1,12 @@
 import React from "react";
 
-const Home = () =>{
-    return(
-        <div>
-            <h1>I am home</h1>
-        </div>
-    )
-}
+import { Link } from "react-router-dom";
+import { SingleProductCard } from "./";
+require("../style.css");
+require("../tailwind.config.js");
 
-export default Home
+const Home = () => {
+  return <></>;
+};
+
+export default Home;
