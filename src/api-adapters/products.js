@@ -9,7 +9,6 @@ const getAllProductsDB = async () => {
       },
     });
     const result = await response.json();
-    console.log("Result from getAllProductsDB: ", result);
     return result;
   } catch (error) {
     console.log("Error in getAllProductsDB Call!");

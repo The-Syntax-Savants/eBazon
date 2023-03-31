@@ -11,9 +11,7 @@ const Home = () => {
 
   const fetchAllProducts = async () => {
     const fetchedProducts = await getAllProductsDB();
-    console.log("fetchedProducts: ", fetchedProducts);
     setProducts(fetchedProducts.products);
-    console.log(products);
   };
 
   useEffect(() => {
@@ -22,14 +20,15 @@ const Home = () => {
   return (
     <div id="home-page">
       <div id="sub-header">
+        <br></br>
         <h1>Welcome to eBazon! The home of all your shopping needs</h1>
-      </div>
 
-      <div id="category-btn-container">
-        <button className="category-button">Insert Tag Name Here</button>
-        <button className="category-button">Insert Tag Name Here</button>
-        <button className="category-button">Insert Tag Name Here</button>
-        <button className="category-button">Insert Tag Name Here</button>
+        <div>
+          <button className="category-button">Insert Tag Name Here</button>
+          <button className="category-button">Insert Tag Name Here</button>
+          <button className="category-button">Insert Tag Name Here</button>
+          <button className="category-button">Insert Tag Name Here</button>
+        </div>
       </div>
 
       <div id="product-cards-container">

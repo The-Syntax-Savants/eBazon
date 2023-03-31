@@ -7,7 +7,7 @@ require("../tailwind.config.js");
 const SingleProductCard = (props) => {
   const { product } = props;
   return (
-    <div id="product-card">
+    <div id="product-card" className="max-w-sm w-full">
       <div className="card w-96 bg-base-100 shadow-xl">
         <figure>
           <img
@@ -25,6 +25,7 @@ const SingleProductCard = (props) => {
               .{String(product.price).slice(-2)}
             </div>
           </h2>
+          <h5>Seller: {product.seller_name}</h5>
           <p>{product.description}</p>
           <div className="card-actions justify-end">
             <button className="btn btn-success">Add to Cart</button>

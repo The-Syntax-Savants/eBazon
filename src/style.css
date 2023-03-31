@@ -24,22 +24,30 @@
   top: 0;
   width: 100%;
   margin-bottom: 10px;
-
-  border: 10px solid orange;
 }
 
 #home-page {
-  border: 10px solid green;
   height: 100%;
   width: 100%;
 }
 
+#sub-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .category-button {
   border-radius: 50%;
-  border: 2px solid red;
+  border: 2px solid slateblue;
   height: 100px;
   width: 100px;
-  margin: 10px 20px 10px 20px;
+  margin: 50px 100px 10px 100px;
+}
+
+.category-button:hover {
+  background-color: lightgray;
 }
 
 #product-cards-container {
