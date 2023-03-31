@@ -1,5 +1,5 @@
 const { client } = require(".");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 
 async function createUser({
   username,
@@ -10,8 +10,8 @@ async function createUser({
 }) {
   try {
     const SALT_COUNT = 10;
-    
-    const hashedPassword = await bcrypt.hash(password, SALT_COUNT)
+
+    const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
     const {
       rows: [user],
     } = await client.query(
@@ -22,8 +22,8 @@ async function createUser({
       RETURNING username, email, first_name, last_name
       `,
       [username, hashedPassword, email, first_name, last_name]
-      );
-      return user;
+    );
+    return user;
   } catch (error) {
     throw error;
   }
@@ -35,8 +35,8 @@ async function getUserById(userId) {
       rows: [user],
     } = await client.query(
       `
-            SELECT * FROM users
-            WHERE id=$1;
+        SELECT * FROM users
+        WHERE id=$1;
         `,
       [userId]
     );
@@ -52,8 +52,8 @@ async function getUserById(userId) {
 async function getAllUsers() {
   try {
     const { rows } = await client.query(`
-            SELECT id, username, first_name, last_name, email, is_admin, active 
-            FROM users;
+        SELECT id, username, first_name, last_name, email, is_admin, active 
+        FROM users;
         `);
     return rows;
   } catch (error) {
@@ -67,14 +67,42 @@ async function getUser(username) {
       rows: [user],
     } = await client.query(
       `
-              SELECT *
-              FROM users
-              WHERE username=$1;
-              `,
+        SELECT *
+        FROM users
+        WHERE username=$1;
+      `,
       [username]
     );
 
     return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function updateUser({ id, ...fields }) {
+  try {
+    const setString = Object.keys(fields)
+      .map((key, index) => `"${key}"=$${index + 1}`)
+      .join(", ");
+
+    if (setString.length === 0) {
+      return;
+    }
+    const {
+      rows: [users],
+    } = await client.query(
+      `
+        UPDATE users
+        SET ${setString}
+        WHERE id=${id}
+        RETURNING *;
+    `,
+      Object.values(fields)
+    );
+
+    //need to figure out if password needs to be removed
+    return users;
   } catch (error) {
     throw error;
   }
@@ -85,4 +113,5 @@ module.exports = {
   getUserById,
   getAllUsers,
   getUser,
+  updateUser,
 };
