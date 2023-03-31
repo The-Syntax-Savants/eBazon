@@ -29,7 +29,7 @@ async function createTables() {
         CREATE TABLE users(
             id SERIAL PRIMARY KEY,
             username VARCHAR(50) UNIQUE NOT NULL,
-            password VARCHAR(50) NOT NULL,
+            password VARCHAR(255) NOT NULL,
             first_name VARCHAR(50) NOT NULL,
             last_name VARCHAR(50) NOT NULL,
             email VARCHAR(50) UNIQUE NOT NULL,
@@ -122,7 +122,7 @@ async function createTables() {
 async function createInitialUsers() {
   try {
     console.log("starting to create initial users");
-    const joel = createUser({
+    const joel = await createUser({
       username: "DrizzyJ",
       password: "password",
       email: "blevins.j921@gmail.com",
@@ -130,7 +130,7 @@ async function createInitialUsers() {
       last_name: "Blevins",
     });
 
-    const random = createUser({
+    const random = await createUser({
       username: "randomTest",
       password: "12345678",
       email: "randomEmail@gmail.com",
