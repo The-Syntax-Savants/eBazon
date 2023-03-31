@@ -1,6 +1,7 @@
 const { client } = require("./index");
 const { createUser, getAllUsers, getUserById } = require("./users");
 const { createProduct, getAllProducts } = require("./products");
+const { createTag, getAllTags, getTagsByProductTag } = require("./tags");
 
 async function dropTables() {
   try {
@@ -199,6 +200,40 @@ async function createInitialProducts() {
   }
 }
 
+async function createInitialTags() {
+  try {
+    console.log("Starting to create tags...");
+
+    let tags = [
+      "Jewelry",
+      "Books",
+      "Decoration",
+      "Home Goods",
+      "Electronics",
+      "Clothing",
+      "Gaming",
+      "Home Improvement",
+      "Handmade",
+      "Collectibles",
+      "Sports",
+      "Toys",
+      "Outdoors",
+      "Accessories",
+      "Shoes",
+      "Miscellaneous",
+    ];
+
+    for (let i = 0; i < tags.length; i++) {
+      createTag(tags[i]);
+    }
+
+    console.log("Finished creating tags");
+  } catch (error) {
+    console.log("Failed to create initial tags");
+    throw error;
+  }
+}
+
 async function rebuildDB() {
   try {
     client.connect();
@@ -206,6 +241,7 @@ async function rebuildDB() {
     await createTables();
     await createInitialUsers();
     await createInitialProducts();
+    await createInitialTags();
   } catch (error) {
     console.log("Error during rebuildDB");
     throw error;
@@ -227,6 +263,10 @@ async function testDB() {
     console.log("Calling getAllProducts");
     const products = await getAllProducts();
     console.log("Result:", products);
+
+    console.log("Calling getAllTags");
+    const tags = await getAllTags();
+    console.log("Result:", tags);
   } catch (error) {
     console.log("Error during testDB");
     throw error;
