@@ -2,6 +2,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const { requireUser } = require("./utils.js");
 const { createUser, getUserById, getAllUsers, getUser } = require("../db/users.js");
+const { user } = require("pg/lib/defaults.js");
 
 const usersRouter = express.Router();
 
@@ -75,4 +76,20 @@ usersRouter.post("/register", async (req, res, next) => {
     }
   });
 
-  module.exports = usersRouter;
+
+// POST /api/users/login
+usersRouter.post("/login", async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+    const _user = await getUser(username);
+
+    if (_user && user.password === password) {
+      
+    }
+    
+  } catch ({name, message}) {
+    next({name, message})
+  }
+})
+
+module.exports = usersRouter;
