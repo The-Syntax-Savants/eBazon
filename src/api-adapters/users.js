@@ -47,4 +47,5 @@ const loginUserDB = async (username, password) => {
 
 module.exports = {
     createUserInDB,
+    loginUserDB
 }

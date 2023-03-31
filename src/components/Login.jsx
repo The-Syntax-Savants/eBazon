@@ -1,118 +1,78 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { loginUser } from "../api-adapters";
+import { useNavigate, Link } from "react-router-dom";
+import { loginUserDB } from "../api-adapters";
 
-const Register = () => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmedPassword, setConfirmedPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [alert, setAlert] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const createUser = async () => {
-    if (password === confirmedPassword && password.length > 7) {
-      const data = await createUserInDB(
-        username,
-        password,
-        email,
-        firstName,
-        lastName
-      );
-      if (data.name) {
-        setAlert(`Error: ${data.message}`);
-      } else {
-          setAlert(data.message);
-          navigate("/")
-      }
+  const loginUser = async () => {
+    const data = await loginUserDB(username, password);
+
+    if (data.name) {
+      setAlert(`Error: ${data.message}`);
     } else {
-      setAlert("Error: Confirmed Password must match Password. And, password must be at least 8 characters long!");
+      localStorage.setItem("token", data.token);
+      setAlert("You are logged in!");
+      navigate("/");
     }
   };
+
   return (
     <div>
-      <form onSubmit={(e)=>{
-        e.preventDefault()
-        createUser()
-      }}>
-        <h2>Register</h2>
-        <label className="input-group">
-          <span>Username</span>
-          <input
-            required
-            type="text"
-            placeholder="User1"
-            className="input input-bordered"
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
-          />
-        </label>
-        <label className="input-group">
-          <span>Password</span>
-          <input
-            required
-            type="password"
-            placeholder="minimum 8 characters"
-            className="input input-bordered"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-        </label>
-        <label className="input-group">
-          <span>Confirm Password</span>
-          <input
-            required
-            type="password"
-            placeholder="minimum 8 characters"
-            className="input input-bordered"
-            onChange={(e) => {
-              setConfirmedPassword(e.target.value);
-            }}
-          />
-        </label>
-        <label className="input-group">
-          <span>First Name</span>
-          <input
-            required
-            type="text"
-            placeholder="John"
-            className="input input-bordered"
-            onChange={(e) => {
-              setFirstName(e.target.value);
-            }}
-          />
-        </label>
-        <label className="input-group">
-          <span>Last Name</span>
-          <input
-            required
-            type="text"
-            placeholder="Doe"
-            className="input input-bordered"
-            onChange={(e) => {
-              setLastName(e.target.value);
-            }}
-          />
-        </label>
-        <label className="input-group">
-          <span>Email</span>
-          <input
-            required
-            type="text"
-            placeholder="info@site.com"
-            className="input input-bordered"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-        </label>
-        <button type="submit" className="btn btn-info">
-          Submit
-        </button>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          loginUser();
+        }}
+      >
+        <div className="hero min-h-screen bg-base-200">
+          <div className="hero-content flex-col lg:flex-row-reverse">
+            <div className="text-center lg:text-left">
+              <h1 className="text-5xl font-bold">Login now!</h1>
+              <Link className="py-6 link link-hover" to="/register">
+                Don't have an account? Sign up here.
+              </Link>
+            </div>
+            <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+              <div className="card-body">
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Username</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="username"
+                    className="input input-bordered"
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Password</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="password"
+                    className="input input-bordered"
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="form-control mt-6">
+                  <button className="btn btn-primary" type="submit">
+                    Login
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
       {alert.startsWith("Error") ? (
         <div className="alert alert-error shadow-lg">
@@ -157,4 +117,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;
