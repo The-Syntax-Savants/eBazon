@@ -23,4 +23,41 @@
   position: absolute;
   top: 0;
   width: 100%;
+  margin-bottom: 10px;
+
+  border: 10px solid orange;
+}
+
+#home-page {
+  border: 10px solid green;
+  height: 100%;
+  width: 100%;
+}
+
+.category-button {
+  border-radius: 50%;
+  border: 2px solid red;
+  height: 100px;
+  width: 100px;
+  margin: 10px 20px 10px 20px;
+}
+
+#product-cards-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+#product-card {
+  width: 33%;
+  margin: 20px;
+}
+
+#product-image {
+  height: 100px;
+  width: 20vh;
+  margin: 20px;
 }

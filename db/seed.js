@@ -150,7 +150,7 @@ async function createInitialProducts() {
     createProduct({
       name: "MLP Action Figure",
       seller_name: "DrizzyJ",
-      price: 15000,
+      price: 1500,
       description: "Priceless Inheritance",
       dimensions: "100x100x100",
       quantity: 1,
@@ -159,7 +159,7 @@ async function createInitialProducts() {
     createProduct({
       name: "Bike",
       seller_name: "DrizzyJ",
-      price: 100000,
+      price: 10000,
       description: "This is a bike",
       dimensions: "10x10x10",
       quantity: 10,
@@ -168,10 +168,28 @@ async function createInitialProducts() {
     createProduct({
       name: "Waffle Maker",
       seller_name: "DrizzyJ",
-      price: 50000,
+      price: 5000,
       description: "This is a waffle maker",
       dimensions: "10x10x10",
       quantity: 5,
+    });
+
+    createProduct({
+      name: "Sick Skateboard",
+      seller_name: "DrizzyJ",
+      price: 15673,
+      description: "This is a skateboard. its sick",
+      dimensions: "10x100x10",
+      quantity: 1,
+    });
+    createProduct({
+      name: "Camping Tent",
+      seller_name: "DrizzyJ",
+      price: 20000,
+      description:
+        "lorem ipsum dolor afnlk al  ak an a nal alkas oiqw  now f qonf  fai osfa fsna lfnla nfa falfn aklf na fanl a ",
+      dimensions: "10x100x10",
+      quantity: 1,
     });
 
     console.log("Finished creating initial products");
