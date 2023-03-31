@@ -15,8 +15,10 @@ const Login = () => {
       setAlert(`Error: ${data.message}`);
     } else {
       localStorage.setItem("token", data.token);
+      localStorage.setItem("username", username)
       setAlert("You are logged in!");
       navigate("/");
+      location.reload()
     }
   };
 
@@ -56,7 +58,7 @@ const Login = () => {
                     <span className="label-text">Password</span>
                   </label>
                   <input
-                    type="text"
+                    type="password"
                     placeholder="password"
                     className="input input-bordered"
                     onChange={(e) => {
