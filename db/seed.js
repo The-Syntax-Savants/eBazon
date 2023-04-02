@@ -42,7 +42,7 @@ async function createTables() {
             zipcode VARCHAR(50),
             about VARCHAR(3000),
             is_admin BOOLEAN DEFAULT false,
-            profile_picture VARCHAR(255),
+            profile_picture BYTEA,
             active BOOLEAN DEFAULT true
         ); `);
     console.log("creating PRODUCTS table...");
@@ -51,8 +51,8 @@ async function createTables() {
             name VARCHAR(50) NOT NULL,
             seller_name VARCHAR(50) NOT NULL,
             is_active BOOLEAN DEFAULT true,
-            price INTEGER NOT NULL,
-            images VARCHAR(255)[],
+            price INTEGER,
+            images BYTEA,
             description VARCHAR(3000),
             dimensions VARCHAR(255),
             quantity INTEGER NOT NULL,
@@ -100,7 +100,7 @@ async function createTables() {
             id SERIAL PRIMARY KEY,
             product_id INTEGER REFERENCES products(id),
             description VARCHAR(3000) NOT NULL,
-            star_ratin INTEGER NOT NULL,
+            star_rating INTEGER NOT NULL,
             reviewer_name VARCHAR(50) REFERENCES users(username) 
         );`);
 

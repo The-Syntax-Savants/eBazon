@@ -41,7 +41,7 @@ async function getAllProducts() {
 
 // *** Forgot to not make functions we were not using. my bad -Emilio & Charles
 
-// async function getProductByID(id) {
+// async function getProductByID(produtId) {
 //   try {
 //     const { rows: [product] } = await client.query(`
 //       SELECT *
