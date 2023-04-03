@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { loginUserDB } from "../api-adapters";
+import { loginUserDB } from "../api-adapters/users";
 
 const Login = (props) => {
   const setIsLoggedIn = props.setIsLoggedIn

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createUserInDB } from "../api-adapters";
+import { createUserInDB } from "../api-adapters/users";
 
 const Register = (props) => {
   const setIsLoggedIn = props.setIsLoggedIn
