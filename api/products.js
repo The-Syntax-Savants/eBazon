@@ -26,7 +26,7 @@ productsRouter.get("/", async (req, res, next) => {
 });
 
 // POST /api/products/createProduct
-productsRouter.post("/createProduct", requireUser, async (req, res, next) => {
+productsRouter.post("/createProduct", async (req, res, next) => {
   try {
     const { name, seller_name, description, price, dimensions, quantity } =
       req.body;
