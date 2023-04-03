@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm i && npm run seed",
+    "build:db": "npm i && npm run seed",
+    "build": "react-scripts build",
     "seed": "node ./db/seed.js",
     "seed:dev": "nodemon ./db/seed.js",
     "start:dev": "nodemon index.js",
