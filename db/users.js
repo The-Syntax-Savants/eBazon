@@ -35,8 +35,8 @@ async function getUserById(userId) {
       rows: [user],
     } = await client.query(
       `
-            SELECT * FROM users
-            WHERE id=$1;
+        SELECT * FROM users
+        WHERE id=$1;
         `,
       [userId]
     );
@@ -52,8 +52,8 @@ async function getUserById(userId) {
 async function getAllUsers() {
   try {
     const { rows } = await client.query(`
-            SELECT id, username, first_name, last_name, email, is_admin, active 
-            FROM users;
+        SELECT id, username, first_name, last_name, email, is_admin, active 
+        FROM users;
         `);
     return rows;
   } catch (error) {
@@ -67,14 +67,40 @@ async function getUser(username) {
       rows: [user],
     } = await client.query(
       `
-              SELECT *
-              FROM users
-              WHERE username=$1;
-              `,
+        SELECT *
+        FROM users
+        WHERE username=$1;
+      `,
       [username]
     );
 
     return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function updateUser({ id, ...fields }) {
+  const setString = Object.keys(fields)
+    .map((key, idx) => `"${key}"=$${idx + 1}`)
+    .join(", ");
+
+  try {
+    if (setString.length) {
+      await client.query(
+        `
+        UPDATE users
+        SET ${setString}
+        WHERE id=${id}
+        RETURNING *
+      `,
+        Object.values(fields)
+
+        
+      );
+      
+      return await getUserById(id);
+    }
   } catch (error) {
     throw error;
   }
@@ -85,4 +111,5 @@ module.exports = {
   getUserById,
   getAllUsers,
   getUser,
+  updateUser,
 };
