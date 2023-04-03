@@ -81,28 +81,26 @@ async function getUser(username) {
 }
 
 async function updateUser({ id, ...fields }) {
-  try {
-    const setString = Object.keys(fields)
-      .map((key, index) => `"${key}"=$${index + 1}`)
-      .join(", ");
+  const setString = Object.keys(fields)
+    .map((key, idx) => `"${key}"=$${idx + 1}`)
+    .join(", ");
 
-    if (setString.length === 0) {
-      return;
-    }
-    const {
-      rows: [users],
-    } = await client.query(
-      `
+  try {
+    if (setString.length) {
+      await client.query(
+        `
         UPDATE users
         SET ${setString}
         WHERE id=${id}
-        RETURNING *;
-    `,
-      Object.values(fields)
-    );
+        RETURNING *
+      `,
+        Object.values(fields)
 
-    //need to figure out if password needs to be removed
-    return users;
+        
+      );
+      
+      return await getUserById(id);
+    }
   } catch (error) {
     throw error;
   }

@@ -37,7 +37,7 @@ async function createTables() {
             address_line_1 VARCHAR(50),
             address_line_2 VARCHAR(50),
             city VARCHAR(3000),
-            state BOOLEAN DEFAULT false,
+            state VARCHAR(50),
             zipcode VARCHAR(50),
             about VARCHAR(3000),
             is_admin BOOLEAN DEFAULT false,
