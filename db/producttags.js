@@ -24,18 +24,7 @@ async function addProductTag(productId, tagId) {
     //     RETURNING *;
     // `, [tagId])
 
-    const {
-      rows: [productTag],
-    } = await client.query(`
-            INSERT INTO productTags(productId, tagId)
-            VALUES ($1, $2)
-            RETURNING *;
-        `);
-
-    product.tags = [];
-    product.tags.push(tag);
-
-    return product;
+  
   } catch (error) {}
 }
 
