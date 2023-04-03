@@ -41,11 +41,11 @@ async function createTag(name) {
   }
 }
 
-async function getTagsByProductTag(productTagId) {
+async function getTagByProductTag(productTagId) {
   try {
     const { rows: tags } = await client.query(
       `
-            SELECT * FROM tags
+            SELECT name FROM tags
             WHERE productTagId=$1;
         `,
       [productTagId]
