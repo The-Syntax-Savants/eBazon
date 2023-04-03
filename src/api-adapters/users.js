@@ -1,6 +1,6 @@
-const BASE_URL = "http://localhost:3001/api"
+const BASE_URL = "https://ebazon.onrender.com/api"
 
-const createUserInDB = async (username, password, email, first_name, last_name) => {
+export const createUserInDB = async (username, password, email, first_name, last_name) => {
     try {
         const response = await fetch (`${BASE_URL}/users/register`, {
             method: "POST",
@@ -24,7 +24,7 @@ const createUserInDB = async (username, password, email, first_name, last_name) 
     }
 }
 
-const loginUserDB = async (username, password) => {
+export const loginUserDB = async (username, password) => {
     try {
         const response = await fetch (`${BASE_URL}/users/login`, {
             method: "POST",
@@ -45,7 +45,7 @@ const loginUserDB = async (username, password) => {
     }
 }
 
-const editUserDB = async (username, token, password, first_name, last_name, email, address_line_1, address_line_2, city, state, zipcode, about, profile_picture, active) => {
+export const editUserDB = async (username, token, password, first_name, last_name, email, address_line_1, address_line_2, city, state, zipcode, about, profile_picture, active) => {
     try {
         const response = await fetch (`${BASE_URL}/users/${username}/profile/edit`, {
             method: "PATCH",
@@ -79,7 +79,7 @@ const editUserDB = async (username, token, password, first_name, last_name, emai
     }
 }
 
-const getLoggedInUserFromDB = async (token) => {
+export const getLoggedInUserFromDB = async (token) => {
     try {
       const response = await fetch(`${BASE_URL}/users/me`, {
         headers: {
@@ -95,9 +95,9 @@ const getLoggedInUserFromDB = async (token) => {
     }
   };
 
-module.exports = {
-    createUserInDB,
-    loginUserDB,
-    editUserDB,
-    getLoggedInUserFromDB
-}
+// module.exports = {
+//     createUserInDB,
+//     loginUserDB,
+//     editUserDB,
+//     getLoggedInUserFromDB
+// }

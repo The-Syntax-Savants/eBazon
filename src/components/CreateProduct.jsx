@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createProductDB } from "../api-adapters";
+import { createProductInDB } from "../api-adapters/products";
 
 const CreateProduct = () => {
   const [name, setName] = useState("");
@@ -10,7 +10,7 @@ const CreateProduct = () => {
   const [seller, setSeller] = useState("");
 
   const createProduct = async () => {
-    const data = await createProductDB({
+    const data = await createProductInDB({
       name,
       description,
       price,
