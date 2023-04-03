@@ -2,6 +2,8 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const { requireUser } = require("./utils.js");
 const { createUser, getUserById, getAllUsers, getUser } = require("../db/users.js");
+const { user } = require("pg/lib/defaults.js");
+const bcrypt = require("bcrypt")
 
 const usersRouter = express.Router();
 
@@ -75,4 +77,36 @@ usersRouter.post("/register", async (req, res, next) => {
     }
   });
 
-  module.exports = usersRouter;
+
+// POST /api/users/login
+usersRouter.post("/login", async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+    const user = await getUser(username);
+    const hashedPassword = user.password
+    const isValid = await bcrypt.compare(password, hashedPassword)
+
+    if (user && isValid) {
+      const token = jwt.sign(
+        {
+          id: user.id,
+          username: user.username,
+        },
+        process.env.JWT_SECRET
+      )
+      res.send({
+        token: token,
+      })
+    }else{
+      next({
+        name: ErrorIncorrectCredentials,
+        message: "Username or Password is incorrect"
+      })
+    }
+    
+  } catch ({name, message}) {
+    next({name, message})
+  }
+})
+
+module.exports = usersRouter;

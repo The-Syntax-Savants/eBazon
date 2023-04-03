@@ -24,6 +24,8 @@ const Register = () => {
       if (data.name) {
         setAlert(`Error: ${data.message}`);
       } else {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("username", username)
           setAlert(data.message);
           navigate("/")
       }
