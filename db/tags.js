@@ -68,5 +68,5 @@ async function getTagByProductTag(productTagId) {
 module.exports = {
   getAllTags,
   createTag,
-  getTagsByProductTag,
+  getTagByProductTag,
 };
