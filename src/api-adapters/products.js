@@ -22,6 +22,7 @@ const createProductDB = async (product) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify(product),
     });
@@ -33,4 +34,4 @@ const createProductDB = async (product) => {
   }
 };
 
-module.exports = { getAllProductsDB };
+module.exports = { getAllProductsDB, createProductDB };

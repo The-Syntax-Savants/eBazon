@@ -5,9 +5,11 @@ const CreateProduct = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [category, setCategory] = useState("");
   const [seller, setSeller] = useState("");
+  const [dimensions, setDimensions] = useState("");
+  const [quantity, setQuantity] = useState("");
 
   const createProduct = async () => {
     const data = await createProductDB({
@@ -19,6 +21,11 @@ const CreateProduct = () => {
       seller,
     });
   };
+
+  const handleFileChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+
   return (
     <div>
       <form
@@ -33,6 +40,8 @@ const CreateProduct = () => {
           <input
             required
             type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             placeholder="Product Name"
             className="input input-bordered"
           />
@@ -42,6 +51,8 @@ const CreateProduct = () => {
           <input
             required
             type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             placeholder="Product Description"
             className="input input-bordered"
           />
@@ -51,6 +62,8 @@ const CreateProduct = () => {
           <input
             required
             type="number"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
             placeholder="Product Price"
             className="input input-bordered"
           />
@@ -58,7 +71,12 @@ const CreateProduct = () => {
 
         <label className="input-group">
           <span>Product Category</span>
-          <select name="Category" className="input input-bordered">
+          <select
+            name="Category"
+            className="input input-bordered"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
             <option value="volvo">Test</option>
             <option value="saab">Test2</option>
             <option value="mercedes">Test3</option>
@@ -69,6 +87,8 @@ const CreateProduct = () => {
           <input
             required
             type="text"
+            value={dimensions}
+            onChange={(e) => setDimensions(e.target.value)}
             placeholder="Product Dimensions"
             className="input input-bordered"
           />
@@ -78,6 +98,8 @@ const CreateProduct = () => {
           <input
             required
             type="text"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
             placeholder="Product Quantity"
             className="input input-bordered"
           />
@@ -87,9 +109,10 @@ const CreateProduct = () => {
           <input
             type="file"
             className="file-input file-input-bordered file-input-info w-full max-w-xs"
+            onChange={handleFileChange}
           />
         </label>
-        <button className="btn btn-primary" onClick={createProduct}>
+        <button className="btn btn-primary" type="submit">
           Create Product
         </button>
       </form>
