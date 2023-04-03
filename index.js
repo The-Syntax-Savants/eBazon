@@ -6,10 +6,6 @@ const PORT = 3001;
 
 client.connect();
 
-server.listen(PORT, () => {
-  console.log("The server is up on port", PORT);
-});
-
 const morgan = require("morgan");
 server.use(morgan("dev"));
 
@@ -42,4 +38,8 @@ server.use((error, req, res, next) => {
   console.error("SERVER ERROR: ", error);
   if (res.statusCode < 400) res.status(500);
   res.send({ name: error.name, message: error.message });
+});
+
+server.listen(PORT, () => {
+  console.log("The server is up on port", PORT);
 });
