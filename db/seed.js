@@ -1,6 +1,7 @@
 const { client } = require("./index");
 const { createUser, getAllUsers, getUserById } = require("./users");
 const { createProduct, getAllProducts } = require("./products");
+const { createTag, getAllTags, getTagsByProductTag } = require("./tags");
 
 async function dropTables() {
   try {
@@ -41,7 +42,7 @@ async function createTables() {
             zipcode VARCHAR(50),
             about VARCHAR(3000),
             is_admin BOOLEAN DEFAULT false,
-            profile_picture VARCHAR(255),
+            profile_picture BYTEA,
             active BOOLEAN DEFAULT true
         ); `);
     console.log("creating PRODUCTS table...");
@@ -50,8 +51,8 @@ async function createTables() {
             name VARCHAR(50) NOT NULL,
             seller_name VARCHAR(50) NOT NULL,
             is_active BOOLEAN DEFAULT true,
-            price INTEGER NOT NULL,
-            images VARCHAR(255)[],
+            price INTEGER,
+            images BYTEA,
             description VARCHAR(3000),
             dimensions VARCHAR(255),
             quantity INTEGER NOT NULL,
@@ -99,7 +100,7 @@ async function createTables() {
             id SERIAL PRIMARY KEY,
             product_id INTEGER REFERENCES products(id),
             description VARCHAR(3000) NOT NULL,
-            star_ratin INTEGER NOT NULL,
+            star_rating INTEGER NOT NULL,
             reviewer_name VARCHAR(50) REFERENCES users(username) 
         );`);
 
@@ -199,6 +200,40 @@ async function createInitialProducts() {
   }
 }
 
+async function createInitialTags() {
+  try {
+    console.log("Starting to create tags...");
+
+    let tags = [
+      "Jewelry",
+      "Books",
+      "Decoration",
+      "Home Goods",
+      "Electronics",
+      "Clothing",
+      "Gaming",
+      "Home Improvement",
+      "Handmade",
+      "Collectibles",
+      "Sports",
+      "Toys",
+      "Outdoors",
+      "Accessories",
+      "Shoes",
+      "Miscellaneous",
+    ];
+
+    for (let i = 0; i < tags.length; i++) {
+      createTag(tags[i]);
+    }
+
+    console.log("Finished creating tags");
+  } catch (error) {
+    console.log("Failed to create initial tags");
+    throw error;
+  }
+}
+
 async function rebuildDB() {
   try {
     client.connect();
@@ -206,6 +241,7 @@ async function rebuildDB() {
     await createTables();
     await createInitialUsers();
     await createInitialProducts();
+    await createInitialTags();
   } catch (error) {
     console.log("Error during rebuildDB");
     throw error;
@@ -227,6 +263,10 @@ async function testDB() {
     console.log("Calling getAllProducts");
     const products = await getAllProducts();
     console.log("Result:", products);
+
+    console.log("Calling getAllTags");
+    const tags = await getAllTags();
+    console.log("Result:", tags);
   } catch (error) {
     console.log("Error during testDB");
     throw error;

@@ -1,5 +1,5 @@
 const { client } = require(".");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 
 async function createUser({
   username,
@@ -10,8 +10,8 @@ async function createUser({
 }) {
   try {
     const SALT_COUNT = 10;
-    
-    const hashedPassword = await bcrypt.hash(password, SALT_COUNT)
+
+    const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
     const {
       rows: [user],
     } = await client.query(
@@ -22,8 +22,8 @@ async function createUser({
       RETURNING username, email, first_name, last_name
       `,
       [username, hashedPassword, email, first_name, last_name]
-      );
-      return user;
+    );
+    return user;
   } catch (error) {
     throw error;
   }
