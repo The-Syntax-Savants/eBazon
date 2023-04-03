@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router";
-import { getLoggedInUserFromDB, editUserDB } from "../api-adapters";
+import { getLoggedInUserFromDB, editUserDB } from "../api-adapters/users";
 
 const Profile = () => {
   const { username } = useParams();

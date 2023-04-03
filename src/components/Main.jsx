@@ -30,18 +30,17 @@ const Main = () => {
 
       <div id="container">
         <Routes>
+          <Route exact path="/" element={<Home />} />
           <Route
-            exact
             path="/register"
             element={<Register setIsLoggedIn={setIsLoggedIn} />}
           />
           <Route
-            exact
             path="/login"
             element={<Login setIsLoggedIn={setIsLoggedIn} />}
           />
-          <Route exact path="/createProduct" element={<CreateProduct />} />
-          <Route exact path="/:username/profile" element={<Profile />} />
+          <Route path="/createProduct" element={<CreateProduct />} />
+          <Route path="/:username/profile" element={<Profile />} />
         </Routes>
       </div>
     </div>
