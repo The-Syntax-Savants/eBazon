@@ -54,7 +54,7 @@ const Navbar = (props) => {
             )}
             {username && isLoggedIn && (
               <li>
-                <Link to="/createListing">Create Listing</Link>
+                <Link to="/createProduct">Create Listing</Link>
               </li>
             )}
             {username && isLoggedIn && (
