@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createProductInDB } from "../api-adapters/products";
+import { createProductDB } from "../api-adapters/products";
 
 const CreateProduct = () => {
   const [name, setName] = useState("");
@@ -11,17 +11,11 @@ const CreateProduct = () => {
   const [quantity, setQuantity] = useState("");
 
   const createProduct = async () => {
-    console.log("Creating product...");
     try {
       const seller_name = localStorage.getItem("username");
+
       console.log("Sending product to db...");
-      console.log(name,
-        seller_name,
-        description,
-        price,
-        dimensions,
-        quantity,
-        tags, "!!!")
+      
       const data = await createProductDB({
         name,
         seller_name,
@@ -31,7 +25,7 @@ const CreateProduct = () => {
         quantity,
         tags,
       });
-      console.log(data, "###");
+      console.log(data, "createProduct response");
       return data;
     } catch (err) {
       console.log(err);

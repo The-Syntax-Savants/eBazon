@@ -10,7 +10,6 @@ export const getAllProductsDB = async () => {
       },
     });
     const result = await response.json();
-    console.log(result)
     return result;
   } catch (error) {
     console.log("Error in getAllProductsDB Call!");
@@ -18,7 +17,7 @@ export const getAllProductsDB = async () => {
   }
 };
 
-export const createProductInDB = async (product) => {
+export const createProductDB = async (product) => {
   try {
     const response = await fetch(`${BASE_URL}/products/createProduct`, {
       method: "POST",
