@@ -7,7 +7,7 @@ async function createProduct({
   description,
   dimensions,
   quantity,
-  tags,
+  tags = [],
 }) {
   try {
     const {
@@ -41,18 +41,42 @@ async function getAllProducts() {
   }
 }
 
+async function getProductByID(productId) {
+  try {
+    const { rows: [product] } = await client.query(`
+      SELECT *
+      FROM products
+      WHERE id=$1;
+    `, [productId])
+
+    if(!product){
+      throw{
+        name: "ProductNotFoundError",
+        message: "Could not find a product with that productId"
+      }
+    }
+
+    const { rows: tags } = await client.query(
+      `
+        SELECT tags.*
+        FROM tags
+        JOIN product_tags ON tags.id=product_tags."tagId"
+        WHERE product_tags."productId"=$1;
+      `,
+      [productId]
+    );
+      if(tags){
+        product.tags = tags;
+      }
+
+    return product
+  } catch(error) {
+    console.error("Error getting productById!");
+    throw error
+  }
+}
 // *** Forgot to not make functions we were not using. my bad -Emilio & Charles
 
-// async function getProductByID(produtId) {
-//   try {
-//     const { rows: [product] } = await client.query(`
-//       SELECT *
-//       FROM products
-//       WHERE products.id=$1;
-//     `, [id])
-//     return product
-//   } catch(error) {}
-// }
 
 // async function getProductsByTag(tag) {
 //   try {
@@ -80,4 +104,5 @@ async function getAllProducts() {
 module.exports = {
   createProduct,
   getAllProducts,
+  getProductByID
 };

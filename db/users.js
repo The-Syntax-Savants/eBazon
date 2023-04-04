@@ -86,7 +86,9 @@ async function updateUser({ id, ...fields }) {
     .map((key, idx) => `"${key}"=$${idx + 1}`)
     .join(", ");
 
-  try {
+    
+    console.log(setString, "!!!!!")
+    try {
     if (setString.length) {
       await client.query(
         `

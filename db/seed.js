@@ -1,7 +1,7 @@
 const { client } = require("./index");
-const { createUser, getAllUsers, getUserById } = require("./users");
+const { createUser, getAllUsers, getUserById, updateUser } = require("./users");
 const { createProduct, getAllProducts } = require("./products");
-const { createTag, getAllTags, getTagsByProductTag } = require("./tags");
+const { createTag, getAllTags, deleteTag, editTag } = require("./tags");
 
 async function dropTables() {
   try {
@@ -262,6 +262,16 @@ async function testDB() {
     const firstUser = await getUserById(users[0].id);
     console.log("Result:", firstUser);
 
+    console.log("Calling updateUser")
+    const object1 = {
+      id: 2,
+      username: "mlpLover",
+      first_name: "Charles",
+      email: "mlpLover69@info.com"
+    }
+    const MLP = await updateUser(object1)
+    console.log("Result:", MLP)
+
     console.log("Calling getAllProducts");
     const products = await getAllProducts();
     console.log("Result:", products);
@@ -269,6 +279,14 @@ async function testDB() {
     console.log("Calling getAllTags");
     const tags = await getAllTags();
     console.log("Result:", tags);
+
+    // console.log("Calling deleteTag")
+    // await deleteTag(tags[1].id)
+    // console.log("Result", await getAllTags())
+
+    // console.log("Calling editTag")
+    // const test = await editTag(tags[0].id, "books")
+    // console.log("Result:", test, await getAllTags())
   } catch (error) {
     console.log("Error during testDB");
     throw error;
