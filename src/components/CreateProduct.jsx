@@ -7,24 +7,31 @@ const CreateProduct = () => {
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
   const [tags, setTags] = useState("");
-  const [seller, setSeller] = useState("");
   const [dimensions, setDimensions] = useState("");
   const [quantity, setQuantity] = useState("");
 
   const createProduct = async () => {
     console.log("Creating product...");
     try {
+      const seller_name = localStorage.getItem("username");
       console.log("Sending product to db...");
+      console.log(name,
+        seller_name,
+        description,
+        price,
+        dimensions,
+        quantity,
+        tags, "!!!")
       const data = await createProductDB({
         name,
-        seller,
+        seller_name,
         description,
         price,
         dimensions,
         quantity,
         tags,
       });
-      console.log(data);
+      console.log(data, "###");
       return data;
     } catch (err) {
       console.log(err);
