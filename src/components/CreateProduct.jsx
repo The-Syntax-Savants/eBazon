@@ -16,7 +16,6 @@ const CreateProduct = () => {
       name,
       description,
       price,
-      image,
       category,
       seller,
     });
