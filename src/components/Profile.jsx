@@ -2,6 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router";
 import { getLoggedInUserFromDB, editUserDB } from "../api-adapters/users";
 
+require("../style.css");
+require("../tailwind.config.js");
+
 const Profile = () => {
   const { username } = useParams();
   // const fileInputRef = useRef()
@@ -76,11 +79,13 @@ const Profile = () => {
 
   return (
     <div className="container m-8">
-    <form onSubmit={(e)=>{
+    <form 
+      className="shrink"
+      onSubmit={(e)=>{
         e.preventDefault()
         submitChanges()
     }}>
-      <div className="hero min-h-screen bg-base-200">
+      <div className="hero max-h-screen bg-base-200">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <div className="text-center lg:text-left">
             <h1 className="text-5xl font-bold">{username}'s Profile</h1>
