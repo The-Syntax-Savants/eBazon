@@ -1,4 +1,5 @@
 const { client } = require(".");
+
 async function createProduct({
   name,
   seller_name,
@@ -6,6 +7,7 @@ async function createProduct({
   description,
   dimensions,
   quantity,
+  tags,
 }) {
   try {
     const {
@@ -41,16 +43,21 @@ async function getAllProducts() {
 
 // *** Forgot to not make functions we were not using. my bad -Emilio & Charles
 
-// async function getProductByID(produtId) {
-//   try {
-//     const { rows: [product] } = await client.query(`
-//       SELECT *
-//       FROM products
-//       WHERE products.id=$1;
-//     `, [id])
-//     return product
-//   } catch(error) {}
-// }
+async function getProductByID(productId) {
+  try {
+    const {
+      rows: [product],
+    } = await client.query(
+      `
+      SELECT *
+      FROM products
+      WHERE products.id=$1;
+    `,
+      [productId]
+    );
+    return product;
+  } catch (error) {}
+}
 
 // async function getProductsByTag(tag) {
 //   try {
@@ -78,4 +85,5 @@ async function getAllProducts() {
 module.exports = {
   createProduct,
   getAllProducts,
+  getProductByID,
 };

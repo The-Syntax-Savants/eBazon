@@ -129,6 +129,7 @@ async function createInitialUsers() {
       email: "blevins.j921@gmail.com",
       first_name: "Joel",
       last_name: "Blevins",
+      is_admin: true
     });
 
     const random = await createUser({
@@ -137,6 +138,7 @@ async function createInitialUsers() {
       email: "randomEmail@gmail.com",
       first_name: "random",
       last_name: "Test",
+      is_admin: false
     });
 
     console.log("finished creating initial users!");

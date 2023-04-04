@@ -1,5 +1,6 @@
-// const BASE_URL = "https://ebazon.onrender.com/api"
+
 const BASE_URL = "http://localhost:3001/api"
+// const BASE_URL = "https://ebazon.onrender.com/api"
 
 export const createUserInDB = async (username, password, email, first_name, last_name) => {
     try {
