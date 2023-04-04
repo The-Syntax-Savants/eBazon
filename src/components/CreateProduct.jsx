@@ -94,16 +94,15 @@ const CreateProduct = () => {
 
         <label className="input-group">
           <span>Product Category</span>
-          <select
-            name="Category"
-            className="input input-bordered"
-            value={selectedTags}
-            onChange={(e) => setSelectedTags(e.target.value)}
-          >
-            <option value="volvo">Test</option>
-            <option value="saab">Test2</option>
-            <option value="mercedes">Test3</option>
-          </select>
+          {/* <form>
+            <legend>Select Category</legend>
+            {allTags.map((tag, idx) => {
+              return(
+                <input key={idx} type="checkbox" value={tag}>{tag.name}</input>
+                )
+              })}
+
+              </form> */}
         </label>
         <label className="input-group">
           <span>Product Dimensions</span>
