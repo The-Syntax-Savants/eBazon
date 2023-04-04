@@ -1,4 +1,5 @@
 const { client } = require(".");
+const { addTagsToProduct } = require("./producttags");
 
 async function createProduct({
   name,
@@ -21,7 +22,11 @@ async function createProduct({
       [name, seller_name, price, description, dimensions, quantity]
     );
 
-    return product;
+  
+     await addTagsToProduct(product.id, tags)
+
+     return await getProductByID(product.id)
+
   } catch (error) {
     console.error("Error creating Product!");
     throw error;
@@ -29,11 +34,14 @@ async function createProduct({
 }
 async function getAllProducts() {
   try {
-    const { rows: products } = await client.query(
+    const { rows: productIds } = await client.query(
       `
-    SELECT * FROM products;
-    `
+        SELECT id FROM products;
+      `
     );
+
+    const products = await Promise.all(productIds.map((product) => getProductByID(product.id)))
+    console.log(products)
     return products;
   } catch (error) {
     console.error("Error getting all products!");
@@ -60,14 +68,12 @@ async function getProductByID(productId) {
       `
         SELECT tags.*
         FROM tags
-        JOIN product_tags ON tags.id=product_tags."tagId"
-        WHERE product_tags."productId"=$1;
+        JOIN product_tags ON tags.id=product_tags.tag_id
+        WHERE product_tags.product_id=$1;
       `,
       [productId]
     );
-      if(tags){
-        product.tags = tags;
-      }
+      product.tags = tags
 
     return product
   } catch(error) {

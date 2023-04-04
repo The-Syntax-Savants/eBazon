@@ -6,7 +6,7 @@ const CreateProduct = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
-  const [tags, setTags] = useState("");
+  const [tags, setTags] = useState([]);
   const [dimensions, setDimensions] = useState("");
   const [quantity, setQuantity] = useState("");
 
@@ -22,14 +22,14 @@ const CreateProduct = () => {
         dimensions,
         quantity,
         tags, "!!!")
-      const data = await createProductDB({
+      const data = await createProductInDB({
         name,
         seller_name,
         description,
         price,
         dimensions,
         quantity,
-        tags,
+        // tags,
       });
       console.log(data, "###");
       return data;

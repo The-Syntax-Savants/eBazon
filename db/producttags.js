@@ -1,12 +1,13 @@
 const { client } = require(".")
-const {getProductById} = require("./products")
+const { getProductByID } = require("./products")
+
 
 async function createProductTag(productId, tagId){
     try {
         await client.query(`
-            INSERT INTO product_tags("productId", "tagId")
+            INSERT INTO product_tags(product_id, tag_id)
             VALUES ($1, $2)
-            ON CONFLICT ("productId", "tagId") DO NOTHING
+            ON CONFLICT (product_id, tag_id) DO NOTHING;
         `, [productId, tagId])
     } catch (error) {
         console.log("Error in createProductTag")
@@ -22,9 +23,9 @@ async function addTagsToProduct(productId, tagList){
 
         await Promise.all(createProductTagPromises)
 
-        return await getProductById(productId)
+        // return await getProductByID(productId)
     } catch (error) {
-        console.log("Error in addTagsToProduct")
+        console.log("Error in createProductTag")
         throw error
     }
 }

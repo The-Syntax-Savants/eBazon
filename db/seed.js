@@ -1,7 +1,8 @@
 const { client } = require("./index");
 const { createUser, getAllUsers, getUserById, updateUser } = require("./users");
-const { createProduct, getAllProducts } = require("./products");
+const { createProduct, getAllProducts, getProductByID } = require("./products");
 const { createTag, getAllTags, deleteTag, editTag } = require("./tags");
+const { addTagsToProduct } = require("./producttags");
 
 async function dropTables() {
   try {
@@ -92,7 +93,8 @@ async function createTables() {
     await client.query(`CREATE TABLE product_tags(
             id SERIAL PRIMARY KEY,
             product_id INTEGER REFERENCES products(id),
-            tag_id INTEGER REFERENCES tags(id)
+            tag_id INTEGER REFERENCES tags(id),
+            UNIQUE(product_id, tag_id)
         );`);
 
     console.log(`creating USER_REVIEWS table...`);
@@ -276,9 +278,29 @@ async function testDB() {
     const products = await getAllProducts();
     console.log("Result:", products);
 
+    
     console.log("Calling getAllTags");
     const tags = await getAllTags();
     console.log("Result:", tags);
+    
+    console.log("Calling addTagsToProduct")
+    const scaryTest = await addTagsToProduct(products[2].id, [tags[3], tags[2], tags[12], tags[11]])
+    console.log("Result:", scaryTest)
+    
+    console.log("Calling getProductById")
+    const product = await getProductByID(products[2].id)
+    console.log("Result:", product)
+    
+    console.log("Testing create product with tags")
+    console.log(await createProduct({
+      name: "newProductICreated",
+      seller_name: "DrizzyJ",
+      price: 2700,
+      description: "Priceless Inheritance",
+      dimensions: "100x100x100",
+      quantity: 1,
+      tags: product.tags
+    }))
 
     // console.log("Calling deleteTag")
     // await deleteTag(tags[1].id)

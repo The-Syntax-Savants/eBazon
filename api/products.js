@@ -1,7 +1,8 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const { requireUser } = require("./utils.js");
-const { createProduct, getAllProducts } = require("../db/products.js");
+const { createProduct, getAllProducts, getProductByID } = require("../db/products.js");
+const { addTagsToProduct } = require("../db/producttags.js");
 
 const productsRouter = express.Router();
 
@@ -65,5 +66,25 @@ productsRouter.post("/createProduct", async (req, res, next) => {
     });
   }
 });
+
+productsRouter.post("/:id/addTags", requireUser, async (req,res,next)=>{
+  try {
+    const {id} = req.params
+    const {tags} = req.body
+    console.log(tags)
+    await addTagsToProduct(id, tags)
+    const product = await getProductByID(id)
+    if(product){
+      res.send(product)
+    }else{
+      next({
+        name: "ProductNotFoundError",
+        message: "A product was not found with this id"
+      })
+    }
+  } catch ({name, message}) {
+    next({name, message})
+  }
+})
 
 module.exports = productsRouter;
