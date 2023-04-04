@@ -48,24 +48,20 @@ productsRouter.get("/:id", async (req, res, next) => {
 });
 
 // POST /api/products/createProduct
-productsRouter.post("/createProduct", async (req, res, next) => {
-  // console.log("Request body: ", req.body);
-  console.log("^^^");
+productsRouter.post("/createProduct", requireUser, async (req, res, next) => {
+
   try {
-    console.log("Request body: ", req.body);
-    console.log(req.user, "username***");
     const seller_name = req.user.username;
-    const { name, description, price, dimensions, quantity, tags } = req.body;
-    console.log(
+    
+    const {
       name,
-      seller_name,
       description,
       price,
       dimensions,
       quantity,
       tags,
-      "&&&"
-    );
+    } = req.body;
+
     const product = await createProduct({
       name,
       seller_name,
