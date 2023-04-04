@@ -41,21 +41,21 @@ async function createTag(name) {
   }
 }
 
-async function getTagByProductTag(productTagId) {
-  try {
-    const { rows: tags } = await client.query(
-      `
-            SELECT name FROM tags
-            WHERE productTagId=$1;
-        `,
-      [productTagId]
-    );
-    return tags;
-  } catch (error) {
-    console.log("Error getting tags by product tags");
-    throw error;
-  }
-}
+// async function getTagByProductTag(productTagId) {
+//   try {
+//     const { rows: tags } = await client.query(
+//       `
+//             SELECT name FROM tags
+//             WHERE productTagId=$1;
+//         `,
+//       [productTagId]
+//     );
+//     return tags;
+//   } catch (error) {
+//     console.log("Error getting tags by product tags");
+//     throw error;
+//   }
+// }
 
 // async function deleteTag(id)({
 
@@ -68,5 +68,4 @@ async function getTagByProductTag(productTagId) {
 module.exports = {
   getAllTags,
   createTag,
-  getTagByProductTag,
 };

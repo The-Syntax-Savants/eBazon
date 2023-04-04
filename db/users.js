@@ -7,6 +7,7 @@ async function createUser({
   email,
   first_name,
   last_name,
+  is_admin
 }) {
   try {
     const SALT_COUNT = 10;
@@ -16,12 +17,12 @@ async function createUser({
       rows: [user],
     } = await client.query(
       `
-      INSERT INTO users (username, password, email, first_name, last_name)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO users (username, password, email, first_name, last_name, is_admin)
+      VALUES ($1, $2, $3, $4, $5, $6)
       ON CONFLICT (username) DO NOTHING
       RETURNING username, email, first_name, last_name
       `,
-      [username, hashedPassword, email, first_name, last_name]
+      [username, hashedPassword, email, first_name, last_name, is_admin]
     );
     return user;
   } catch (error) {

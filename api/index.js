@@ -49,7 +49,7 @@ apiRouter.use("/products", productsRouter);
 // const cartsRouter = require("./carts")
 // apiRouter.use("/carts", cartsRouter)
 
-// const tags = require("./tags");
-// apiRouter.use("/tags", tags);
+const tagsRouter = require("./tags");
+apiRouter.use("/tags", tagsRouter);
 
 module.exports = apiRouter;
