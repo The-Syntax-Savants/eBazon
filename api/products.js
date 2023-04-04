@@ -20,16 +20,34 @@ productsRouter.get("/", async (req, res, next) => {
   } catch ({ name, message }) {
     next({
       name: "Error fetching allProducts",
-      message: "Could not fetch all products. bitch. ",
+      message: "Could not fetch all products. ",
     });
   }
 });
 
 // POST /api/products/createProduct
 productsRouter.post("/createProduct", async (req, res, next) => {
+  // console.log("Request body: ", req.body);
+  console.log("^^^")
   try {
-    const { name, seller_name, description, price, dimensions, quantity } =
-      req.body;
+    console.log("Request body: ", req.body);
+    console.log(req.user, "username***")
+    const seller_name = req.user.username;
+    const {
+      name,
+      description,
+      price,
+      dimensions,
+      quantity,
+      tags,
+    } = req.body;
+    console.log(name,
+      seller_name,
+      description,
+      price,
+      dimensions,
+      quantity,
+      tags, "&&&")
     const product = await createProduct({
       name,
       seller_name,
@@ -37,6 +55,7 @@ productsRouter.post("/createProduct", async (req, res, next) => {
       price,
       dimensions,
       quantity,
+      tags,
     });
     res.send({ product });
   } catch ({ name, message }) {

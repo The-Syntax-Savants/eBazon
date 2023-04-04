@@ -6,24 +6,42 @@ const CreateProduct = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
-  const [category, setCategory] = useState("");
-  const [seller, setSeller] = useState("");
+  const [tags, setTags] = useState("");
   const [dimensions, setDimensions] = useState("");
   const [quantity, setQuantity] = useState("");
 
   const createProduct = async () => {
-    const data = await createProductInDB({
-      name,
-      description,
-      price,
-      category,
-      seller,
-    });
+    console.log("Creating product...");
+    try {
+      const seller_name = localStorage.getItem("username");
+      console.log("Sending product to db...");
+      console.log(name,
+        seller_name,
+        description,
+        price,
+        dimensions,
+        quantity,
+        tags, "!!!")
+      const data = await createProductDB({
+        name,
+        seller_name,
+        description,
+        price,
+        dimensions,
+        quantity,
+        tags,
+      });
+      console.log(data, "###");
+      return data;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   };
 
-  const handleFileChange = (e) => {
-    setImage(e.target.files[0]);
-  };
+  // const handleFileChange = (e) => {
+  //   setImage(e.target.files[0]);
+  // };
 
   return (
     <div>
@@ -73,8 +91,8 @@ const CreateProduct = () => {
           <select
             name="Category"
             className="input input-bordered"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
           >
             <option value="volvo">Test</option>
             <option value="saab">Test2</option>
@@ -108,7 +126,7 @@ const CreateProduct = () => {
           <input
             type="file"
             className="file-input file-input-bordered file-input-info w-full max-w-xs"
-            onChange={handleFileChange}
+            // onChange={handleFileChange}
           />
         </label>
         <button className="btn btn-primary" type="submit">

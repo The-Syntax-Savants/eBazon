@@ -1,4 +1,5 @@
 const { client } = require(".");
+
 async function createProduct({
   name,
   seller_name,
@@ -6,6 +7,7 @@ async function createProduct({
   description,
   dimensions,
   quantity,
+  tags,
 }) {
   try {
     const {
