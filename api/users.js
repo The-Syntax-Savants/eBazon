@@ -2,7 +2,6 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const { requireUser } = require("./utils.js");
 const { createUser, getUserById, getAllUsers, getUser, updateUser } = require("../db/users.js");
-const { user } = require("pg/lib/defaults.js");
 const bcrypt = require("bcrypt")
 
 const usersRouter = express.Router();
@@ -44,6 +43,7 @@ usersRouter.get("/me", requireUser, async (req, res, next) => {
 usersRouter.post("/register", async (req, res, next) => {
     try {
       const { username, password, email, first_name, last_name } = req.body;
+      const is_admin = false
       const _user = await getUser(username);
   
       if (_user) {
@@ -64,7 +64,8 @@ usersRouter.post("/register", async (req, res, next) => {
           password,
           email,
           first_name,
-          last_name
+          last_name,
+          is_admin
         });
   
         const token = jwt.sign(
