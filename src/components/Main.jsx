@@ -8,6 +8,7 @@ import {
   Login,
   Profile,
   CreateProduct,
+  SingleProductView,
 } from "./";
 import "tailwindcss/tailwind.css";
 import "daisyui/dist/full.css";
@@ -40,6 +41,10 @@ const Main = () => {
             element={<Login setIsLoggedIn={setIsLoggedIn} />}
           />
           <Route path="/createProduct" element={<CreateProduct />} />
+          <Route
+            path="/product-view/:productId"
+            element={<SingleProductView />}
+          />
           <Route path="/:username/profile" element={<Profile />} />
         </Routes>
       </div>

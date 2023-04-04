@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3001/api"
+const BASE_URL = "http://localhost:3001/api";
 // const BASE_URL = "https://ebazon.onrender.com/api"
 
 export const getAllProductsDB = async () => {
@@ -10,6 +10,8 @@ export const getAllProductsDB = async () => {
       },
     });
     const result = await response.json();
+
+    console.log(result);
     return result;
   } catch (error) {
     console.log("Error in getAllProductsDB Call!");
@@ -17,13 +19,32 @@ export const getAllProductsDB = async () => {
   }
 };
 
-export const createProductDB = async (product) => {
+
+export const getProductByIdDB = async (id) => {
+  try {
+    const response = await fetch(`${BASE_URL}/products/${id}`, {
+      METHOD: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const result = await response.json();
+    console.log(result);
+    return result;
+  } catch (error) {
+    console.log("Error in getProductByID product Call!");
+    console.error(error);
+  }
+};
+
+export const createProductInDB = async (product) => {
+
   try {
     const response = await fetch(`${BASE_URL}/products/createProduct`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify(product),
     });
@@ -35,7 +56,7 @@ export const createProductDB = async (product) => {
   }
 };
 
-// module.exports = { 
-//   getAllProductsDB, 
-//   // createProductInDB 
+// module.exports = {
+//   getAllProductsDB,
+//   // createProductInDB
 // };

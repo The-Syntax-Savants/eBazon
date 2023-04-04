@@ -6,6 +6,7 @@ require("../tailwind.config.js");
 
 const SingleProductCard = (props) => {
   const { product } = props;
+
   return (
     <div id="product-card" className="max-w-sm w-full">
       <div className="card w-96 bg-base-100 shadow-xl">
@@ -18,7 +19,7 @@ const SingleProductCard = (props) => {
         </figure>
         <div className="card-body">
           <h2 className="card-title">
-            {product.name}
+            <Link to={`/product-view/${product.id}`}>{product.name}</Link>
             <div className="badge badge-secondary">
               $
               {String(product.price).slice(0, String(product.price).length - 2)}
