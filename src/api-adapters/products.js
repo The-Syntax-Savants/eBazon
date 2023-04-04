@@ -1,6 +1,7 @@
-const BASE_URL = "http://localhost:3001/api";
+const BASE_URL = "http://localhost:3001/api"
+// const BASE_URL = "https://ebazon.onrender.com/api"
 
-const getAllProductsDB = async () => {
+export const getAllProductsDB = async () => {
   try {
     const response = await fetch(`${BASE_URL}/products`, {
       METHOD: "GET",
@@ -9,6 +10,7 @@ const getAllProductsDB = async () => {
       },
     });
     const result = await response.json();
+    console.log(result)
     return result;
   } catch (error) {
     console.log("Error in getAllProductsDB Call!");
@@ -16,7 +18,7 @@ const getAllProductsDB = async () => {
   }
 };
 
-const createProductDB = async (product) => {
+export const createProductInDB = async (product) => {
   try {
     const response = await fetch(`${BASE_URL}/products/createProduct`, {
       method: "POST",
@@ -34,4 +36,7 @@ const createProductDB = async (product) => {
   }
 };
 
-module.exports = { getAllProductsDB, createProductDB };
+// module.exports = { 
+//   getAllProductsDB, 
+//   // createProductInDB 
+// };

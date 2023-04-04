@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
 import { SingleProductCard } from "./";
-import { getAllProductsDB } from "../api-adapters";
+import { getAllProductsDB } from "../api-adapters/products";
 require("../style.css");
 require("../tailwind.config.js");
 

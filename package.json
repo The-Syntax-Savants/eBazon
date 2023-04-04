@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "react-scripts start",
+    "build:db": "npm i && npm run seed",
+    "build": "react-scripts build",
+    "seed": "node ./db/seed.js",
     "seed:dev": "nodemon ./db/seed.js",
-    "start:dev": "nodemon index.js"
+    "start:dev": "nodemon index.js",
+    "start:api": "node index.js"
   },
   "keywords": [],
   "author": "",

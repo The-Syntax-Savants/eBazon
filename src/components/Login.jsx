@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { loginUserDB } from "../api-adapters";
+import { loginUserDB } from "../api-adapters/users";
 
-const Login = () => {
+const Login = (props) => {
+  const setIsLoggedIn = props.setIsLoggedIn
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [alert, setAlert] = useState("");
@@ -16,9 +17,9 @@ const Login = () => {
     } else {
       localStorage.setItem("token", data.token);
       localStorage.setItem("username", username)
+      setIsLoggedIn(true)
       setAlert("You are logged in!");
       navigate("/");
-      location.reload()
     }
   };
 

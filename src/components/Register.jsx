@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createUserInDB } from "../api-adapters";
+import { createUserInDB } from "../api-adapters/users";
 
-const Register = () => {
+const Register = (props) => {
+  const setIsLoggedIn = props.setIsLoggedIn
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
@@ -26,6 +27,7 @@ const Register = () => {
       } else {
           localStorage.setItem("token", data.token);
           localStorage.setItem("username", username)
+          setIsLoggedIn(true)
           setAlert(data.message);
           navigate("/")
       }

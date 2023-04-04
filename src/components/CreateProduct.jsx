@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createProductDB } from "../api-adapters";
+import { createProductInDB } from "../api-adapters/products";
 
 const CreateProduct = () => {
   const [name, setName] = useState("");
