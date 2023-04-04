@@ -29,7 +29,7 @@ const Main = () => {
         <Navbar setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
       </div>
 
-      <div id="container">
+      <div id="content">
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route

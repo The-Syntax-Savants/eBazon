@@ -24,7 +24,7 @@ const Login = (props) => {
   };
 
   return (
-    <div>
+    <div id="login-page">
       <form
         onSubmit={(e) => {
           e.preventDefault();

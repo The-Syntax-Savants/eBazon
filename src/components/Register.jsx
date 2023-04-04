@@ -36,7 +36,7 @@ const Register = (props) => {
     }
   };
   return (
-    <div>
+    <div id="register-page">
       <form onSubmit={(e)=>{
         e.preventDefault()
         createUser()
