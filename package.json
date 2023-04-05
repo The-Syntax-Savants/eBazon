@@ -16,6 +16,7 @@
   "dependencies": {
     "@stripe/react-stripe-js": "^2.1.0",
     "@stripe/stripe-js": "^1.52.0",
+    "antd": "^5.4.0",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "daisyui": "^2.51.5",

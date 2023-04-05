@@ -15,8 +15,6 @@ server.use(morgan("dev"));
 
 server.use(cors());
 
-server.use("/api", apiRouter);
-
 server.use(express.json());
 
 server.use((req, res, next) => {
@@ -26,6 +24,8 @@ server.use((req, res, next) => {
 
   next();
 });
+
+server.use("/api", apiRouter);
 
 // 404 handler
 server.get("*", (req, res) => {

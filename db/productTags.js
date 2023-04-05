@@ -1,4 +1,4 @@
-const { client } = require(".");
+import { client } from "./index.js";
 
 export async function createProductTag(productId, tagId) {
   try {
@@ -28,4 +28,3 @@ export async function addTagsToProduct(productId, tagList) {
     throw error;
   }
 }
-

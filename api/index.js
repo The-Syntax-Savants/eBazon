@@ -3,7 +3,7 @@ import express from "express";
 import { getUserById } from "../db/users.js";
 import usersRouter from "./users.js";
 import productsRouter from "./products.js";
-// import cartsRouter from "./carts.js"
+import cartsRouter from "./carts.js";
 import tagsRouter from "./tags.js";
 
 const { JWT_SECRET } = process.env;
@@ -50,6 +50,6 @@ apiRouter.use("/users", usersRouter);
 
 apiRouter.use("/products", productsRouter);
 
-apiRouter.use("/carts", cartsRouter)
+apiRouter.use("/carts", cartsRouter);
 
 apiRouter.use("/tags", tagsRouter);

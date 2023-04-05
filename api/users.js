@@ -101,6 +101,7 @@ usersRouter.post("/register", async (req, res, next) => {
 // POST /api/users/login
 usersRouter.post("/login", async (req, res, next) => {
   try {
+    console.log(req.body, "!!!!!!");
     const { username, password } = req.body;
     const user = await getUser(username);
     const hashedPassword = user.password;
@@ -113,52 +114,54 @@ usersRouter.post("/login", async (req, res, next) => {
           username: user.username,
         },
         process.env.JWT_SECRET
-      )
+      );
       res.send({
         token: token,
-      })
-    }else{
-      next({
-        name: "ErrorIncorrectCredentials",
-        message: "Username or Password is incorrect"
-      })
-    }
-    
-  } catch ({name, message}) {
-    next({name, message})
-  }
-})
-
-usersRouter.patch("/:username/profile/edit", requireUser, async (req, res, next) => {
-  try {
-    const { username } = req.params;
-    const SALT_COUNT = 10;
-
-    const info = req.body;
-    if(req.user){
-      info.id = req.user.id
-    }
-    hashedPassword = await bcrypt.hash(info.password, SALT_COUNT);
-    if(info.is_admin){
-      delete info.is_admin 
-    }
-    info.password = hashedPassword;
-    info.username = username;
-    console.log(info, "!!!!!!!")
-    const update = await updateUser(info);
-    if (update) {
-      res.send(update);
+      });
     } else {
       next({
-        name: "ErrorUserDoesNotExist",
-        message:
-          "This user does not exist",
+        name: "ErrorIncorrectCredentials",
+        message: "Username or Password is incorrect",
       });
     }
   } catch ({ name, message }) {
     next({ name, message });
   }
 });
+
+usersRouter.patch(
+  "/:username/profile/edit",
+  requireUser,
+  async (req, res, next) => {
+    try {
+      const { username } = req.params;
+      const SALT_COUNT = 10;
+
+      const info = req.body;
+      if (req.user) {
+        info.id = req.user.id;
+      }
+      hashedPassword = await bcrypt.hash(info.password, SALT_COUNT);
+      if (info.is_admin) {
+        delete info.is_admin;
+      }
+      info.password = hashedPassword;
+      info.username = username;
+      console.log(info, "!!!!!!!");
+      const update = await updateUser(info);
+      if (update) {
+        res.send(update);
+      } else {
+        next({
+          name: "ErrorUserDoesNotExist",
+          message: "This user does not exist",
+        });
+      }
+    } catch ({ name, message }) {
+      next({ name, message });
+    }
+  }
+);
 
 // usersRouter.patch(
 //   "/:username/profile/edit",

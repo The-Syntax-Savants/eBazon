@@ -1,8 +1,8 @@
-import { client } from"./index";
-import { createUser, getAllUsers, getUserById, updateUser } from"./users";
-import { createProduct, getAllProducts, getProductByID } from"./products";
-import { createTag, getAllTags, deleteTag, editTag } from "./tags";
-import { addTagsToProduct } from"./productTags";
+import { client } from "./index.js";
+import { createUser, getAllUsers, getUserById, updateUser } from "./users.js";
+import { createProduct, getAllProducts, getProductByID } from "./products.js";
+import { createTag, getAllTags, deleteTag, editTag } from "./tags.js";
+import { addTagsToProduct } from "./productTags.js";
 
 async function dropTables() {
   try {

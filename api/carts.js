@@ -7,11 +7,11 @@ import {
   updateCart,
 } from "../db/carts.js";
 import {
-  getCartProductsByCartId,
   createCartProduct,
-  updateCartProduct,
+  getCartProductsByCartId,
   deleteCartProduct,
-} from "../db/cartProducts.js";
+  updateCartProduct,
+} from "../db/cartsProducts.js";
 
 export const cartsRouter = express.Router();
 export default cartsRouter;

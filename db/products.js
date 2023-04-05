@@ -1,5 +1,5 @@
 import { client } from "./index.js";
-import { addTagsToProduct } from"./productTags.js";
+import { addTagsToProduct } from "./productTags.js";
 
 export async function createProduct({
   name,
