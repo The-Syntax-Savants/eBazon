@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { createUserInDB } from "../api-adapters/users";
 
 const Register = (props) => {
-  const setIsLoggedIn = props.setIsLoggedIn
+  const setIsLoggedIn = props.setIsLoggedIn;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
@@ -11,7 +11,7 @@ const Register = (props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [alert, setAlert] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const createUser = async () => {
     if (password === confirmedPassword && password.length > 7) {
@@ -25,22 +25,26 @@ const Register = (props) => {
       if (data.name) {
         setAlert(`Error: ${data.message}`);
       } else {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("username", username)
-          setIsLoggedIn(true)
-          setAlert(data.message);
-          navigate("/")
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("username", username);
+        setIsLoggedIn(true);
+        setAlert(data.message);
+        navigate("/");
       }
     } else {
-      setAlert("Error: Confirmed Password must match Password. And, password must be at least 8 characters long!");
+      setAlert(
+        "Error: Confirmed Password must match Password. And, password must be at least 8 characters long!"
+      );
     }
   };
   return (
-    <div id="register-page">
-      <form onSubmit={(e)=>{
-        e.preventDefault()
-        createUser()
-      }}>
+    <div>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          createUser();
+        }}
+      >
         <h2>Register</h2>
         <label className="input-group">
           <span>Username</span>

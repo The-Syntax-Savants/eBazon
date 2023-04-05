@@ -1,7 +1,7 @@
-const { client } = require(".");
-const { addTagsToProduct } = require("./productTags.js");
+import { client } from "./index.js";
+import { addTagsToProduct } from "./productTags.js";
 
-async function createProduct({
+export async function createProduct({
   name,
   seller_name,
   price,
@@ -11,7 +11,6 @@ async function createProduct({
   tags = [],
 }) {
   try {
-
     const {
       rows: [product],
     } = await client.query(
@@ -31,7 +30,7 @@ async function createProduct({
     throw error;
   }
 }
-async function getAllProducts() {
+export async function getAllProducts() {
   try {
     const { rows: productIds } = await client.query(
       `
@@ -50,7 +49,9 @@ async function getAllProducts() {
   }
 }
 
-async function getProductByID(productId) {
+// *** Forgot to not make functions we were not using. my bad -Emilio & Charles
+
+export async function getProductByID(productId) {
   try {
     const {
       rows: [product],
@@ -112,18 +113,17 @@ async function updateProduct(productId, fields = {}) {
   const { tags } = fields; // might be undefined
   delete fields.tags;
 
-
   // build the set string
   const setString = Object.keys(fields)
     .map((key, index) => `"${key}"=$${index + 1}`)
     .join(", ");
 
   try {
-    let data = {}
+    let data = {};
     // update any fields that need to be updated
 
     if (setString.length > 0) {
-     await client.query(
+      await client.query(
         `
         UPDATE products
         SET ${setString}
@@ -163,31 +163,31 @@ async function updateProduct(productId, fields = {}) {
 
 //only should be done by admin
 
-async function deleteProductByID(productId){
+async function deleteProductByID(productId) {
   try {
-    
-    await client.query(`
+    await client.query(
+      `
       DELETE FROM product_tags
       WHERE product_tags.product_id=$1
-    `, [productId])
-    
-    await client.query(`
+    `,
+      [productId]
+    );
+
+    await client.query(
+      `
       DELETE FROM products
       WHERE products.id=$1
-    `
-    , [productId])
-
+    `,
+      [productId]
+    );
   } catch (error) {
-    console.log("Error in DeleteProduct")
-    throw error
+    console.log("Error in DeleteProduct");
+    throw error;
   }
 }
 
-
-module.exports = {
-  createProduct,
-  getAllProducts,
-  getProductByID,
-  updateProduct,
-  deleteProductByID
-};
+// module.exports = {
+//   createProduct,
+//   getAllProducts,
+//   getProductByID,
+// };

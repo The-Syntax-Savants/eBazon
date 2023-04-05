@@ -3,21 +3,22 @@ import { useNavigate, Link } from "react-router-dom";
 import { loginUserDB } from "../api-adapters/users";
 
 const Login = (props) => {
-  const setIsLoggedIn = props.setIsLoggedIn
+  const setIsLoggedIn = props.setIsLoggedIn;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [alert, setAlert] = useState("");
   const navigate = useNavigate();
 
   const loginUser = async () => {
+    console.log(username, password, "!!!!!!!!!");
     const data = await loginUserDB(username, password);
 
     if (data.name) {
       setAlert(`Error: ${data.message}`);
     } else {
       localStorage.setItem("token", data.token);
-      localStorage.setItem("username", username)
-      setIsLoggedIn(true)
+      localStorage.setItem("username", username);
+      setIsLoggedIn(true);
       setAlert("You are logged in!");
       navigate("/");
     }

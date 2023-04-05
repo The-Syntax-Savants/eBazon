@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router";
 import { getLoggedInUserFromDB, editUserDB } from "../api-adapters/users";
 
-require("../style.css");
-require("../tailwind.config.js");
+// require("../style.css");
+// require("../tailwind.config.js");
 
 const Profile = () => {
   const { username } = useParams();

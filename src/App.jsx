@@ -7,7 +7,6 @@ import {
   Profile,
   CreateProduct,
   SingleProductView,
-  EditProduct
 } from "./";
 import { Navbar, Footer } from "../components";
 import "tailwindcss/tailwind.css";
@@ -44,10 +43,6 @@ const Main = () => {
           <Route
             path="/product-view/:productId"
             element={<SingleProductView />}
-          />
-          <Route 
-            path="/edit-product/:id"
-            element={<EditProduct />}
           />
           <Route path="/:username/profile" element={<Profile />} />
         </Routes>

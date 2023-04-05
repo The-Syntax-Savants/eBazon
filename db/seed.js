@@ -1,8 +1,14 @@
-const { client } = require("./index");
-const { createUser, getAllUsers, getUserById, updateUser } = require("./users");
-const { createProduct, getAllProducts, getProductByID, updateProduct, deleteProductByID } = require("./products");
-const { createTag, getAllTags, deleteTag, editTag } = require("./tags");
-const { addTagsToProduct } = require("./productTags");
+import { client } from "./index.js";
+import { createUser, getAllUsers, getUserById, updateUser } from "./users.js";
+import {
+  createProduct,
+  getAllProducts,
+  getProductByID,
+  updateProduct,
+  deleteProductByID,
+} from "./products.js";
+import { createTag, getAllTags, deleteTag, editTag } from "./tags.js";
+import { addTagsToProduct } from "./productTags.js";
 
 async function dropTables() {
   try {
@@ -65,10 +71,10 @@ async function createTables() {
             id SERIAL PRIMARY KEY,
             username VARCHAR(50) REFERENCES users(username),
             is_complete BOOLEAN default false,
-            city VARCHAR(50) NOT NULL,
-            state VARCHAR(50) NOT NULL, 
-            zipcode VARCHAR(50) NOT NULL,
-            address_line_1 VARCHAR(50) NOT NULL,
+            city VARCHAR(50),
+            state VARCHAR(50), 
+            zipcode VARCHAR(50),
+            address_line_1 VARCHAR(50),
             address_line_2 VARCHAR(50),
             price INTEGER NOT NULL,
             time_of_purchase TIMESTAMP DEFAULT NOW()
@@ -79,7 +85,7 @@ async function createTables() {
             id SERIAL PRIMARY KEY,
             cart_id INTEGER REFERENCES carts(id),
             product_id INTEGER REFERENCES products(id),
-            quantity INTEGER,
+            quantity INTEGER default 1,
             price INTEGER
         ); `);
 
@@ -304,19 +310,19 @@ async function testDB() {
       dimensions: "100x100x100",
       quantity: 1,
       tags: product.tags,
-    })
+    });
     console.log("Result:", create);
 
-    console.log("testing updateProduct")
+    console.log("testing updateProduct");
     console.log(
-      await updateProduct(create.id,{
+      await updateProduct(create.id, {
         name: "why now",
         seller_name: "mlpLover",
         price: 27770,
         description: "Priceless Inheritance",
         dimensions: "100x100x100",
         quantity: 1,
-        tags: product.tags
+        tags: product.tags,
       })
     );
 

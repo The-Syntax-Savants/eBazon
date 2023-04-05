@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-require("../style.css");
-require("../tailwind.config.js");
-
 const Navbar = (props) => {
-  const isLoggedIn = props.isLoggedIn
-  const setIsLoggedIn = props.setIsLoggedIn
-  const [username, setUsername] = useState("")
-  useEffect(()=>{
-    const localStorageUsername = localStorage.getItem("username")
+  const isLoggedIn = props.isLoggedIn;
+  const setIsLoggedIn = props.setIsLoggedIn;
+  const [username, setUsername] = useState("");
+  useEffect(() => {
+    const localStorageUsername = localStorage.getItem("username");
     if (localStorageUsername) {
-      setUsername(localStorageUsername)
+      setUsername(localStorageUsername);
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn]);
 
   return (
     <div className="navbar bg-base-100">
@@ -42,7 +39,7 @@ const Navbar = (props) => {
             <li>
               <Link to="/">Home</Link>
             </li>
-            {!username && !isLoggedIn  && (
+            {!username && !isLoggedIn && (
               <li>
                 <Link to="/login">Login</Link>
               </li>
@@ -63,8 +60,8 @@ const Navbar = (props) => {
                   onClick={() => {
                     localStorage.removeItem("token");
                     localStorage.removeItem("username");
-                    setUsername("")
-                    setIsLoggedIn(false)
+                    setUsername("");
+                    setIsLoggedIn(false);
                   }}
                 >
                   Logout
