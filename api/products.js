@@ -6,6 +6,7 @@ const {
   getAllProducts,
   getProductByID,
 } = require("../db/products.js");
+const { addTagsToProduct } = require("../db/producttags.js");
 
 const productsRouter = express.Router();
 
@@ -49,19 +50,10 @@ productsRouter.get("/:id", async (req, res, next) => {
 
 // POST /api/products/createProduct
 productsRouter.post("/createProduct", requireUser, async (req, res, next) => {
-
   try {
     const seller_name = req.user.username;
-    
-    const {
-      name,
-      description,
-      price,
-      dimensions,
-      quantity,
-      tags,
-    } = req.body;
 
+    const { name, description, price, dimensions, quantity, tags } = req.body;
     const product = await createProduct({
       name,
       seller_name,
@@ -77,6 +69,26 @@ productsRouter.post("/createProduct", requireUser, async (req, res, next) => {
       name: "ErrorCreatingProduct",
       message: "Error Creating Product",
     });
+  }
+});
+
+productsRouter.post("/:id/addTags", requireUser, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { tags } = req.body;
+    console.log(tags);
+    await addTagsToProduct(id, tags);
+    const product = await getProductByID(id);
+    if (product) {
+      res.send(product);
+    } else {
+      next({
+        name: "ProductNotFoundError",
+        message: "A product was not found with this id",
+      });
+    }
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
 

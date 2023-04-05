@@ -1,6 +1,6 @@
 const express = require("express");
 const { requireUser, requireAdmin } = require("./utils.js");
-const {createTag, getAllTags} = require("../db/tags.js")
+const {createTag, getAllTags, getTagById, deleteTag, editTag} = require("../db/tags.js")
 
 const tagsRouter = express.Router();
 
@@ -24,7 +24,6 @@ tagsRouter.get("/", requireUser, async (req, res)=>
 tagsRouter.post("/", requireAdmin, async (req,res,next) => {
     try {
         const {name} = req.body
-        console.log(name, "!!!!!!")
         if(name.length > 1){
             const tag = await createTag(name)
             res.send(tag)
@@ -39,5 +38,45 @@ tagsRouter.post("/", requireAdmin, async (req,res,next) => {
         next({name, message})
     }
 })
+
+tagsRouter.patch("/:id", requireAdmin, async (req,res,next) => {
+    try {
+        const {id} = req.params
+        const {name} = req.body
+        const _tag = await getTagById(id)
+        console.log(_tag, "!!!!!")
+        if(_tag){
+           const tag = await editTag(id, name)
+           res.send(tag)
+        }else{
+            next({
+                name: "TagDoesNotExistError",
+                message: `Tag with an id of ${id} does not exist`
+            })
+        }
+    } catch ({name, message}) {
+        next({name, message})
+    }
+})
+
+tagsRouter.delete("/:id", requireAdmin, async (req,res,next) => {
+    try {
+        const {id} = req.params
+        const _tag = await getTagById(id)
+        if(_tag){
+            await deleteTag(id)
+            res.send(`You have successfully deleted a tag with id: ${id}`)
+        }else{
+            next({
+                name: "TagDoesNotExistError",
+                message: `Tag with an id of ${id} does not exist`
+            })
+        }
+
+    } catch ({name, message}) {
+        next({name, message})
+    }
+})
+
 
 module.exports = tagsRouter

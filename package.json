@@ -18,7 +18,7 @@
   "dependencies": {
     "@stripe/react-stripe-js": "^2.1.0",
     "@stripe/stripe-js": "^1.52.0",
-    "antd": "^5.3.3",
+    "antd": "^5.4.0",
     "autoprefixer": "^10.4.14",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
