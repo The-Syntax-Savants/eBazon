@@ -8,7 +8,7 @@ import {
   Login,
   Profile,
   CreateProduct,
-} from "./";
+} from "./components";
 import "tailwindcss/tailwind.css";
 import "daisyui/dist/full.css";
 
