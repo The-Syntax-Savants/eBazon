@@ -97,6 +97,9 @@ productsRouter.patch("/:id/edit", requireUser, async(req,res,next) => {
   try {
     const {id} = req.params
     const info = req.body
+    if(info.seller_name){
+      delete info.seller_name
+    }
     const test = await getProductByID(id)
     if(test){
       if(req.user.username === test.seller_name || req.user.is_admin){

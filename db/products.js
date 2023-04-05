@@ -120,9 +120,11 @@ async function updateProduct(productId, fields = {}) {
     .join(", ");
 
   try {
+    let data = {}
     // update any fields that need to be updated
+
     if (setString.length > 0) {
-      await client.query(
+     await client.query(
         `
         UPDATE products
         SET ${setString}
@@ -134,7 +136,7 @@ async function updateProduct(productId, fields = {}) {
     }
 
     // return early if there's no tags to update
-    if (tags === undefined) {
+    if (!tags) {
       return await getProductByID(productId);
     }
 

@@ -311,7 +311,7 @@ async function testDB() {
     console.log(
       await updateProduct(create.id,{
         name: "why now",
-        seller_name: "DrizzyJ",
+        seller_name: "mlpLover",
         price: 27770,
         description: "Priceless Inheritance",
         dimensions: "100x100x100",
