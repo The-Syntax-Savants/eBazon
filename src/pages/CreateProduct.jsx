@@ -12,43 +12,43 @@ const CreateProduct = () => {
   const [allTags, setAllTags] = useState([]);
   const [dimensions, setDimensions] = useState("");
   const [quantity, setQuantity] = useState("");
-  let values = []
+  let values = [];
 
   const options = [];
-  const tagsWithValue = []
-  allTags.map((tag)=>{
-      options.push({
-        label: tag.name,
-        value: tag.id,
-      });
-  }) 
+  const tagsWithValue = [];
+  allTags.map((tag) => {
+    options.push({
+      label: tag.name,
+      value: tag.id,
+    });
+  });
 
   const handleChange = (value) => {
     console.log(`selected ${value}`);
-    values = value
+    values = value;
   };
-  
+
   const tagGrabber = async () => {
     const data = await getAllTagsDB(localStorage.getItem("token"));
     setAllTags(data);
     console.log(data);
   };
-  
+
   useEffect(() => {
     tagGrabber();
   }, []);
-  
+
   const createProduct = async () => {
     try {
       const seller_name = localStorage.getItem("username");
-      
-      console.log("Sending product to db...");
-      console.log(values, "VALUES")
-      const tagValues = values.map((tagID)=>{
-          tagsWithValue.push({id: tagID})
-      })
 
-      console.log(tagsWithValue)
+      console.log("Sending product to db...");
+      console.log(values, "VALUES");
+      const tagValues = values.map((tagID) => {
+        tagsWithValue.push({ id: tagID });
+      });
+
+      console.log(tagsWithValue);
 
       // tagsWithValue.push()
       const data = await createProductInDB({
@@ -67,7 +67,7 @@ const CreateProduct = () => {
       throw err;
     }
   };
-  
+
   // const handleFileChange = (e) => {
   //   setImage(e.target.files[0]);
   // };
@@ -118,7 +118,7 @@ const CreateProduct = () => {
         <label className="input-group">
           <span>Product Category</span>
           <Space
-          className="input input-bordered"
+            className="input input-bordered"
             style={{
               width: "100%",
             }}

@@ -8,7 +8,8 @@ import {
   Login,
   Profile,
   CreateProduct,
-} from "./components";
+  SingleProductView,
+} from "./";
 import "tailwindcss/tailwind.css";
 import "daisyui/dist/full.css";
 
@@ -28,7 +29,7 @@ const Main = () => {
         <Navbar setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
       </div>
 
-      <div id="container">
+      <div id="content">
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route
@@ -40,6 +41,10 @@ const Main = () => {
             element={<Login setIsLoggedIn={setIsLoggedIn} />}
           />
           <Route path="/createProduct" element={<CreateProduct />} />
+          <Route
+            path="/product-view/:productId"
+            element={<SingleProductView />}
+          />
           <Route path="/:username/profile" element={<Profile />} />
         </Routes>
       </div>

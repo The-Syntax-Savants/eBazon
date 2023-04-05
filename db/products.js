@@ -22,11 +22,9 @@ async function createProduct({
       [name, seller_name, price, description, dimensions, quantity]
     );
 
-  
-     await addTagsToProduct(product.id, tags)
+    await addTagsToProduct(product.id, tags);
 
-     return await getProductByID(product.id)
-
+    return await getProductByID(product.id);
   } catch (error) {
     console.error("Error creating Product!");
     throw error;
@@ -40,8 +38,10 @@ async function getAllProducts() {
       `
     );
 
-    const products = await Promise.all(productIds.map((product) => getProductByID(product.id)))
-    console.log(products)
+    const products = await Promise.all(
+      productIds.map((product) => getProductByID(product.id))
+    );
+    console.log(products);
     return products;
   } catch (error) {
     console.error("Error getting all products!");
@@ -51,17 +51,22 @@ async function getAllProducts() {
 
 async function getProductByID(productId) {
   try {
-    const { rows: [product] } = await client.query(`
+    const {
+      rows: [product],
+    } = await client.query(
+      `
       SELECT *
       FROM products
       WHERE id=$1;
-    `, [productId])
+    `,
+      [productId]
+    );
 
-    if(!product){
-      throw{
+    if (!product) {
+      throw {
         name: "ProductNotFoundError",
-        message: "Could not find a product with that productId"
-      }
+        message: "Could not find a product with that productId",
+      };
     }
 
     const { rows: tags } = await client.query(
@@ -73,16 +78,15 @@ async function getProductByID(productId) {
       `,
       [productId]
     );
-      product.tags = tags
+    product.tags = tags;
 
-    return product
-  } catch(error) {
+    return product;
+  } catch (error) {
     console.error("Error getting productById!");
-    throw error
+    throw error;
   }
 }
 // *** Forgot to not make functions we were not using. my bad -Emilio & Charles
-
 
 // async function getProductsByTag(tag) {
 //   try {
@@ -110,5 +114,5 @@ async function getProductByID(productId) {
 module.exports = {
   createProduct,
   getAllProducts,
-  getProductByID
+  getProductByID,
 };
