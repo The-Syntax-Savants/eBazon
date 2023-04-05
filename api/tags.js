@@ -1,8 +1,10 @@
-const express = require("express");
-const { requireUser, requireAdmin } = require("./utils.js");
-const {createTag, getAllTags, getTagById, deleteTag, editTag} = require("../db/tags.js")
 
-const tagsRouter = express.Router();
+import express from "express";
+import { requireUser, requireAdmin } from "./utils.js";
+import {createTag, getAllTags, getTagById, deleteTag, editTag} from "../db/tags.js";
+
+export const tagsRouter = express.Router();
+export default tagsRouter;
 
 tagsRouter.use((req, res, next)=>
 {

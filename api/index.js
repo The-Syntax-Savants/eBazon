@@ -1,8 +1,15 @@
-import express from "express";
 import jwt from "jsonwebtoken";
-const { getUserById } = require("../db/users");
+import express from "express";
+import { getUserById } from "../db/users.js";
+import usersRouter from "./users.js";
+import productsRouter from "./products.js";
+// import cartsRouter from "./carts.js"
+import tagsRouter from "./tags.js";
+
 const { JWT_SECRET } = process.env;
-const apiRouter = express.Router();
+export const apiRouter = express.Router();
+export default apiRouter;
+
 apiRouter.get("/health", async (req, res, next) => {
   try {
     res.send({ message: "Server is healthy" });
@@ -39,16 +46,10 @@ apiRouter.use(async (req, res, next) => {
   }
 });
 
-const usersRouter = require("./users");
 apiRouter.use("/users", usersRouter);
 
-const productsRouter = require("./products");
 apiRouter.use("/products", productsRouter);
 
-const cartsRouter = require("./carts");
-apiRouter.use("/carts", cartsRouter);
+apiRouter.use("/carts", cartsRouter)
 
-const tagsRouter = require("./tags");
 apiRouter.use("/tags", tagsRouter);
-
-module.exports = apiRouter;

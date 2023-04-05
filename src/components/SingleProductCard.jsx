@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-require("../style.css");
-require("../tailwind.config.js");
+// require("../style.css");
+// require("../tailwind.config.js");
 
 const SingleProductCard = (props) => {
   const { product } = props;
-
+  console.log(product);
   return (
     <div id="product-card" className="max-w-sm w-full">
       <div className="card w-96 bg-base-100 shadow-xl">

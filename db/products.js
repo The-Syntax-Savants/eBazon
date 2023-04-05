@@ -1,7 +1,7 @@
-const { client } = require(".");
-const { addTagsToProduct } = require("./productTags.js");
+import { client } from "./index.js";
+import { addTagsToProduct } from"./productTags.js";
 
-async function createProduct({
+export async function createProduct({
   name,
   seller_name,
   price,
@@ -30,7 +30,7 @@ async function createProduct({
     throw error;
   }
 }
-async function getAllProducts() {
+export async function getAllProducts() {
   try {
     const { rows: productIds } = await client.query(
       `
@@ -49,7 +49,9 @@ async function getAllProducts() {
   }
 }
 
-async function getProductByID(productId) {
+// *** Forgot to not make functions we were not using. my bad -Emilio & Charles
+
+export async function getProductByID(productId) {
   try {
     const {
       rows: [product],
@@ -111,8 +113,8 @@ async function getProductByID(productId) {
 //   } catch {}
 // }
 
-module.exports = {
-  createProduct,
-  getAllProducts,
-  getProductByID,
-};
+// module.exports = {
+//   createProduct,
+//   getAllProducts,
+//   getProductByID,
+// };

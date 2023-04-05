@@ -1,8 +1,8 @@
-const { client } = require("./index");
-const { createUser, getAllUsers, getUserById, updateUser } = require("./users");
-const { createProduct, getAllProducts, getProductByID } = require("./products");
-const { createTag, getAllTags, deleteTag, editTag } = require("./tags");
-const { addTagsToProduct } = require("./productTags");
+import { client } from"./index";
+import { createUser, getAllUsers, getUserById, updateUser } from"./users";
+import { createProduct, getAllProducts, getProductByID } from"./products";
+import { createTag, getAllTags, deleteTag, editTag } from "./tags";
+import { addTagsToProduct } from"./productTags";
 
 async function dropTables() {
   try {

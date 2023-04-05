@@ -1,4 +1,3 @@
-
 const BASE_URL = "http://localhost:3001/api";
 // const BASE_URL = "https://ebazon.onrender.com/api"
 
@@ -11,7 +10,6 @@ export const getAllProductsDB = async () => {
       },
     });
     const result = await response.json();
-
     console.log(result);
     return result;
   } catch (error) {
@@ -19,7 +17,6 @@ export const getAllProductsDB = async () => {
     console.error(error);
   }
 };
-
 
 export const getProductByIdDB = async (id) => {
   try {
@@ -39,7 +36,6 @@ export const getProductByIdDB = async (id) => {
 };
 
 export const createProductInDB = async (product) => {
-
   try {
     const response = await fetch(`${BASE_URL}/products/createProduct`, {
       method: "POST",

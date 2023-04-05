@@ -1,14 +1,14 @@
-const express = require("express");
-const jwt = require("jsonwebtoken");
-const { requireUser } = require("./utils.js");
-const {
+import express from "express";
+import jwt from "jsonwebtoken";
+import { requireUser } from "./utils.js";
+import {
   createProduct,
   getAllProducts,
   getProductByID,
-} = require("../db/products.js");
-const { addTagsToProduct } = require("../db/productTags.js");
+} from "../db/products.js";
 
-const productsRouter = express.Router();
+export const productsRouter = express.Router();
+export default productsRouter;
 
 productsRouter.use((req, res, next) => {
   console.log("A request is being made to /products");
@@ -49,11 +49,24 @@ productsRouter.get("/:id", async (req, res, next) => {
 });
 
 // POST /api/products/createProduct
-productsRouter.post("/createProduct", requireUser, async (req, res, next) => {
+productsRouter.post("/createProduct", async (req, res, next) => {
+  // console.log("Request body: ", req.body);
+  console.log("^^^");
   try {
+    console.log("Request body: ", req.body);
+    console.log(req.user, "username***");
     const seller_name = req.user.username;
-
     const { name, description, price, dimensions, quantity, tags } = req.body;
+    console.log(
+      name,
+      seller_name,
+      description,
+      price,
+      dimensions,
+      quantity,
+      tags,
+      "&&&"
+    );
     const product = await createProduct({
       name,
       seller_name,

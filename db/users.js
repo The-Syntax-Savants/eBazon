@@ -1,7 +1,7 @@
-const { client } = require(".");
-const bcrypt = require("bcrypt");
+import { client } from "./index.js";
+import bcrypt from "bcrypt";
 
-async function createUser({
+export async function createUser({
   username,
   password,
   email,
@@ -30,7 +30,7 @@ async function createUser({
   }
 }
 
-async function getUserById(userId) {
+export async function getUserById(userId) {
   try {
     const {
       rows: [user],
@@ -50,7 +50,7 @@ async function getUserById(userId) {
   }
 }
 
-async function getAllUsers() {
+export async function getAllUsers() {
   try {
     const { rows } = await client.query(`
         SELECT id, username, first_name, last_name, email, is_admin, active 
@@ -62,7 +62,7 @@ async function getAllUsers() {
   }
 }
 
-async function getUser(username) {
+export async function getUser(username) {
   try {
     const {
       rows: [user],
@@ -81,7 +81,7 @@ async function getUser(username) {
   }
 }
 
-async function updateUser({ id, ...fields }) {
+export async function updateUser({ id, ...fields }) {
   const setString = Object.keys(fields)
     .map((key, idx) => `"${key}"=$${idx + 1}`)
     .join(", ");
@@ -98,21 +98,11 @@ async function updateUser({ id, ...fields }) {
         RETURNING *
       `,
         Object.values(fields)
-
-        
       );
-      
+
       return await getUserById(id);
     }
   } catch (error) {
     throw error;
   }
 }
-
-module.exports = {
-  createUser,
-  getUserById,
-  getAllUsers,
-  getUser,
-  updateUser,
-};

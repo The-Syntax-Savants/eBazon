@@ -1,8 +1,7 @@
-const {Client} = require("pg")
+import pkg from "pg";
+const { Client } = pkg;
 // const {DATABASE_URL} = process.env
 
-const client = new Client(process.env.DATABASE_URL || "postgres://localhost:5432/eBazon")
-
-module.exports = {
-    client
-}
+export const client = new Client(
+  process.env.DATABASE_URL || "postgres://localhost:5432/eBazon"
+);
