@@ -65,10 +65,10 @@ async function createTables() {
             id SERIAL PRIMARY KEY,
             username VARCHAR(50) REFERENCES users(username),
             is_complete BOOLEAN default false,
-            city VARCHAR(50) NOT NULL,
-            state VARCHAR(50) NOT NULL, 
-            zipcode VARCHAR(50) NOT NULL,
-            address_line_1 VARCHAR(50) NOT NULL,
+            city VARCHAR(50),
+            state VARCHAR(50), 
+            zipcode VARCHAR(50),
+            address_line_1 VARCHAR(50),
             address_line_2 VARCHAR(50),
             price INTEGER NOT NULL,
             time_of_purchase TIMESTAMP DEFAULT NOW()
@@ -79,7 +79,7 @@ async function createTables() {
             id SERIAL PRIMARY KEY,
             cart_id INTEGER REFERENCES carts(id),
             product_id INTEGER REFERENCES products(id),
-            quantity INTEGER,
+            quantity INTEGER default 1,
             price INTEGER
         ); `);
 
