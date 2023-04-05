@@ -2,17 +2,19 @@ import React, { useEffect, useState } from "react";
 import { createProductInDB } from "../api-adapters/products";
 import { getAllTagsDB } from "../api-adapters/tags";
 import { Select, Space } from "antd";
+import { useNavigate } from "react-router";
 
 const CreateProduct = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [tags, setTags] = useState([]);
   const [allTags, setAllTags] = useState([]);
   const [dimensions, setDimensions] = useState("");
   const [quantity, setQuantity] = useState("");
-  let values = [];
+  const [values, setValues] = useState([]);
+  const navigate = useNavigate()
 
   const options = [];
   const tagsWithValue = [];
@@ -25,7 +27,7 @@ const CreateProduct = () => {
 
   const handleChange = (value) => {
     console.log(`selected ${value}`);
-    values = value;
+    setValues(value);
   };
 
   const tagGrabber = async () => {
@@ -36,32 +38,39 @@ const CreateProduct = () => {
 
   useEffect(() => {
     tagGrabber();
-  }, []);
+    if(tags.length){
+      createProduct()
+    }
+  }, [tags]);
+
+  const updateTagsFunc = async () => {
+    values.map((tagID) => {
+      tagsWithValue.push({ id: tagID });
+    });
+  
+    setTags(tagsWithValue)
+
+  }
 
   const createProduct = async () => {
     try {
       const seller_name = localStorage.getItem("username");
 
-      console.log("Sending product to db...");
-      console.log(values, "VALUES");
-      const tagValues = values.map((tagID) => {
-        tagsWithValue.push({ id: tagID });
-      });
+      console.log(price)
+    
 
-      console.log(tagsWithValue);
 
-      // tagsWithValue.push()
-      const data = await createProductInDB({
+      await createProductInDB({
         name,
         seller_name,
         description,
-        price,
+        price: price*100,
         dimensions,
         quantity,
-        selectedTags,
+        tags,
       });
-      console.log(data, "createProduct response");
-      return data;
+
+      navigate("/")//this will end up taking to single product view
     } catch (err) {
       console.log(err);
       throw err;
@@ -75,9 +84,9 @@ const CreateProduct = () => {
   return (
     <div>
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          createProduct();
+          await updateTagsFunc()
         }}
       >
         <h2>Create Product</h2>
@@ -151,7 +160,7 @@ const CreateProduct = () => {
           <span>Product Quantity</span>
           <input
             required
-            type="text"
+            type="number"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
             placeholder="Product Quantity"

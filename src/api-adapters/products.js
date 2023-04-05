@@ -49,7 +49,9 @@ export const createProductInDB = async (product) => {
       },
       body: JSON.stringify(product),
     });
+
     const result = await response.json();
+    console.log(result)
     return result;
   } catch (error) {
     console.log("Error in createProduct Call!");
