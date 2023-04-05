@@ -5,7 +5,8 @@ const {
   createProduct,
   getAllProducts,
   getProductByID,
-  deleteProductByID
+  deleteProductByID,
+  updateProduct
 } = require("../db/products.js");
 const { addTagsToProduct } = require("../db/productTags.js");
 
@@ -89,6 +90,32 @@ productsRouter.delete("/:id/delete", requireAdmin, async (req,res,next) => {
 
   } catch ({name, message}) {
     next({name, message})
+  }
+})
+
+productsRouter.patch("/:id/edit", requireUser, async(req,res,next) => {
+  try {
+    const {id} = req.params
+    const info = req.body
+    const test = await getProductByID(id)
+    if(test){
+      if(req.user.username === test.seller_name || req.user.is_admin){
+        const product = await updateProduct(id, info)
+        res.send(product)
+      }else{
+        next({
+          name: "YouDoNotOwnThisProductError",
+          message: "This product does not belong to you"
+        })
+      }
+    }else{
+      next({
+        name: "ProductDoesNotExistError",
+        message: `Product with id: ${id} does not exist`
+      })
+    }
+  } catch ({name,message}) {
+      next({name, message})
   }
 })
 

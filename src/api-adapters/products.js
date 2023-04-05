@@ -45,7 +45,7 @@ export const createProductInDB = async (product) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify(product),
     });
@@ -58,6 +58,39 @@ export const createProductInDB = async (product) => {
     console.error(error);
   }
 };
+
+export const editProductInDB = async(id, token, name, sellerName, price, images, description, dimensions, quantity, isActive, tags) => {
+  try {
+    const response = await fetch (`${BASE_URL}/products/${id}/edit`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            name: name,
+            seller_name: sellerName,
+            price: price,
+            images: images,
+            description: description,
+            dimensions: dimensions,
+            quantity: quantity,
+            is_active: isActive,
+            tags: tags
+
+        })
+    })
+
+
+    const result = await response.json()
+    console.log(result) 
+    return result
+} catch (error) {
+    console.error(error)
+}
+}
+
+
 
 // module.exports = {
 //   getAllProductsDB,
