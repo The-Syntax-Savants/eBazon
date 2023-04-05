@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createProductInDB } from "../api-adapters/products";
 import { getAllTagsDB } from "../api-adapters/tags";
+import { Select, Space } from "antd";
 
 const CreateProduct = () => {
   const [name, setName] = useState("");
@@ -8,26 +9,48 @@ const CreateProduct = () => {
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [allTags, setAllTags] = useState([])
+  const [allTags, setAllTags] = useState([]);
   const [dimensions, setDimensions] = useState("");
   const [quantity, setQuantity] = useState("");
+  let values = []
 
+  const options = [];
+  const tagsWithValue = []
+  allTags.map((tag)=>{
+      options.push({
+        label: tag.name,
+        value: tag.id,
+      });
+  }) 
+
+  const handleChange = (value) => {
+    console.log(`selected ${value}`);
+    values = value
+  };
+  
   const tagGrabber = async () => {
-    const data = await getAllTagsDB(localStorage.getItem("token"))
-    setAllTags(data)
-    console.log(data)
-  }
-
-  useEffect(()=>{
-    tagGrabber()
-  }, [])
-
+    const data = await getAllTagsDB(localStorage.getItem("token"));
+    setAllTags(data);
+    console.log(data);
+  };
+  
+  useEffect(() => {
+    tagGrabber();
+  }, []);
+  
   const createProduct = async () => {
     try {
       const seller_name = localStorage.getItem("username");
-
-      console.log("Sending product to db...");
       
+      console.log("Sending product to db...");
+      console.log(values, "VALUES")
+      const tagValues = values.map((tagID)=>{
+          tagsWithValue.push({id: tagID})
+      })
+
+      console.log(tagsWithValue)
+
+      // tagsWithValue.push()
       const data = await createProductInDB({
         name,
         seller_name,
@@ -44,7 +67,7 @@ const CreateProduct = () => {
       throw err;
     }
   };
-
+  
   // const handleFileChange = (e) => {
   //   setImage(e.target.files[0]);
   // };
@@ -94,15 +117,24 @@ const CreateProduct = () => {
 
         <label className="input-group">
           <span>Product Category</span>
-          {/* <form>
-            <legend>Select Category</legend>
-            {allTags.map((tag, idx) => {
-              return(
-                <input key={idx} type="checkbox" value={tag}>{tag.name}</input>
-                )
-              })}
-
-              </form> */}
+          <Space
+          className="input input-bordered"
+            style={{
+              width: "100%",
+            }}
+            direction="vertical"
+          >
+            <Select
+              mode="multiple"
+              allowClear
+              style={{
+                width: "100%",
+              }}
+              placeholder="Please select"
+              onChange={handleChange}
+              options={options}
+            />
+          </Space>
         </label>
         <label className="input-group">
           <span>Product Dimensions</span>
