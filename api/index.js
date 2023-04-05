@@ -5,8 +5,8 @@ import usersRouter from "./users.js";
 import productsRouter from "./products.js";
 import cartsRouter from "./carts.js";
 import tagsRouter from "./tags.js";
-
 const { JWT_SECRET } = process.env;
+
 export const apiRouter = express.Router();
 export default apiRouter;
 

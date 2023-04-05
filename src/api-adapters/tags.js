@@ -17,3 +17,4 @@ export const getAllTagsDB = async (token) => {
         console.error(error);
       }
 }
+

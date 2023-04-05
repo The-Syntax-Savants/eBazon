@@ -1,23 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { createProductInDB } from "../api-adapters/products";
+import { useParams, useNavigate } from "react-router";
+import { editProductInDB, getProductByIdDB } from "../api-adapters/products";
 import { getAllTagsDB } from "../api-adapters/tags";
 import { Select, Space } from "antd";
-import { useNavigate } from "react-router";
 
-const CreateProduct = () => {
+const EditProduct = () => {
+  const {id} = useParams()
+  const [product, setProduct] = useState({})
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(0)
   const [image, setImage] = useState(null);
-  const [tags, setTags] = useState([]);
-  const [allTags, setAllTags] = useState([]);
   const [dimensions, setDimensions] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [values, setValues] = useState([]);
-  const navigate = useNavigate()
+  const [quantity, setQuantity] = useState(0);
+  const [isActive, setIsActive] = useState(true);
+  const [allTags, setAllTags] = useState([]);
+  const [tags, setTags] = useState([]);
+const [values, setValues] = useState([]);
+const navigate = useNavigate()
 
-  const options = [];
-  const tagsWithValue = [];
+const options = [];
+const tagsWithValue = [];
+  
+  const fetchProduct = async () => {
+    const data = await getProductByIdDB(id)
+    if(data.product){
+        setName(data.product.name)
+        setDescription(data.product.description)
+        setPrice(data.product.price)
+        setDimensions(data.product.dimensions)
+        setQuantity(data.product.quantity)
+        
+        setProduct(data.product)
+    }
+  } 
+
+
   allTags.map((tag) => {
     options.push({
       label: tag.name,
@@ -37,9 +55,12 @@ const CreateProduct = () => {
   };
 
   useEffect(() => {
+    if(!name){
+      fetchProduct()
+    }
     tagGrabber();
-    if(tags.length){
-      createProduct()
+    if(tags.length || name.length){
+      editProduct()
     }
   }, [tags]);
 
@@ -52,23 +73,21 @@ const CreateProduct = () => {
 
   }
 
-  const createProduct = async () => {
+  const editProduct = async () => {
     try {
-      const seller_name = localStorage.getItem("username");
-
-      console.log(price)
     
 
 
-      await createProductInDB({
+      await editProductInDB({
+        id,
         name,
-        seller_name,
         description,
-        price: price*100,
+        price,
         dimensions,
         quantity,
+        is_active: isActive,
         tags,
-      });
+    });
 
       navigate("/")//this will end up taking to single product view
     } catch (err) {
@@ -83,7 +102,7 @@ const CreateProduct = () => {
 
   return (
     <div>
-      <form
+      {product && <form
         onSubmit={async (e) => {
           e.preventDefault();
           await updateTagsFunc()
@@ -97,7 +116,6 @@ const CreateProduct = () => {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Product Name"
             className="input input-bordered"
           />
         </label>
@@ -108,7 +126,6 @@ const CreateProduct = () => {
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Product Description"
             className="input input-bordered"
           />
         </label>
@@ -119,7 +136,6 @@ const CreateProduct = () => {
             type="number"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            placeholder="Product Price"
             className="input input-bordered"
           />
         </label>
@@ -152,7 +168,6 @@ const CreateProduct = () => {
             type="text"
             value={dimensions}
             onChange={(e) => setDimensions(e.target.value)}
-            placeholder="Product Dimensions"
             className="input input-bordered"
           />
         </label>
@@ -163,7 +178,6 @@ const CreateProduct = () => {
             type="number"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
-            placeholder="Product Quantity"
             className="input input-bordered"
           />
         </label>
@@ -176,11 +190,11 @@ const CreateProduct = () => {
           />
         </label>
         <button className="btn btn-primary" type="submit">
-          Create Product
+          Edit Product
         </button>
-      </form>
+      </form>}
     </div>
   );
 };
 
-export default CreateProduct;
+export default EditProduct;

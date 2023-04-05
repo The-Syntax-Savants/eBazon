@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Navbar, Footer } from "./components";
 import {
   Home,
   Register,
@@ -8,9 +7,12 @@ import {
   Profile,
   CreateProduct,
   SingleProductView,
-} from "./pages";
+} from "./";
+import { Navbar, Footer } from "../components";
+import "tailwindcss/tailwind.css";
+import "daisyui/dist/full.css";
 
-const App = () => {
+const Main = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     const localStorageToken = localStorage.getItem("token");
@@ -26,7 +28,7 @@ const App = () => {
         <Navbar setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
       </div>
 
-      <div id="container">
+      <div id="content">
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route
@@ -49,4 +51,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Main;

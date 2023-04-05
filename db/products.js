@@ -108,10 +108,83 @@ export async function getProductByID(productId) {
 //   } catch {}
 // }
 
-// async function updateProduct({ id, ...fields }) {
-//   try {
-//   } catch {}
-// }
+async function updateProduct(productId, fields = {}) {
+  // read off the tags & remove that field
+  const { tags } = fields; // might be undefined
+  delete fields.tags;
+
+  // build the set string
+  const setString = Object.keys(fields)
+    .map((key, index) => `"${key}"=$${index + 1}`)
+    .join(", ");
+
+  try {
+    let data = {};
+    // update any fields that need to be updated
+
+    if (setString.length > 0) {
+      await client.query(
+        `
+        UPDATE products
+        SET ${setString}
+        WHERE id=${productId}
+        RETURNING *;
+      `,
+        Object.values(fields)
+      );
+    }
+
+    // return early if there's no tags to update
+    if (!tags) {
+      return await getProductByID(productId);
+    }
+
+    const tagListIdString = tags.map((tag) => `${tag.id}`).join(", ");
+
+    // delete any post_tags from the database which aren't in that tagList
+    await client.query(
+      `
+      DELETE FROM product_tags
+      WHERE tag_id
+      NOT IN (${tagListIdString})
+      AND product_id=$1;
+    `,
+      [productId]
+    );
+
+    // and create post_tags as necessary
+    await addTagsToProduct(productId, tags);
+
+    return await getProductByID(productId);
+  } catch (error) {
+    throw error;
+  }
+}
+
+//only should be done by admin
+
+async function deleteProductByID(productId) {
+  try {
+    await client.query(
+      `
+      DELETE FROM product_tags
+      WHERE product_tags.product_id=$1
+    `,
+      [productId]
+    );
+
+    await client.query(
+      `
+      DELETE FROM products
+      WHERE products.id=$1
+    `,
+      [productId]
+    );
+  } catch (error) {
+    console.log("Error in DeleteProduct");
+    throw error;
+  }
+}
 
 // module.exports = {
 //   createProduct,
