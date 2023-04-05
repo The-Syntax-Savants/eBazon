@@ -110,7 +110,6 @@ async function getProductByID(productId) {
 async function updateProduct(productId, fields = {}) {
   // read off the tags & remove that field
   const { tags } = fields; // might be undefined
-
   delete fields.tags;
 
 
