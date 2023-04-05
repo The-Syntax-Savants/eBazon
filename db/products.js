@@ -1,5 +1,5 @@
 const { client } = require(".");
-const { addTagsToProduct } = require("./producttags");
+const { addTagsToProduct } = require("./productTags.js");
 
 async function createProduct({
   name,

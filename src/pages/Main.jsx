@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import {
-  Navbar,
-  Footer,
   Home,
   Register,
   Login,
@@ -10,6 +8,7 @@ import {
   CreateProduct,
   SingleProductView,
 } from "./";
+import { Navbar, Footer } from "../components";
 import "tailwindcss/tailwind.css";
 import "daisyui/dist/full.css";
 

@@ -6,7 +6,7 @@ const {
   getAllProducts,
   getProductByID,
 } = require("../db/products.js");
-const { addTagsToProduct } = require("../db/producttags.js");
+const { addTagsToProduct } = require("../db/productTags.js");
 
 const productsRouter = express.Router();
 

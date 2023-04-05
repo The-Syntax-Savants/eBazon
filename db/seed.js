@@ -2,7 +2,7 @@ const { client } = require("./index");
 const { createUser, getAllUsers, getUserById, updateUser } = require("./users");
 const { createProduct, getAllProducts, getProductByID } = require("./products");
 const { createTag, getAllTags, deleteTag, editTag } = require("./tags");
-const { addTagsToProduct } = require("./producttags");
+const { addTagsToProduct } = require("./productTags");
 
 async function dropTables() {
   try {
@@ -131,7 +131,7 @@ async function createInitialUsers() {
       email: "blevins.j921@gmail.com",
       first_name: "Joel",
       last_name: "Blevins",
-      is_admin: true
+      is_admin: true,
     });
 
     const random = await createUser({
@@ -140,7 +140,7 @@ async function createInitialUsers() {
       email: "randomEmail@gmail.com",
       first_name: "random",
       last_name: "Test",
-      is_admin: false
+      is_admin: false,
     });
 
     console.log("finished creating initial users!");
@@ -264,43 +264,49 @@ async function testDB() {
     const firstUser = await getUserById(users[0].id);
     console.log("Result:", firstUser);
 
-    console.log("Calling updateUser")
+    console.log("Calling updateUser");
     const object1 = {
       id: 2,
       username: "mlpLover",
       first_name: "Charles",
-      email: "mlpLover69@info.com"
-    }
-    const MLP = await updateUser(object1)
-    console.log("Result:", MLP)
+      email: "mlpLover69@info.com",
+    };
+    const MLP = await updateUser(object1);
+    console.log("Result:", MLP);
 
     console.log("Calling getAllProducts");
     const products = await getAllProducts();
     console.log("Result:", products);
 
-    
     console.log("Calling getAllTags");
     const tags = await getAllTags();
     console.log("Result:", tags);
-    
-    console.log("Calling addTagsToProduct")
-    const scaryTest = await addTagsToProduct(products[2].id, [tags[3], tags[2], tags[12], tags[11]])
-    console.log("Result:", scaryTest)
-    
-    console.log("Calling getProductById")
-    const product = await getProductByID(products[2].id)
-    console.log("Result:", product)
-    
-    console.log("Testing create product with tags")
-    console.log(await createProduct({
-      name: "newProductICreated",
-      seller_name: "DrizzyJ",
-      price: 2700,
-      description: "Priceless Inheritance",
-      dimensions: "100x100x100",
-      quantity: 1,
-      tags: product.tags
-    }))
+
+    console.log("Calling addTagsToProduct");
+    const scaryTest = await addTagsToProduct(products[2].id, [
+      tags[3],
+      tags[2],
+      tags[12],
+      tags[11],
+    ]);
+    console.log("Result:", scaryTest);
+
+    console.log("Calling getProductById");
+    const product = await getProductByID(products[2].id);
+    console.log("Result:", product);
+
+    console.log("Testing create product with tags");
+    console.log(
+      await createProduct({
+        name: "newProductICreated",
+        seller_name: "DrizzyJ",
+        price: 2700,
+        description: "Priceless Inheritance",
+        dimensions: "100x100x100",
+        quantity: 1,
+        tags: product.tags,
+      })
+    );
 
     // console.log("Calling deleteTag")
     // await deleteTag(tags[1].id)

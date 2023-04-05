@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom/client";
 import React from "react";
-import { Main } from "./components";
+import { Main } from "./pages";
 import { BrowserRouter as Router } from "react-router-dom";
 
 const container = document.getElementById("app");
