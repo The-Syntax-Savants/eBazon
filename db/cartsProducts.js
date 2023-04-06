@@ -3,7 +3,7 @@ import { getActiveCartByUsername } from "./carts.js";
 
 export async function createCartProduct({ username, productId, quantity }) {
   try {
-    const cart = getActiveCartByUsername(username);
+    const cart = await getActiveCartByUsername(username);
     const {
       rows: [cartProduct],
     } = await client.query(

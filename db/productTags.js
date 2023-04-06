@@ -1,6 +1,6 @@
-const { client } = require(".");
+import { client } from "./index.js";
 
-async function createProductTag(productId, tagId) {
+export async function createProductTag(productId, tagId) {
   try {
     await client.query(
       `
@@ -16,7 +16,7 @@ async function createProductTag(productId, tagId) {
   }
 }
 
-async function addTagsToProduct(productId, tagList) {
+export async function addTagsToProduct(productId, tagList) {
   try {
     const createProductTagPromises = tagList.map((tag) =>
       createProductTag(productId, tag.id)
@@ -28,7 +28,3 @@ async function addTagsToProduct(productId, tagList) {
     throw error;
   }
 }
-
-module.exports = {
-  addTagsToProduct,
-};

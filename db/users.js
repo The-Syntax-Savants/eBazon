@@ -1,13 +1,13 @@
-const { client } = require(".");
-const bcrypt = require("bcrypt");
+import { client } from "./index.js";
+import bcrypt from "bcrypt";
 
-async function createUser({
+export async function createUser({
   username,
   password,
   email,
   first_name,
   last_name,
-  is_admin
+  is_admin,
 }) {
   try {
     const SALT_COUNT = 10;
@@ -20,7 +20,7 @@ async function createUser({
       INSERT INTO users (username, password, email, first_name, last_name, is_admin)
       VALUES ($1, $2, $3, $4, $5, $6)
       ON CONFLICT (username) DO NOTHING
-      RETURNING username, email, first_name, last_name
+      RETURNING *;
       `,
       [username, hashedPassword, email, first_name, last_name, is_admin]
     );
@@ -30,7 +30,7 @@ async function createUser({
   }
 }
 
-async function getUserById(userId) {
+export async function getUserById(userId) {
   try {
     const {
       rows: [user],
@@ -50,7 +50,7 @@ async function getUserById(userId) {
   }
 }
 
-async function getAllUsers() {
+export async function getAllUsers() {
   try {
     const { rows } = await client.query(`
         SELECT id, username, first_name, last_name, email, is_admin, active 
@@ -62,7 +62,7 @@ async function getAllUsers() {
   }
 }
 
-async function getUser(username) {
+export async function getUser(username) {
   try {
     const {
       rows: [user],
@@ -81,14 +81,13 @@ async function getUser(username) {
   }
 }
 
-async function updateUser({ id, ...fields }) {
+export async function updateUser({ id, ...fields }) {
   const setString = Object.keys(fields)
     .map((key, idx) => `"${key}"=$${idx + 1}`)
     .join(", ");
 
-    
-    console.log(setString, "!!!!!")
-    try {
+  console.log(setString, "!!!!!");
+  try {
     if (setString.length) {
       await client.query(
         `
@@ -98,21 +97,11 @@ async function updateUser({ id, ...fields }) {
         RETURNING *
       `,
         Object.values(fields)
-
-        
       );
-      
+
       return await getUserById(id);
     }
   } catch (error) {
     throw error;
   }
 }
-
-module.exports = {
-  createUser,
-  getUserById,
-  getAllUsers,
-  getUser,
-  updateUser,
-};

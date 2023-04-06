@@ -7,12 +7,10 @@ import {
   Profile,
   CreateProduct,
   SingleProductView,
-} from "./";
-import { Navbar, Footer } from "../components";
-import "tailwindcss/tailwind.css";
-import "daisyui/dist/full.css";
-
-const Main = () => {
+  EditProduct,
+} from "./pages";
+import { Navbar, Footer } from "./components";
+const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     const localStorageToken = localStorage.getItem("token");
@@ -27,6 +25,7 @@ const Main = () => {
       <div id="navbar-container">
         <Navbar setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
       </div>
+
       <div id="content">
         <Routes>
           <Route exact path="/" element={<Home />} />
@@ -44,10 +43,11 @@ const Main = () => {
             element={<SingleProductView />}
           />
           <Route path="/:username/profile" element={<Profile />} />
+          <Route path="/edit-product/:id" element={<EditProduct />} />
         </Routes>
       </div>
     </div>
   );
 };
 
-export default Main;
+export default App;

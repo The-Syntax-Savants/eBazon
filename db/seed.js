@@ -1,8 +1,14 @@
-const { client } = require("./index");
-const { createUser, getAllUsers, getUserById, updateUser } = require("./users");
-const { createProduct, getAllProducts, getProductByID } = require("./products");
-const { createTag, getAllTags, deleteTag, editTag } = require("./tags");
-const { addTagsToProduct } = require("./productTags");
+import { client } from "./index.js";
+import { createUser, getAllUsers, getUserById, updateUser } from "./users.js";
+import {
+  createProduct,
+  getAllProducts,
+  getProductByID,
+  updateProduct,
+  deleteProductByID,
+} from "./products.js";
+import { createTag, getAllTags, deleteTag, editTag } from "./tags.js";
+import { addTagsToProduct } from "./productTags.js";
 
 async function dropTables() {
   try {
@@ -296,17 +302,32 @@ async function testDB() {
     console.log("Result:", product);
 
     console.log("Testing create product with tags");
+    const create = await createProduct({
+      name: "newProductICreated",
+      seller_name: "DrizzyJ",
+      price: 2700,
+      description: "Priceless Inheritance",
+      dimensions: "100x100x100",
+      quantity: 1,
+      tags: product.tags,
+    });
+    console.log("Result:", create);
+
+    console.log("testing updateProduct");
     console.log(
-      await createProduct({
-        name: "newProductICreated",
-        seller_name: "DrizzyJ",
-        price: 2700,
+      await updateProduct(create.id, {
+        name: "why now",
+        seller_name: "mlpLover",
+        price: 27770,
         description: "Priceless Inheritance",
         dimensions: "100x100x100",
         quantity: 1,
         tags: product.tags,
       })
     );
+
+    // console.log("testing deleteProductById")
+    // await deleteProductByID(create.id)
 
     // console.log("Calling deleteTag")
     // await deleteTag(tags[1].id)
