@@ -1,4 +1,4 @@
-const { client } = require(".");
+import { client } from "./index.js";
 
 //getAllTags()
 // editTag(id) requiredAdmin
@@ -6,7 +6,7 @@ const { client } = require(".");
 // deleteTag(id) requiredAdmin
 // getTagsByProductTag(productTagId)
 
-async function getAllTags() {
+export async function getAllTags() {
   try {
     const { rows: tags } = await client.query(
       `
@@ -22,7 +22,7 @@ async function getAllTags() {
   }
 }
 
-async function createTag(name) {
+export async function createTag(name) {
   try {
     const {
       rows: [tag],
@@ -41,7 +41,7 @@ async function createTag(name) {
   }
 }
 
-// async function getTagByProductTag(productTagId) {
+// export async function getTagByProductTag(productTagId) {
 //   try {
 //     const { rows: tags } = await client.query(
 //       `
@@ -57,15 +57,47 @@ async function createTag(name) {
 //   }
 // }
 
-// async function deleteTag(id)({
+export async function getTagById(id){
+  try {
+    const {rows: [tag]} = await client.query(`
+      SELECT * 
+      FROM tags
+      WHERE id=$1
+    `, [id])
+    return tag
+  } catch (error) {
+    console.error("Error in getTagById Database method!")
+    throw error
+  }
+}
 
-// })
+export async function deleteTag(id){
+  try {
+      await client.query(`
+        DELETE
+        FROM tags
+        WHERE tags.id=$1
+      `, [id])
 
-// async function editTag(id)({
+  } catch (error) {
+    console.error("Error in deleteTag Database method!")
+    throw error
+  }
+}
 
-// })
+export async function editTag(id, name){
+  console.log(name, "nAME")
+  try {
+    const {rows: [tag]} = await client.query(`
+    UPDATE tags
+    SET name = $1
+    WHERE id=${id}
+    RETURNING *
+    `, [name])
 
-module.exports = {
-  getAllTags,
-  createTag,
-};
+    return tag
+  } catch (error) {
+    console.error("Error in editTag Database method!")
+    throw error
+  }
+}

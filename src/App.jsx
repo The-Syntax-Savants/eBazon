@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import {
-  Navbar,
-  Footer,
   Home,
   Register,
   Login,
   Profile,
   CreateProduct,
   SingleProductView,
-} from "./";
-import "tailwindcss/tailwind.css";
-import "daisyui/dist/full.css";
-
-const Main = () => {
+  EditProduct,
+} from "./pages";
+import { Navbar, Footer } from "./components";
+const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     const localStorageToken = localStorage.getItem("token");
@@ -46,10 +43,11 @@ const Main = () => {
             element={<SingleProductView />}
           />
           <Route path="/:username/profile" element={<Profile />} />
+          <Route path="/edit-product/:id" element={<EditProduct />} />
         </Routes>
       </div>
     </div>
   );
 };
 
-export default Main;
+export default App;

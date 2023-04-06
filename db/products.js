@@ -1,13 +1,14 @@
-const { client } = require(".");
+import { client } from "./index.js";
+import { addTagsToProduct } from "./productTags.js";
 
-async function createProduct({
+export async function createProduct({
   name,
   seller_name,
   price,
   description,
   dimensions,
   quantity,
-  tags,
+  tags = [],
 }) {
   try {
     const {
@@ -21,19 +22,26 @@ async function createProduct({
       [name, seller_name, price, description, dimensions, quantity]
     );
 
-    return product;
+    await addTagsToProduct(product.id, tags);
+
+    return await getProductByID(product.id);
   } catch (error) {
     console.error("Error creating Product!");
     throw error;
   }
 }
-async function getAllProducts() {
+export async function getAllProducts() {
   try {
-    const { rows: products } = await client.query(
+    const { rows: productIds } = await client.query(
       `
-    SELECT * FROM products;
-    `
+        SELECT id FROM products;
+      `
     );
+
+    const products = await Promise.all(
+      productIds.map((product) => getProductByID(product.id))
+    );
+    console.log(products);
     return products;
   } catch (error) {
     console.error("Error getting all products!");
@@ -43,7 +51,7 @@ async function getAllProducts() {
 
 // *** Forgot to not make functions we were not using. my bad -Emilio & Charles
 
-async function getProductByID(productId) {
+export async function getProductByID(productId) {
   try {
     const {
       rows: [product],
@@ -51,13 +59,36 @@ async function getProductByID(productId) {
       `
       SELECT *
       FROM products
-      WHERE products.id=$1;
+      WHERE id=$1;
     `,
       [productId]
     );
+
+    if (!product) {
+      throw {
+        name: "ProductNotFoundError",
+        message: "Could not find a product with that productId",
+      };
+    }
+
+    const { rows: tags } = await client.query(
+      `
+        SELECT tags.*
+        FROM tags
+        JOIN product_tags ON tags.id=product_tags.tag_id
+        WHERE product_tags.product_id=$1;
+      `,
+      [productId]
+    );
+    product.tags = tags;
+
     return product;
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error getting productById!");
+    throw error;
+  }
 }
+// *** Forgot to not make functions we were not using. my bad -Emilio & Charles
 
 // async function getProductsByTag(tag) {
 //   try {
@@ -77,13 +108,80 @@ async function getProductByID(productId) {
 //   } catch {}
 // }
 
-// async function updateProduct({ id, ...fields }) {
-//   try {
-//   } catch {}
-// }
+export async function updateProduct(productId, fields = {}) {
+  // read off the tags & remove that field
+  const { tags } = fields; // might be undefined
+  delete fields.tags;
 
-module.exports = {
-  createProduct,
-  getAllProducts,
-  getProductByID,
-};
+  // build the set string
+  const setString = Object.keys(fields)
+    .map((key, index) => `"${key}"=$${index + 1}`)
+    .join(", ");
+
+  try {
+    let data = {};
+    // update any fields that need to be updated
+
+    if (setString.length > 0) {
+      await client.query(
+        `
+        UPDATE products
+        SET ${setString}
+        WHERE id=${productId}
+        RETURNING *;
+      `,
+        Object.values(fields)
+      );
+    }
+
+    // return early if there's no tags to update
+    if (!tags) {
+      return await getProductByID(productId);
+    }
+
+    const tagListIdString = tags.map((tag) => `${tag.id}`).join(", ");
+
+    // delete any post_tags from the database which aren't in that tagList
+    await client.query(
+      `
+      DELETE FROM product_tags
+      WHERE tag_id
+      NOT IN (${tagListIdString})
+      AND product_id=$1;
+    `,
+      [productId]
+    );
+
+    // and create post_tags as necessary
+    await addTagsToProduct(productId, tags);
+
+    return await getProductByID(productId);
+  } catch (error) {
+    throw error;
+  }
+}
+
+//only should be done by admin
+
+export async function deleteProductByID(productId) {
+  try {
+    await client.query(
+      `
+      DELETE FROM product_tags
+      WHERE product_tags.product_id=$1
+    `,
+      [productId]
+    );
+
+    await client.query(
+      `
+      DELETE FROM products
+      WHERE products.id=$1
+    `,
+      [productId]
+    );
+  } catch (error) {
+    console.log("Error in DeleteProduct");
+    throw error;
+  }
+}

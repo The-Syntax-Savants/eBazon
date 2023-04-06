@@ -1,7 +1,14 @@
-const { client } = require("./index");
-const { createUser, getAllUsers, getUserById } = require("./users");
-const { createProduct, getAllProducts } = require("./products");
-const { createTag, getAllTags, getTagsByProductTag } = require("./tags");
+import { client } from "./index.js";
+import { createUser, getAllUsers, getUserById, updateUser } from "./users.js";
+import {
+  createProduct,
+  getAllProducts,
+  getProductByID,
+  updateProduct,
+  deleteProductByID,
+} from "./products.js";
+import { createTag, getAllTags, deleteTag, editTag } from "./tags.js";
+import { addTagsToProduct } from "./productTags.js";
 
 async function dropTables() {
   try {
@@ -64,10 +71,10 @@ async function createTables() {
             id SERIAL PRIMARY KEY,
             username VARCHAR(50) REFERENCES users(username),
             is_complete BOOLEAN default false,
-            city VARCHAR(50) NOT NULL,
-            state VARCHAR(50) NOT NULL, 
-            zipcode VARCHAR(50) NOT NULL,
-            address_line_1 VARCHAR(50) NOT NULL,
+            city VARCHAR(50),
+            state VARCHAR(50), 
+            zipcode VARCHAR(50),
+            address_line_1 VARCHAR(50),
             address_line_2 VARCHAR(50),
             price INTEGER NOT NULL,
             time_of_purchase TIMESTAMP DEFAULT NOW()
@@ -78,7 +85,7 @@ async function createTables() {
             id SERIAL PRIMARY KEY,
             cart_id INTEGER REFERENCES carts(id),
             product_id INTEGER REFERENCES products(id),
-            quantity INTEGER,
+            quantity INTEGER default 1,
             price INTEGER
         ); `);
 
@@ -92,7 +99,8 @@ async function createTables() {
     await client.query(`CREATE TABLE product_tags(
             id SERIAL PRIMARY KEY,
             product_id INTEGER REFERENCES products(id),
-            tag_id INTEGER REFERENCES tags(id)
+            tag_id INTEGER REFERENCES tags(id),
+            UNIQUE(product_id, tag_id)
         );`);
 
     console.log(`creating USER_REVIEWS table...`);
@@ -129,7 +137,7 @@ async function createInitialUsers() {
       email: "blevins.j921@gmail.com",
       first_name: "Joel",
       last_name: "Blevins",
-      is_admin: true
+      is_admin: true,
     });
 
     const random = await createUser({
@@ -138,7 +146,7 @@ async function createInitialUsers() {
       email: "randomEmail@gmail.com",
       first_name: "random",
       last_name: "Test",
-      is_admin: false
+      is_admin: false,
     });
 
     console.log("finished creating initial users!");
@@ -262,6 +270,16 @@ async function testDB() {
     const firstUser = await getUserById(users[0].id);
     console.log("Result:", firstUser);
 
+    console.log("Calling updateUser");
+    const object1 = {
+      id: 2,
+      username: "mlpLover",
+      first_name: "Charles",
+      email: "mlpLover69@info.com",
+    };
+    const MLP = await updateUser(object1);
+    console.log("Result:", MLP);
+
     console.log("Calling getAllProducts");
     const products = await getAllProducts();
     console.log("Result:", products);
@@ -269,6 +287,55 @@ async function testDB() {
     console.log("Calling getAllTags");
     const tags = await getAllTags();
     console.log("Result:", tags);
+
+    console.log("Calling addTagsToProduct");
+    const scaryTest = await addTagsToProduct(products[2].id, [
+      tags[3],
+      tags[2],
+      tags[12],
+      tags[11],
+    ]);
+    console.log("Result:", scaryTest);
+
+    console.log("Calling getProductById");
+    const product = await getProductByID(products[2].id);
+    console.log("Result:", product);
+
+    console.log("Testing create product with tags");
+    const create = await createProduct({
+      name: "newProductICreated",
+      seller_name: "DrizzyJ",
+      price: 2700,
+      description: "Priceless Inheritance",
+      dimensions: "100x100x100",
+      quantity: 1,
+      tags: product.tags,
+    });
+    console.log("Result:", create);
+
+    console.log("testing updateProduct");
+    console.log(
+      await updateProduct(create.id, {
+        name: "why now",
+        seller_name: "mlpLover",
+        price: 27770,
+        description: "Priceless Inheritance",
+        dimensions: "100x100x100",
+        quantity: 1,
+        tags: product.tags,
+      })
+    );
+
+    // console.log("testing deleteProductById")
+    // await deleteProductByID(create.id)
+
+    // console.log("Calling deleteTag")
+    // await deleteTag(tags[1].id)
+    // console.log("Result", await getAllTags())
+
+    // console.log("Calling editTag")
+    // const test = await editTag(tags[0].id, "books")
+    // console.log("Result:", test, await getAllTags())
   } catch (error) {
     console.log("Error during testDB");
     throw error;

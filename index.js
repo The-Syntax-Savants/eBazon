@@ -1,15 +1,17 @@
-const express = require("express");
+import cors from "cors";
+import express from "express";
+import { client } from "./db/index.js";
+import dotenv from "dotenv";
+import morgan from "morgan";
+import apiRouter from "./api/index.js";
+dotenv.config();
 const server = express();
-require("dotenv").config();
-const { client } = require("./db");
 const PORT = 3001;
 
 client.connect();
 
-const morgan = require("morgan");
 server.use(morgan("dev"));
 
-const cors = require("cors");
 server.use(cors());
 
 server.use(express.json());
@@ -22,7 +24,6 @@ server.use((req, res, next) => {
   next();
 });
 
-const apiRouter = require("./api");
 server.use("/api", apiRouter);
 
 // 404 handler
