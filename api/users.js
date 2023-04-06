@@ -1,6 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import { requireUser } from "./utils.js";
+import { requireUser, requireAdmin } from "./utils.js";
 import {
   createUser,
   getUserById,
@@ -19,13 +19,29 @@ usersRouter.use((req, res, next) => {
   next();
 });
 
-// GET /api/users/
-usersRouter.get("/", async (req, res) => {
-  const users = await getAllUsers();
+// GET /api/users/          
+//If we do a search bar to look for users in the future, we might have to remove requireAdmin from this route. For now it stays
+usersRouter.get("/", requireAdmin,  async (req, res) => {
+  try{
+    const users = await getAllUsers();
 
-  res.send({
-    users,
-  });
+    if (users) {
+      res.send({
+        users,
+      }); 
+    } else {
+      next({
+        name: "ErrorGettingAllUsers",
+        message: "I really don't know what could be going wrong here. api -> usersRouter.get(\"/\") "
+      })
+    }
+  
+    
+  }catch ({name, message}) {
+    next({
+      name, message
+    })
+  }
 });
 
 usersRouter.get("/me", requireUser, async (req, res, next) => {
@@ -43,6 +59,24 @@ usersRouter.get("/me", requireUser, async (req, res, next) => {
     next({ name, message });
   }
 });
+
+//Used so that an admin can see another users profile data
+usersRouter.get("/:userId", requireAdmin, async (req, res, next) => {
+  try{
+    const { userId: id } = req.params;
+    const user = await getUserById(id)
+    if (user) {
+      res.send(user)
+    } else {
+      next({
+        name: "ErrorFindingUser",
+        message: "A user with that id does not exist"
+      })
+    }
+  }catch ({name, message}) {
+    next({name, message})
+  } 
+})
 
 // POST /api/users/register
 usersRouter.post("/register", async (req, res, next) => {
@@ -142,13 +176,20 @@ usersRouter.patch(
       if (req.user) {
         info.id = req.user.id;
       }
-      hashedPassword = await bcrypt.hash(info.password, SALT_COUNT);
+      if(info.password.length){
+        hashedPassword = await bcrypt.hash(info.password, SALT_COUNT);
+      }
       if (info.is_admin) {
         delete info.is_admin;
       }
-      info.password = hashedPassword;
+      if(info.password.length){
+        info.password = hashedPassword;
+        console.log(hashedPassword, "HASHED")
+        console.log(info.password, "INFO PASS")
+      }else{
+        delete info.password
+      }
       info.username = username;
-      console.log(info, "!!!!!!!");
       const update = await updateUser(info);
       if (update) {
         res.send(update);

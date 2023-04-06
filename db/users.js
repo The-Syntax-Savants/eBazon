@@ -116,6 +116,7 @@ export async function updateUser({ id, ...fields }) {
       return await getUserById(id);
     }
   } catch (error) {
+    console.log("Error in UpdateUser!")
     throw error;
   }
 }

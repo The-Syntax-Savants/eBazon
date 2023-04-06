@@ -5,10 +5,6 @@ import { getLoggedInUserFromDB, editUserDB } from "../api-adapters/users";
 const Profile = () => {
   const { username } = useParams();
   // const fileInputRef = useRef()
-  let token = "";
-  if (localStorage.getItem("token")) {
-    token = localStorage.getItem("token");
-  }
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -29,9 +25,7 @@ const Profile = () => {
   // }
 
   const grabUserInfo = async () => {
-    console.log(token, "//////////");
-    let user = await getLoggedInUserFromDB(token);
-    console.log(user, "!!!!!!!!!!!");
+    let user = await getLoggedInUserFromDB();
     if (user) {
       setFirstName(user.first_name || "");
       setLastName(user.last_name || "");
@@ -54,7 +48,6 @@ const Profile = () => {
   const submitChanges = async () => {
     const data = await editUserDB(
       username,
-      token,
       password,
       firstName,
       lastName,
@@ -113,7 +106,7 @@ const Profile = () => {
                     placeholder="password"
                     className="input input-bordered"
                     onChange={(e) => {
-                      setPassword(e.target.value);
+                        setPassword(e.target.value);
                     }}
                   />
                 </div>

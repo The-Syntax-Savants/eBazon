@@ -1,3 +1,4 @@
+import React, {useState, useEffect} from "react";
 import { useParams, useNavigate } from "react-router";
 import { editProductInDB, getProductByIdDB } from "../api-adapters/products";
 import { getAllTagsDB } from "../api-adapters/tags";
@@ -5,6 +6,10 @@ import { Select, Space } from "antd";
 
 const EditProduct = () => {
   const { id } = useParams();
+
+  //Would be cool if instead of a bunch of different states, or a single state for each section, we could have a "user" state that is an object containing all these 
+  //  other states as keys inside of it. That way we dont got a clump of state definitions and only got 1. -Emilio
+
   const [product, setProduct] = useState({});
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");

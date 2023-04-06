@@ -14,7 +14,7 @@ const CreateProduct = () => {
   const [dimensions, setDimensions] = useState("");
   const [quantity, setQuantity] = useState("");
   const [values, setValues] = useState([]);
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const options = [];
   const tagsWithValue = [];
@@ -38,8 +38,8 @@ const CreateProduct = () => {
 
   useEffect(() => {
     tagGrabber();
-    if (tags.length) {
-      createProduct();
+    if(tags.length){
+      createProduct()
     }
   }, [tags]);
 
@@ -47,27 +47,30 @@ const CreateProduct = () => {
     values.map((tagID) => {
       tagsWithValue.push({ id: tagID });
     });
+  
+    setTags(tagsWithValue)
 
-    setTags(tagsWithValue);
-  };
+  }
 
   const createProduct = async () => {
     try {
       const seller_name = localStorage.getItem("username");
 
-      console.log(price);
+      console.log(price)
+    
+
 
       await createProductInDB({
         name,
         seller_name,
         description,
-        price: price * 100,
+        price: price*100,
         dimensions,
         quantity,
         tags,
       });
 
-      navigate("/"); //this will end up taking to single product view
+      navigate("/")//this will end up taking to single product view
     } catch (err) {
       console.log(err);
       throw err;
@@ -83,7 +86,7 @@ const CreateProduct = () => {
       <form
         onSubmit={async (e) => {
           e.preventDefault();
-          await updateTagsFunc();
+          await updateTagsFunc()
         }}
       >
         <h2>Create Product</h2>
