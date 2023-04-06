@@ -18,7 +18,7 @@ tagsRouter.use((req, res, next) => {
 });
 
 // GET /api/users/
-tagsRouter.get("/", requireUser, async (req, res) => {
+tagsRouter.get("/", async (req, res) => {
   const tags = await getAllTags();
 
   res.send({

@@ -101,6 +101,7 @@ export const editUserDB = async (
 };
 
 export const getLoggedInUserFromDB = async (token) => {
+  console.log("INSIDE", token);
   try {
     const response = await fetch(`${BASE_URL}/users/me`, {
       headers: {
@@ -115,10 +116,3 @@ export const getLoggedInUserFromDB = async (token) => {
     console.error(err);
   }
 };
-
-// module.exports = {
-//     createUserInDB,
-//     loginUserDB,
-//     editUserDB,
-//     getLoggedInUserFromDB
-// }

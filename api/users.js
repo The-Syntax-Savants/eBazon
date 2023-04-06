@@ -72,6 +72,7 @@ usersRouter.post("/register", async (req, res, next) => {
         is_admin,
       });
 
+      console.log(user, "!!!!!!");
       const token = jwt.sign(
         {
           id: user.id,
@@ -101,7 +102,7 @@ usersRouter.post("/register", async (req, res, next) => {
 // POST /api/users/login
 usersRouter.post("/login", async (req, res, next) => {
   try {
-    console.log(req.body, "!!!!!!");
+    console.log(req.body);
     const { username, password } = req.body;
     const user = await getUser(username);
     const hashedPassword = user.password;

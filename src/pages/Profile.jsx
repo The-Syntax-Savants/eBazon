@@ -2,9 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router";
 import { getLoggedInUserFromDB, editUserDB } from "../api-adapters/users";
 
-// require("../style.css");
-// require("../tailwind.config.js");
-
 const Profile = () => {
   const { username } = useParams();
   // const fileInputRef = useRef()
@@ -32,35 +29,21 @@ const Profile = () => {
   // }
 
   const grabUserInfo = async () => {
+    console.log(token, "//////////");
     let user = await getLoggedInUserFromDB(token);
+    console.log(user, "!!!!!!!!!!!");
     if (user) {
-      setFirstName(user.first_name);
-      setLastName(user.last_name);
-      setEmail(user.email);
-      if (user.address_line_1) {
-        setAddress1(user.address_line_1);
-      }
-      if (user.address_line_2) {
-        setAddress2(user.address_line_2);
-      }
-      if (user.city) {
-        setCity(user.city);
-      }
-      if (user.state) {
-        setState(user.state);
-      }
-      if (user.zipcode) {
-        setZipcode(user.zipcode);
-      }
-      if (user.about) {
-        setAbout(user.about);
-      }
-      if (user.profile_picture) {
-        setProfilePicture(user.profile_picture);
-      }
-      if (user.active) {
-        setActive(user.active);
-      }
+      setFirstName(user.first_name || "");
+      setLastName(user.last_name || "");
+      setEmail(user.email || "");
+      setAddress1(user.address_line_1 || "");
+      setAddress2(user.address_line_2 || "");
+      setCity(user.city || "");
+      setState(user.state || "");
+      setZipcode(user.zipcode || "");
+      setAbout(user.about || "");
+      setProfilePicture(user.profile_picture || "");
+      setActive(user.active || "");
     }
   };
 

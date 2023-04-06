@@ -108,7 +108,7 @@ export async function getProductByID(productId) {
 //   } catch {}
 // }
 
-async function updateProduct(productId, fields = {}) {
+export async function updateProduct(productId, fields = {}) {
   // read off the tags & remove that field
   const { tags } = fields; // might be undefined
   delete fields.tags;
@@ -163,7 +163,7 @@ async function updateProduct(productId, fields = {}) {
 
 //only should be done by admin
 
-async function deleteProductByID(productId) {
+export async function deleteProductByID(productId) {
   try {
     await client.query(
       `
@@ -185,9 +185,3 @@ async function deleteProductByID(productId) {
     throw error;
   }
 }
-
-// module.exports = {
-//   createProduct,
-//   getAllProducts,
-//   getProductByID,
-// };
