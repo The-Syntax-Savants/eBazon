@@ -9,7 +9,6 @@ import {
   updateProduct,
 } from "../db/products.js";
 import { addTagsToProduct } from "../db/productTags.js";
-import { emitWarning } from "process";
 
 export const productsRouter = express.Router();
 export default productsRouter;
@@ -53,24 +52,11 @@ productsRouter.get("/:id", async (req, res, next) => {
 });
 
 // POST /api/products/createProduct
-productsRouter.post("/createProduct", async (req, res, next) => {
-  console.log("Request body: OUTER ", req.body);
-  console.log("^^^");
+productsRouter.post("/createProduct", requireUser, async (req, res, next) => {
   try {
-    console.log("Request body: ", req.body);
-    console.log(req.user, "username***");
     const seller_name = req.user.username;
+
     const { name, description, price, dimensions, quantity, tags } = req.body;
-    console.log(
-      name,
-      seller_name,
-      description,
-      price,
-      dimensions,
-      quantity,
-      tags,
-      "&&&"
-    );
     const product = await createProduct({
       name,
       seller_name,

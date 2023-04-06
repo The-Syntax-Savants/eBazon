@@ -4,67 +4,159 @@ import { getAllTagsDB } from "../api-adapters/tags";
 import { Select, Space } from "antd";
 import { useNavigate } from "react-router";
 
+// add getters/setters to class
+// add fields to toObject()
+// set values in input fields in the form
+class FormState {
+  /**
+   * @param options { { name?: string, seller_name?: string } }
+   */
+  constructor(options) {
+    this.name = options.name || "";
+    this.seller_name = options.seller_name || "";
+    this.description = options.description || "";
+    this.price = options.price || "";
+    this.dimensions = options.dimensions || "";
+    this.quantity = options.quantity || "";
+    this.tags = options.tags || [];
+  }
+
+  // get name() {
+  //   return this._name;
+  // }
+
+  // set name(value) {
+  //   if (typeof value === "string") {
+  //     this._name = value;
+  //   }
+  // }
+
+  // get tags() {
+  //   return this._tags;
+  // }
+
+  // set tags(value) {
+  //   if (Array.isArray(value)) {
+  //     this._tags = value;
+  //   }
+  // }
+
+  // /**
+  //  * @returns {boolean}
+  //  */
+  validate() {
+    if (!this.name || !this.seller_name)
+      throw new Error("Missing field(s) for form submission!");
+    return true;
+  }
+
+  /**
+   * @return {{name: string, seller_name: string}}
+   */
+  toObject() {
+    return {
+      name: this.name,
+      seller_name: this.seller_name,
+    };
+  }
+}
+
 const CreateProduct = () => {
+  // replace state with getters and setters in class
+  // redundant variables options, tags, allTags, values
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
+  // Fetched list of tags from DB
   const [tags, setTags] = useState([]);
-  const [allTags, setAllTags] = useState([]);
+  // Tags rendered as options
+  const [tagsAsOptions, setTagsAsOptions] = useState([]);
+  // UNUSED
+  // const [allTags, setAllTags] = useState([]);
   const [dimensions, setDimensions] = useState("");
   const [quantity, setQuantity] = useState("");
   const [values, setValues] = useState([]);
+
+  // MAIN FORMSTATE OBJECT
+  // UPDATE ME INSTEAD OF INDIVIDUAL FIELDS, i.e. get rid of price, setPrice useStates -> get/set on FormState
+  const [formState, setFormState] = useState(
+    new FormState({
+      name: "",
+    })
+  );
+  const tagsWithValue = [];
   const navigate = useNavigate();
 
-  const options = [];
-  const tagsWithValue = [];
-  allTags.map((tag) => {
-    options.push({
-      label: tag.name,
-      value: tag.id,
-    });
-  });
-
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-    setValues(value);
+  const onTagsSelectChange = (event) => {
+    formState.tags = event.target.value;
   };
 
-  const tagGrabber = async () => {
-    const data = await getAllTagsDB(localStorage.getItem("token"));
-    setAllTags(data);
-    console.log(data);
-  };
-
+  // On component mount, fetch tags from API. Update tags with response
   useEffect(() => {
-    tagGrabber();
-    if (tags.length) {
-      createProduct();
-    }
+    const data = (() =>
+      getAllTagsDB(localStorage.getItem("token")).then((res) => {
+        console.log(`response from api: ${JSON.stringify(res)}`);
+        if (Array.isArray(res)) {
+          const formattedTags = res.reduce((tags, tag) => {
+            return [
+              ...tags,
+              {
+                label: tag.name,
+                value: tag.id,
+              },
+            ];
+          }, []);
+          setTagsAsOptions(formattedTags);
+        }
+        setTags(res);
+        console.log();
+        return res;
+      }))();
+    console.log(`Updated tags with data: ${JSON.stringify(data)}`);
+  }, []);
+
+  // Log whenever tags have changed
+  useEffect(() => {
+    console.log("Updated tags: ", tags);
   }, [tags]);
 
-  const updateTagsFunc = async () => {
-    values.map((tagID) => {
-      tagsWithValue.push({ id: tagID });
-    });
+  // // When formState changes, log it and validate
+  // useEffect(() => {
+  //   console.log(formState.validate());
+  // }, [formState]);
 
-    setTags(tagsWithValue);
+  // On submit, convert formState to object and submit to createProduct
+  const onSubmitForm = async (e) => {
+    e.preventDefault();
+    // if (!formState.validate()) {
+    //   throw new Error("Form state is invalid!");
+    // }
+    const submissionData = formState.toObject();
+    await createProduct(submissionData);
   };
 
-  const createProduct = async () => {
+  /**
+   * Takes formState data and submits it to API
+   * @param submissionData {{name: string, seller_name: string}}
+   */
+  const createProduct = async (submissionData) => {
     try {
       const seller_name = localStorage.getItem("username");
 
       console.log(price);
 
       await createProductInDB({
-        name,
-        seller_name,
+        // fromState.name etc.
+        name: submissionData.name,
+        seller_name: submissionData.seller_name,
         description,
         price: price * 100,
         dimensions,
         quantity,
         tags,
+      }).then((res) => {
+        console.log(`POST /createProduct res: ${JSON.stringify(res)}`);
       });
 
       navigate("/"); //this will end up taking to single product view
@@ -74,18 +166,9 @@ const CreateProduct = () => {
     }
   };
 
-  // const handleFileChange = (e) => {
-  //   setImage(e.target.files[0]);
-  // };
-
   return (
     <div>
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          await updateTagsFunc();
-        }}
-      >
+      <form onSubmit={onSubmitForm}>
         <h2>Create Product</h2>
         <label className="input-group">
           <span>Product Name</span>
@@ -93,7 +176,9 @@ const CreateProduct = () => {
             required
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              formState.name = e.target.value;
+            }}
             placeholder="Product Name"
             className="input input-bordered"
           />
@@ -137,8 +222,8 @@ const CreateProduct = () => {
                 width: "100%",
               }}
               placeholder="Please select"
-              onChange={handleChange}
-              options={options}
+              onChange={onTagsSelectChange}
+              options={tagsAsOptions}
             />
           </Space>
         </label>
