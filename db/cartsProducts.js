@@ -1,21 +1,24 @@
 import { client } from "./index.js";
 import { getActiveCartByUsername } from "./carts.js";
 
-export async function createCartProduct({ username, productId, quantity }) {
+export async function createCartProduct({ username, product_id, quantity }) {
   try {
     const cart = await getActiveCartByUsername(username);
+    console.log(cart, "CART IN CREATE CART PRODUCT");
     const {
       rows: [cartProduct],
     } = await client.query(
       `
-            INSERT INTO carts_products("cartId", "productId", "quantity")
+            INSERT INTO cart_products(cart_id, product_id, quantity)
             VALUES ($1, $2, $3)
             RETURNING *;
             `,
-      [cart.id, productId, quantity]
+      [cart.id, product_id, quantity]
     );
+    console.log(cartProduct, "CART PRODUCT IN CREATE CART PRODUCT");
     return cartProduct;
   } catch (error) {
+    console.log("ERROR in createCartProduct");
     throw error;
   }
 }
@@ -25,7 +28,7 @@ export async function getCartProductsByCartId(cartId) {
     const { rows } = await client.query(
       `
           SELECT * FROM cart_products
-          WHERE "cartId"=$1;
+          WHERE cart_id=$1;
           `,
       [cartId]
     );
@@ -43,7 +46,9 @@ export async function updateCartProduct({ id, ...fields }) {
   console.log(setString, "!!!!!");
   try {
     if (setString.length) {
-      const cartProduct = await client.query(
+      const {
+        rows: [cartProduct],
+      } = await client.query(
         `
           UPDATE cart_products
           SET ${setString}
@@ -75,6 +80,45 @@ export async function deleteCartProduct(cartProductId) {
 
     return cartProduct;
   } catch (error) {
+    throw error;
+  }
+}
+
+// THIS IS ONLY FOR TEST PURPOSES!! DELETE!!!
+// #
+// #
+// #
+// #
+// #
+// #
+export async function getAllCartProducts() {
+  try {
+    const { rows: cartProducts } = await client.query(
+      `
+        SELECT * FROM cart_products;
+      `
+    );
+
+    console.log(cartProducts);
+    return cartProducts;
+  } catch (error) {
+    console.error("Error getting all cart products!");
+    throw error;
+  }
+}
+
+export async function getAllCarts() {
+  try {
+    const { rows: carts } = await client.query(
+      `
+        SELECT * FROM carts;
+      `
+    );
+
+    console.log(carts);
+    return carts;
+  } catch (error) {
+    console.error("Error getting all carts!");
     throw error;
   }
 }
