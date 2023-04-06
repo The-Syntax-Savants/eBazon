@@ -8,6 +8,7 @@ import {
   CreateProduct,
   SingleProductView,
   EditProduct,
+  Cart,
 } from "./pages";
 import { Navbar, Footer } from "./components";
 const App = () => {
@@ -44,6 +45,7 @@ const App = () => {
           />
           <Route path="/:username/profile" element={<Profile />} />
           <Route path="/edit-product/:id" element={<EditProduct />} />
+          <Route path="/my-cart" element={<Cart />} />
         </Routes>
       </div>
     </div>

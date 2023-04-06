@@ -9,6 +9,7 @@ import {
   updateUser,
 } from "../db/users.js";
 import bcrypt from "bcrypt";
+
 export const usersRouter = express.Router();
 export default usersRouter;
 
@@ -72,7 +73,6 @@ usersRouter.post("/register", async (req, res, next) => {
         is_admin,
       });
 
-      console.log(user, "!!!!!!");
       const token = jwt.sign(
         {
           id: user.id,
