@@ -2,7 +2,7 @@ import { client } from "./index.js";
 
 export async function createCart({
   username,
-  isComplete,
+  is_complete,
   city,
   state,
   zipcode,
@@ -16,13 +16,13 @@ export async function createCart({
       rows: [cart],
     } = await client.query(
       `
-        INSERT INTO carts(username, isComplete, city, state, zipcode, address_line_1, address_line_2, price, time_of_purchase)")
+        INSERT INTO carts(username, is_complete, city, state, zipcode, address_line_1, address_line_2, price, time_of_purchase)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
         RETURNING *;
         `,
       [
         username,
-        isComplete,
+        is_complete,
         city,
         state,
         zipcode,
@@ -67,26 +67,30 @@ export async function updateCart({ id, ...fields }) {
 
 export async function getActiveCartByUsername(username) {
   try {
-    const { rows } = await client.query(
+    const {
+      rows: [cart],
+    } = await client.query(
       `
           SELECT * FROM carts
-          WHERE username=$1 AND isComplete=true;
+          WHERE username=$1 AND is_complete=false;
           `,
       [username]
     );
 
-    return rows;
+    return cart;
   } catch (error) {
+    console.log("ERROR in getActiveCartByUsername");
     throw error;
   }
 }
 
+// For order history
 export async function getInactiveCartsByUsername(username) {
   try {
     const { rows } = await client.query(
       `
           SELECT * FROM carts
-          WHERE username=$1 AND isComplete=false;
+          WHERE username=$1 AND is_complete=true;
           `,
       [username]
     );

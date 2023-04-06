@@ -9,6 +9,7 @@ import {
   SingleProductView,
   EditProduct,
   AdminPanel
+  Cart,
 } from "./pages";
 import { Navbar, Footer } from "./components";
 const App = () => {
@@ -47,6 +48,8 @@ const App = () => {
           <Route path="/edit-product/:id" element={<EditProduct />} />
           <Route path="/panel" element={<AdminPanel />} />
         </Routes> 
+          <Route path="/my-cart" element={<Cart />} />
+        </Routes>
       </div>
     </div>
   );

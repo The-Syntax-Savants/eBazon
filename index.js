@@ -1,28 +1,31 @@
+import dotenv from "dotenv";
+dotenv.config();
 import cors from "cors";
 import express from "express";
 import { client } from "./db/index.js";
-import dotenv from "dotenv";
 import morgan from "morgan";
 import apiRouter from "./api/index.js";
-dotenv.config();
 const server = express();
 const PORT = 3001;
 
+morgan.token("body", (req) => JSON.stringify(req.body));
+const customMorganFormat =
+  ":method :url HTTP/:http-version :status :res[content-length] - :response-time ms :body";
+
 client.connect();
 
-server.use(morgan("dev"));
+server.use(morgan(customMorganFormat));
 
 server.use(cors());
 
+// server.use((req, res, next) => {
+//   console.log("<____Body Logger START____>");
+//   console.log(req.body);
+//   console.log("<_____Body Logger END_____>");
+
+//   next();
+// });
 server.use(express.json());
-
-server.use((req, res, next) => {
-  console.log("<____Body Logger START____>");
-  console.log(req.body);
-  console.log("<_____Body Logger END_____>");
-
-  next();
-});
 
 server.use("/api", apiRouter);
 

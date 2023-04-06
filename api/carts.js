@@ -11,10 +11,12 @@ import {
   getCartProductsByCartId,
   deleteCartProduct,
   updateCartProduct,
+  getAllCartProducts,
+  getAllCarts,
 } from "../db/cartsProducts.js";
+import { getProductByID } from "../db/products.js";
 
 export const cartsRouter = express.Router();
-export default cartsRouter;
 
 cartsRouter.use((req, res, next) => {
   console.log("A request is being made to /carts");
@@ -22,10 +24,11 @@ cartsRouter.use((req, res, next) => {
   next();
 });
 
-cartsRouter.get("/:username", requireUser, async (req, res, next) => {
+cartsRouter.get("/health", async (req, res, next) => {
   try {
-  } catch ({ name, message }) {
-    throw { name, message };
+    res.send({ message: "Carts is healthy" });
+  } catch (error) {
+    next(error);
   }
 });
 
@@ -53,7 +56,7 @@ cartsRouter.post("/place-order", requireUser, async (req, res, next) => {
       console.log("Please fill out all fields before placing order");
     }
   } catch ({ name, message }) {
-    throw { name, message };
+    next({ name, message });
   }
 });
 
@@ -73,27 +76,37 @@ cartsRouter.patch("/edit-address", requireUser, async (req, res, next) => {
     });
     res.send(newCart);
   } catch ({ name, message }) {
-    throw { name, message };
+    next({ name, message });
   }
 });
 
-// cartsRouter.get(
-//   "/order-history/:username",
-//   requireUser,
-//   async (req, res, next) => {
-//     try {
-//       const carts = await getInactiveCartsByUsername(req.user.username);
+// Go to users cart page
+cartsRouter.get("/myCart", async (req, res, next) => {
+  try {
+    console.log("testststst");
+    console.log(req.user.username, "username //////////");
+    const cart = await getActiveCartByUsername(req.user.username);
+    console.log(cart, "cart");
+    const cartProducts = await getCartProductsByCartId(cart.id);
+    console.log(cartProducts, "cartProducts");
 
-//       carts.map(async (cart) => {
-//         cart.cartProducts = await getCartProductsByCartId(cart.id);
-//         console.log(cart);
-//       });
-//       res.send(carts);
-//     } catch ({ name, message }) {
-//       throw { name, message };
-//     }
-//   }
-// );
+    const cartProductsWithProducts = await Promise.all(
+      cartProducts.map(async (cartProduct) => {
+        const product = await getProductByID(cartProduct.product_id);
+        return { ...cartProduct, product };
+      })
+    );
+    console.log(cartProductsWithProducts, "CART PRODUCTS WITH PRODUCTS");
+    res.send(cartProductsWithProducts);
+
+    // cartProducts.map(async (cartProduct) => {
+    //   cartProduct.product = await getProductByID(cartProduct.productId);
+    // });
+    // res.send(cartProducts);
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
 
 cartsRouter.get(
   "/order-history/:username",
@@ -112,7 +125,7 @@ cartsRouter.get(
       );
       res.send(cartsWithProducts);
     } catch ({ name, message }) {
-      throw { name, message };
+      next({ name, message });
     }
   }
 );
@@ -148,7 +161,7 @@ cartsRouter.post("/add-to-cart", requireUser, async (req, res, next) => {
       res.send(newCartProduct);
     }
   } catch ({ name, message }) {
-    throw { name, message };
+    next({ name, message });
   }
 });
 
@@ -158,7 +171,7 @@ cartsRouter.delete("/remove-from-cart", requireUser, async (req, res, next) => {
     const cartProduct = await deleteCartProduct(cartProductId);
     res.send(cartProduct);
   } catch ({ name, message }) {
-    throw { name, message };
+    next({ name, message });
   }
 });
 
@@ -171,6 +184,33 @@ cartsRouter.patch("/update-quantity", requireUser, async (req, res, next) => {
     });
     res.send(cartProduct);
   } catch ({ name, message }) {
-    throw { name, message };
+    next({ name, message });
   }
 });
+
+// DELETE BOTH OF THESE!!!!
+// #
+// #
+// #
+// #
+// #
+// #
+// #
+// #
+cartsRouter.get("/allCartProducts", async (req, res) => {
+  const cartProducts = await getAllCartProducts();
+
+  res.send({
+    cartProducts,
+  });
+});
+
+cartsRouter.get("/allCarts", async (req, res) => {
+  const carts = await getAllCarts();
+
+  res.send({
+    carts,
+  });
+});
+
+export default cartsRouter;
