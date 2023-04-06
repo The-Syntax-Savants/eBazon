@@ -1,6 +1,6 @@
 const BASE_URL = "http://localhost:3001/api";
 
-export const getAllTagsDB = async (token) => {
+export const getAllTagsDB = async () => {
   try {
     const response = await fetch(`${BASE_URL}/tags`, {
       METHOD: "GET",

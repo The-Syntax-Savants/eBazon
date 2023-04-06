@@ -83,8 +83,3 @@ export const editProductInDB = async (product) => {
     console.error(error);
   }
 };
-
-// module.exports = {
-//   getAllProductsDB,
-//   // createProductInDB
-// };

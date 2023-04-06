@@ -54,7 +54,6 @@ export const loginUserDB = async (username, password) => {
 
 export const editUserDB = async (
   username,
-  token,
   password,
   first_name,
   last_name,
@@ -73,7 +72,7 @@ export const editUserDB = async (
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify({
         username: username,
@@ -100,13 +99,12 @@ export const editUserDB = async (
   }
 };
 
-export const getLoggedInUserFromDB = async (token) => {
-  console.log("INSIDE", token);
+export const getLoggedInUserFromDB = async () => {
   try {
     const response = await fetch(`${BASE_URL}/users/me`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
     const result = await response.json();

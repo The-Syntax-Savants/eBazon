@@ -108,6 +108,8 @@ export async function getProductByID(productId) {
 //   } catch {}
 // }
 
+
+//We can also use this to deactivate a product by updating active to false
 export async function updateProduct(productId, fields = {}) {
   // read off the tags & remove that field
   const { tags } = fields; // might be undefined
@@ -162,7 +164,6 @@ export async function updateProduct(productId, fields = {}) {
 }
 
 //only should be done by admin
-
 export async function deleteProductByID(productId) {
   try {
     await client.query(

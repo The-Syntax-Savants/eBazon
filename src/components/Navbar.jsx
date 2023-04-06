@@ -1,14 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { getLoggedInUserFromDB } from "../api-adapters/users";
 
 const Navbar = (props) => {
+  const navigate = useNavigate()
+  const [admin, setAdmin] = useState(false)
   const isLoggedIn = props.isLoggedIn;
   const setIsLoggedIn = props.setIsLoggedIn;
   const [username, setUsername] = useState("");
+  
+  const grabUser = async () => {
+    const data = await getLoggedInUserFromDB()
+    if(data.is_admin){
+      setAdmin(true)
+    }
+  }
   useEffect(() => {
+    grabUser()
     const localStorageUsername = localStorage.getItem("username");
     if (localStorageUsername) {
       setUsername(localStorageUsername);
+      // navigate("/")
     }
   }, [isLoggedIn]);
 
@@ -54,6 +66,11 @@ const Navbar = (props) => {
                 <Link to="/createProduct">Create Listing</Link>
               </li>
             )}
+             {admin && (
+              <li>
+                <Link to="/panel">Admin</Link>
+              </li>
+            )}
             {username && isLoggedIn && (
               <li>
                 <a
@@ -62,6 +79,8 @@ const Navbar = (props) => {
                     localStorage.removeItem("username");
                     setUsername("");
                     setIsLoggedIn(false);
+                    setAdmin(false)
+                    navigate("/")
                   }}
                 >
                   Logout

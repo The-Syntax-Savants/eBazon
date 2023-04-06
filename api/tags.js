@@ -51,7 +51,7 @@ tagsRouter.patch("/:id", requireAdmin, async (req, res, next) => {
     console.log(_tag, "!!!!!");
     if (_tag) {
       const tag = await editTag(id, name);
-      res.send(tag);
+      res.send({message: `You have successfully edited tag id: ${id}`});
     } else {
       next({
         name: "TagDoesNotExistError",
@@ -66,10 +66,10 @@ tagsRouter.patch("/:id", requireAdmin, async (req, res, next) => {
 tagsRouter.delete("/:id", requireAdmin, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const _tag = await getTagById(id);
-    if (_tag) {
+    const tag = await getTagById(id);
+    if (tag) {
       await deleteTag(id);
-      res.send(`You have successfully deleted a tag with id: ${id}`);
+      res.send({message: `You have successfully deleted a tag with id: ${id}`});
     } else {
       next({
         name: "TagDoesNotExistError",

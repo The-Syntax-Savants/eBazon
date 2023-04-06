@@ -1,5 +1,6 @@
 import { client } from "./index.js";
 import bcrypt from "bcrypt";
+import { createCart } from "./carts.js";
 
 export async function createUser({
   username,
@@ -24,6 +25,19 @@ export async function createUser({
       `,
       [username, hashedPassword, email, first_name, last_name, is_admin]
     );
+
+    console.log("CREATING DEFAULT CART IN USERSDB");
+    await createCart({
+      username: username,
+      is_complete: false,
+      city: null,
+      state: null,
+      zipcode: null,
+      address_line_1: null,
+      address_line_2: null,
+      price: 0,
+      time_of_purchase: null,
+    });
     return user;
   } catch (error) {
     throw error;
@@ -102,6 +116,7 @@ export async function updateUser({ id, ...fields }) {
       return await getUserById(id);
     }
   } catch (error) {
+    console.log("Error in UpdateUser!")
     throw error;
   }
 }

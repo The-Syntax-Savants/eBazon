@@ -7,6 +7,8 @@ import {
   updateProduct,
   deleteProductByID,
 } from "./products.js";
+import { createCartProduct, getCartProductsByCartId } from "./cartsProducts.js";
+import { createCart, getActiveCartByUsername } from "./carts.js";
 import { createTag, getAllTags, deleteTag, editTag } from "./tags.js";
 import { addTagsToProduct } from "./productTags.js";
 
@@ -69,14 +71,14 @@ async function createTables() {
     console.log("creating CARTS table...");
     await client.query(`CREATE TABLE carts(
             id SERIAL PRIMARY KEY,
-            username VARCHAR(50) REFERENCES users(username),
+            username VARCHAR(50) REFERENCES users(username) ON UPDATE CASCADE ON DELETE CASCADE,
             is_complete BOOLEAN default false,
             city VARCHAR(50),
             state VARCHAR(50), 
             zipcode VARCHAR(50),
             address_line_1 VARCHAR(50),
             address_line_2 VARCHAR(50),
-            price INTEGER NOT NULL,
+            price INTEGER,
             time_of_purchase TIMESTAMP DEFAULT NOW()
         ); `);
 
@@ -131,7 +133,7 @@ async function createTables() {
 async function createInitialUsers() {
   try {
     console.log("starting to create initial users");
-    const joel = await createUser({
+    await createUser({
       username: "DrizzyJ",
       password: "password",
       email: "blevins.j921@gmail.com",
@@ -140,7 +142,7 @@ async function createInitialUsers() {
       is_admin: true,
     });
 
-    const random = await createUser({
+    await createUser({
       username: "randomTest",
       password: "12345678",
       email: "randomEmail@gmail.com",
@@ -155,10 +157,45 @@ async function createInitialUsers() {
   }
 }
 
+// async function createInitialCarts() {
+//   try {
+//     console.log("creating initial carts");
+//     createCart({
+//       username: "DrizzyJ",
+//       isComplete: false,
+//       city: "San Francisco",
+//       state: "CA",
+//       zipcode: "94107",
+//       address_line_1: "1234 Main St",
+//       address_line_2: "Apt 1",
+//       price: 1500,
+//       time_of_purchase: "2021-07-01 00:00:00",
+//     });
+//   } catch (error) {
+//     throw error;
+//   }
+// }
+async function createInitialCartProducts() {
+  try {
+    console.log("creating initial cart products");
+    console.log(
+      "Creating first cart product",
+      await createCartProduct({
+        username: "DrizzyJ",
+        product_id: 1,
+        quantity: 1,
+      })
+    );
+    console.log("Finished creating initial products");
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function createInitialProducts() {
   try {
     console.log("Creating Initial Products...");
-    createProduct({
+    await createProduct({
       name: "MLP Action Figure",
       seller_name: "DrizzyJ",
       price: 1500,
@@ -167,7 +204,7 @@ async function createInitialProducts() {
       quantity: 1,
     });
 
-    createProduct({
+    await createProduct({
       name: "Bike",
       seller_name: "DrizzyJ",
       price: 10000,
@@ -176,7 +213,7 @@ async function createInitialProducts() {
       quantity: 10,
     });
 
-    createProduct({
+    await createProduct({
       name: "Waffle Maker",
       seller_name: "DrizzyJ",
       price: 5000,
@@ -185,7 +222,7 @@ async function createInitialProducts() {
       quantity: 5,
     });
 
-    createProduct({
+    await createProduct({
       name: "Sick Skateboard",
       seller_name: "DrizzyJ",
       price: 15673,
@@ -193,12 +230,13 @@ async function createInitialProducts() {
       dimensions: "10x100x10",
       quantity: 1,
     });
-    createProduct({
+
+    await createProduct({
       name: "Camping Tent",
       seller_name: "DrizzyJ",
       price: 20000,
       description:
-        "lorem ipsum dolor afnlk al  ak an a nal alkas oiqw  now f qonf  fai osfa fsna lfnla nfa falfn aklf na fanl a ",
+        "lorem ipsum dolor afnlk al ak an a nal alkas oiqw  now f qonf  fai osfa fsna lfnla nfa falfn aklf na fanl a ",
       dimensions: "10x100x10",
       quantity: 1,
     });
@@ -234,7 +272,7 @@ async function createInitialTags() {
     ];
 
     for (let i = 0; i < tags.length; i++) {
-      createTag(tags[i]);
+      await createTag(tags[i]);
     }
 
     console.log("Finished creating tags");
@@ -252,6 +290,7 @@ async function rebuildDB() {
     await createInitialUsers();
     await createInitialProducts();
     await createInitialTags();
+    await createInitialCartProducts();
   } catch (error) {
     console.log("Error during rebuildDB");
     throw error;
@@ -325,6 +364,10 @@ async function testDB() {
         tags: product.tags,
       })
     );
+
+    console.log("testing getCartProductByCartId");
+    const data = await getCartProductsByCartId(1);
+    console.log("Result:", data);
 
     // console.log("testing deleteProductById")
     // await deleteProductByID(create.id)
