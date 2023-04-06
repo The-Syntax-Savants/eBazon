@@ -36,18 +36,23 @@ export const getProductByIdDB = async (id) => {
 };
 
 export const createProductInDB = async (product) => {
+  console.log(
+    `post call to ${BASE_URL}/products/createProduct: ${JSON.stringify(
+      product
+    )}}`
+  );
   try {
     const response = await fetch(`${BASE_URL}/products/createProduct`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify(product),
     });
 
     const result = await response.json();
-    console.log(result)
+    console.log(result);
     return result;
   } catch (error) {
     console.log("Error in createProduct Call!");
@@ -55,32 +60,29 @@ export const createProductInDB = async (product) => {
   }
 };
 
-export const editProductInDB = async(product) => {
+export const editProductInDB = async (product) => {
   try {
-    if(product.tags.length < 1){
-      delete product.tags
+    if (product.tags.length < 1) {
+      delete product.tags;
     }
-    console.log(product, "THIS IS WHAT IS BEING SENT IN")
-    const id = product.id
-    const response = await fetch (`${BASE_URL}/products/${id}/edit`, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
-        },
-        body: JSON.stringify(product)
-    })
+    console.log(product, "THIS IS WHAT IS BEING SENT IN");
+    const id = product.id;
+    const response = await fetch(`${BASE_URL}/products/${id}/edit`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(product),
+    });
 
-
-    const result = await response.json()
-    console.log(result, "THIS IS RESULT") 
-    return result
-} catch (error) {
-    console.error(error)
-}
-}
-
-
+    const result = await response.json();
+    console.log(result, "THIS IS RESULT");
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 // module.exports = {
 //   getAllProductsDB,

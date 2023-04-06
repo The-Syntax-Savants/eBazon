@@ -4,7 +4,6 @@ import { client } from "./db/index.js";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import apiRouter from "./api/index.js";
-
 dotenv.config();
 const server = express();
 const PORT = 3001;

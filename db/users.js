@@ -7,7 +7,7 @@ export async function createUser({
   email,
   first_name,
   last_name,
-  is_admin
+  is_admin,
 }) {
   try {
     const SALT_COUNT = 10;
@@ -20,7 +20,7 @@ export async function createUser({
       INSERT INTO users (username, password, email, first_name, last_name, is_admin)
       VALUES ($1, $2, $3, $4, $5, $6)
       ON CONFLICT (username) DO NOTHING
-      RETURNING username, email, first_name, last_name
+      RETURNING *;
       `,
       [username, hashedPassword, email, first_name, last_name, is_admin]
     );
@@ -86,9 +86,8 @@ export async function updateUser({ id, ...fields }) {
     .map((key, idx) => `"${key}"=$${idx + 1}`)
     .join(", ");
 
-    
-    console.log(setString, "!!!!!")
-    try {
+  console.log(setString, "!!!!!");
+  try {
     if (setString.length) {
       await client.query(
         `
