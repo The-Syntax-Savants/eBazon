@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { createCartProductDB } from "../api-adapters/carts";
 
 const SingleProductCard = (props) => {
-  const { product } = props;
+  const product = props.product;
+  const setAlert = props.setAlert;
+
+  async function handleAddToCart() {
+    try {
+      await createCartProductDB(product.id);
+      console.log(product.name + " added to cart!");
+      setAlert("success");
+    } catch (error) {
+      console.log(error);
+      setAlert("error");
+      throw error;
+    }
+  }
+
   return (
     <div id="product-card" className="max-w-sm w-full">
       <div className="card w-96 bg-base-100 shadow-xl">
@@ -25,7 +40,9 @@ const SingleProductCard = (props) => {
           <h5>Seller: {product.seller_name}</h5>
           <p>{product.description}</p>
           <div className="card-actions justify-end">
-            <button className="btn btn-success">Add to Cart</button>
+            <button onClick={handleAddToCart} className="btn btn-success">
+              Add to Cart
+            </button>
             {/* <div className="badge badge-outline">Fashion</div>
         <div className="badge badge-outline">Products</div> */}
           </div>
