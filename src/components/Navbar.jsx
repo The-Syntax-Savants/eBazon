@@ -16,9 +16,9 @@ const Navbar = (props) => {
     }
   }
   useEffect(() => {
-    grabUser()
     const localStorageUsername = localStorage.getItem("username");
     if (localStorageUsername) {
+      grabUser()
       setUsername(localStorageUsername);
       // navigate("/")
     }

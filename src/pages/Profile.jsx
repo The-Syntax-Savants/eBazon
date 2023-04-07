@@ -17,6 +17,7 @@ const Profile = () => {
   const [about, setAbout] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
   const [active, setActive] = useState("");
+  const [id, setId] = useState(0)
   const [alert, setAlert] = useState("");
 
   // const handleFileChange = async (event) => {
@@ -27,6 +28,7 @@ const Profile = () => {
   const grabUserInfo = async () => {
     let user = await getLoggedInUserFromDB();
     if (user) {
+      setId(user.id)
       setFirstName(user.first_name || "");
       setLastName(user.last_name || "");
       setEmail(user.email || "");
@@ -46,21 +48,22 @@ const Profile = () => {
   }, []);
 
   const submitChanges = async () => {
-    const data = await editUserDB(
+    const data = await editUserDB({
+      id,
       username,
       password,
-      firstName,
-      lastName,
+      first_name: firstName,
+      last_name: lastName,
       email,
-      address1,
-      address2,
+      address_line_1: address1,
+      address_line_2: address2,
       city,
       state,
       zipcode,
       about,
-      profilePicture,
+      profile_picture: profilePicture,
       active
-    );
+  });
     if (data.message) {
       setAlert(`Error: ${data.message}`);
     } else {

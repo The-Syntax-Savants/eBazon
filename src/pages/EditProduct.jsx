@@ -81,7 +81,7 @@ const EditProduct = () => {
         id,
         name,
         description,
-        price,
+        price: price * 100,
         dimensions,
         quantity,
         is_active: isActive,

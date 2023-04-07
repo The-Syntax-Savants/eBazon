@@ -67,7 +67,7 @@ export async function getUserById(userId) {
 export async function getAllUsers() {
   try {
     const { rows } = await client.query(`
-        SELECT id, username, first_name, last_name, email, is_admin, active 
+        SELECT *
         FROM users;
         `);
     return rows;
