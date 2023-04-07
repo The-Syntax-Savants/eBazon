@@ -64,7 +64,7 @@ const AdminPanel = () => {
                         <th></th>
                         <th>Username</th>
                         <th>Email</th>
-                        <th>Admin?</th>
+                        <th>Active?</th>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Address1</th>
@@ -73,19 +73,19 @@ const AdminPanel = () => {
                         <th>State</th>
                         <th>Zipcode</th>
                         <th>ID</th>
-                        <th>Active?</th>
+                        <th>Admin?</th>
                         <th>Delete</th>
                       </tr>
                     </thead>
                     <tbody>
                       {allUsers.map((user, idx) => {
-                        // delete user.password
+                        delete user.password
                         return (
                           <tr key={user.id} className="hover">
                             <th>{idx + 1}</th>
                             <td>{user.username}</td>
                             <td>{user.email}</td>
-                            {user.is_admin ? <td>True</td> : <td>False</td>}
+                            {user.active ? <td>True</td> : <td>False</td>}
                             <td>{user.first_name}</td>
                             <td>{user.last_name}</td>
                             <td>{user.address_line_1}</td>
@@ -94,7 +94,7 @@ const AdminPanel = () => {
                             <td>{user.state}</td>
                             <td>{user.zipcode}</td>
                             <td>{user.id}</td>
-                            {user.active ? <td>True</td> : <td>False</td>}
+                            {user.is_admin ? <td>True</td> : <td>False</td>}
                             <td><button onClick={async ()=>{
                               user.active = false
                               await editUserDB(user)

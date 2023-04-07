@@ -58,7 +58,7 @@ async function createTables() {
     await client.query(`CREATE TABLE products(
             id SERIAL PRIMARY KEY,
             name VARCHAR(50) NOT NULL,
-            seller_name VARCHAR(50) NOT NULL,
+            seller_name VARCHAR(50) REFERENCES users(username) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
             is_active BOOLEAN DEFAULT true,
             price INTEGER,
             images BYTEA,
@@ -402,7 +402,7 @@ async function testDB() {
     console.log(
       await updateProduct(create.id, {
         name: "why now",
-        seller_name: "mlpLover",
+        seller_name: "PolyNoodle",
         price: 27770,
         description: "Priceless Inheritance",
         dimensions: "100x100x100",
