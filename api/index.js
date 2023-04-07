@@ -8,7 +8,6 @@ import tagsRouter from "./tags.js";
 import dotenv from "dotenv";
 dotenv.config();
 const { JWT_SECRET } = process.env;
-console.log(JWT_SECRET);
 
 export const apiRouter = express.Router();
 export default apiRouter;

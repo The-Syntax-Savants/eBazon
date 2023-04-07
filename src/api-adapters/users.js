@@ -1,5 +1,5 @@
-const BASE_URL = "http://localhost:3001/api";
-// const BASE_URL = "https://ebazon.onrender.com/api"
+// const BASE_URL = "http://localhost:3001/api";
+const BASE_URL = "https://ebazon.onrender.com/api"
 
 export const createUserInDB = async (
   username,
@@ -52,43 +52,16 @@ export const loginUserDB = async (username, password) => {
   }
 };
 
-export const editUserDB = async (
-  username,
-  password,
-  first_name,
-  last_name,
-  email,
-  address_line_1,
-  address_line_2,
-  city,
-  state,
-  zipcode,
-  about,
-  profile_picture,
-  active
-) => {
+export const editUserDB = async (user) => {
+  console.log(user, "WHAT IS BEING PASSED IN")
   try {
-    const response = await fetch(`${BASE_URL}/users/${username}/profile/edit`, {
+    const response = await fetch(`${BASE_URL}/users/${user.username}/profile/edit`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-        first_name: first_name,
-        last_name: last_name,
-        email: email,
-        address_line_1: address_line_1,
-        address_line_2: address_line_2,
-        city: city,
-        state: state,
-        zipcode: zipcode,
-        about: about,
-        profile_picture: profile_picture,
-        active: active,
-      }),
+      body: JSON.stringify(user),
     });
 
     const result = await response.json();

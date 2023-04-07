@@ -21,10 +21,11 @@ usersRouter.use((req, res, next) => {
 
 // GET /api/users/          
 //If we do a search bar to look for users in the future, we might have to remove requireAdmin from this route. For now it stays
-usersRouter.get("/", requireAdmin,  async (req, res) => {
+usersRouter.get("/", requireAdmin,  async (req, res, next) => {
   try{
     const users = await getAllUsers();
-
+    console.log(users)
+    
     if (users) {
       res.send({
         users,
@@ -38,9 +39,7 @@ usersRouter.get("/", requireAdmin,  async (req, res) => {
   
     
   }catch ({name, message}) {
-    next({
-      name, message
-    })
+    next({name, message})
   }
 });
 
@@ -173,16 +172,13 @@ usersRouter.patch(
       const SALT_COUNT = 10;
 
       const info = req.body;
-      if (req.user) {
-        info.id = req.user.id;
-      }
-      if(info.password.length){
+      if(info.password && info.password.length){
         hashedPassword = await bcrypt.hash(info.password, SALT_COUNT);
       }
       if (info.is_admin) {
         delete info.is_admin;
       }
-      if(info.password.length){
+      if(info.password && info.password.length){
         info.password = hashedPassword;
         console.log(hashedPassword, "HASHED")
         console.log(info.password, "INFO PASS")
@@ -190,6 +186,7 @@ usersRouter.patch(
         delete info.password
       }
       info.username = username;
+      console.log(info.username, "WTF IS HAPPENING")
       const update = await updateUser(info);
       if (update) {
         res.send(update);

@@ -34,7 +34,8 @@ export async function getAllProducts() {
   try {
     const { rows: productIds } = await client.query(
       `
-        SELECT id FROM products;
+        SELECT id FROM products
+        WHERE is_active=true;
       `
     );
 

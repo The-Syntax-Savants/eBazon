@@ -1,5 +1,5 @@
-const BASE_URL = "http://localhost:3001/api";
-// const BASE_URL = "https://ebazon.onrender.com/api"
+// const BASE_URL = "http://localhost:3001/api";
+const BASE_URL = "https://ebazon.onrender.com/api"
 
 export const getAllProductsDB = async () => {
   try {
@@ -21,7 +21,7 @@ export const getAllProductsDB = async () => {
 export const getProductByIdDB = async (id) => {
   try {
     const response = await fetch(`${BASE_URL}/products/${id}`, {
-      METHOD: "GET",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
@@ -62,7 +62,7 @@ export const createProductInDB = async (product) => {
 
 export const editProductInDB = async (product) => {
   try {
-    if (product.tags.length < 1) {
+    if (product.tags && product.tags.length < 1) {
       delete product.tags;
     }
     console.log(product, "THIS IS WHAT IS BEING SENT IN");

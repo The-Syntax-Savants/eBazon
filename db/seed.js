@@ -58,7 +58,7 @@ async function createTables() {
     await client.query(`CREATE TABLE products(
             id SERIAL PRIMARY KEY,
             name VARCHAR(50) NOT NULL,
-            seller_name VARCHAR(50) NOT NULL,
+            seller_name VARCHAR(50) REFERENCES users(username) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
             is_active BOOLEAN DEFAULT true,
             price INTEGER,
             images BYTEA,
@@ -143,13 +143,59 @@ async function createInitialUsers() {
     });
 
     await createUser({
+      username: "crooney",
+      password: "password",
+      email: "crooney@info.com",
+      first_name: "Charles",
+      last_name: "Rooney",
+      is_admin: true,
+    });
+
+    await createUser({
+      username: "Phillip",
+      password: "password",
+      email: "arkfanatic@info.com",
+      first_name: "Andrew",
+      last_name: "Conlin",
+      is_admin: true,
+    });
+
+    await createUser({
       username: "randomTest",
       password: "12345678",
       email: "randomEmail@gmail.com",
       first_name: "random",
       last_name: "Test",
+      is_admin: true,
+    });
+
+    await createUser({
+      username: "topstown",
+      password: "12345678",
+      email: "topstown56@info.com",
+      first_name: "Tops",
+      last_name: "Town",
       is_admin: false,
     });
+
+    await createUser({
+      username: "Cashing",
+      password: "12345678",
+      email: "cashingout@info.com",
+      first_name: "Cashing",
+      last_name: "Out",
+      is_admin: false,
+    });
+
+    await createUser({
+      username: "unforgottable",
+      password: "12345678",
+      email: "unforgottable@info.com",
+      first_name: "mike",
+      last_name: "dimes",
+      is_admin: false,
+    });
+
 
     console.log("finished creating initial users!");
   } catch (error) {
@@ -311,10 +357,10 @@ async function testDB() {
 
     console.log("Calling updateUser");
     const object1 = {
-      id: 2,
-      username: "mlpLover",
-      first_name: "Charles",
-      email: "mlpLover69@info.com",
+      id: 4,
+      username: "PolyNoodle",
+      first_name: "Emilio",
+      email: "d2fan@info.com",
     };
     const MLP = await updateUser(object1);
     console.log("Result:", MLP);
@@ -356,7 +402,7 @@ async function testDB() {
     console.log(
       await updateProduct(create.id, {
         name: "why now",
-        seller_name: "mlpLover",
+        seller_name: "PolyNoodle",
         price: 27770,
         description: "Priceless Inheritance",
         dimensions: "100x100x100",
