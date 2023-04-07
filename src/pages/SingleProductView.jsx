@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import { getProductByIdDB } from "../api-adapters/products";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { getProductByIdDB, editProductInDB } from "../api-adapters/products";
+import { getLoggedInUserFromDB } from "../api-adapters/users";
 
 // require("../styles/style.css");
 // require("../tailwind.config.js");
 
 const SingleProductView = () => {
   const [product, setProduct] = useState({});
+  const [user, setUser] = useState({});
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const { productId } = useParams();
+  const navigate = useNavigate();
   const getProduct = async () => {
     try {
       const data = await getProductByIdDB(productId);
@@ -17,11 +21,23 @@ const SingleProductView = () => {
     }
   };
 
+  const fetchUser = async () => {
+    const data = await getLoggedInUserFromDB();
+    if (data.username) {
+      console.log(data, "This is the data i want");
+      setUser(data);
+    }
+  };
+
+  const handleDelete = async () => {
+    await editProductInDB({ id: product.product.id, is_active: false });
+    navigate("/");
+  };
+
   useEffect(() => {
     getProduct();
+    fetchUser();
   }, []);
-
-  console.log(product, "!!!!!!!!");
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -44,15 +60,73 @@ const SingleProductView = () => {
                   {product.product.name}
                 </h1>
                 <p className="text-xl text-gray-600">
-                  Price: ${product.product.price}
+                  Price: ${product.product.price / 100}
                 </p>
                 <p className="text-gray-600">{product.product.description}</p>
                 <p className="text-gray-600">
                   Dimensions: {product.product.dimensions}
                 </p>
-                <button className="mt-4 px-4 py-2 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600">
+                <button
+                  className="mt-4 px-4 py-2 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    console.log(user, "THIS IS USER");
+                  }}
+                >
                   Add to Cart
                 </button>
+                {((user && user.username === product.product.seller_name) ||
+                  user.is_admin) && (
+                  <div>
+                    <Link to={`/edit-product/${product.product.id}`}>
+                      <button className="mt-4 px-4 py-2 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600">
+                        Edit Product
+                      </button>
+                    </Link>
+
+                    <button
+                      className="mt-4 px-4 py-2 bg-red-500 text-white font-semibold rounded-md shadow-md hover:bg-red-600"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowConfirmDelete(true);
+                      }}
+                    >
+                      Delete Product
+                    </button>
+                    {showConfirmDelete && (
+                      <div className="fixed z-50 inset-0 overflow-y-auto">
+                        <div className="flex items-center justify-center min-h-screen">
+                          <div className="relative bg-white w-1/2 md:w-1/3 lg:w-1/4 rounded-md shadow-lg">
+                            <div className="p-6">
+                              <h4 className="text-lg font-bold mb-4">
+                                Are you sure you would like to delete Product:{" "}
+                                {product.product && product.product.name}
+                              </h4>
+                              <div className="flex justify-end">
+                                <button
+                                  className="mr-4 px-4 py-2 bg-gray-300 text-gray-800 font-semibold rounded-md shadow-md hover:bg-gray-400"
+                                  onClick={()=>{
+                                    setShowConfirmDelete(false)
+                                  }}
+                                >
+                                  Cancel
+                                </button>
+                                <button
+                                  className="px-4 py-2 bg-red-500 text-white font-semibold rounded-md shadow-md hover:bg-red-600"
+                                  onClick={()=>{
+                                    handleDelete()
+                                  }}
+                                >
+                                  Confirm
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>
