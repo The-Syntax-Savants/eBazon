@@ -130,18 +130,57 @@ cartsRouter.get(
   }
 );
 
+// cartsRouter.post("/add-to-cart", requireUser, async (req, res, next) => {
+//   try {
+//     //receive productId from req.body
+//     const { productId } = req.body;
+//     // get active cart for user
+//     const cart = await getActiveCartByUsername(req.user.username);
+//     const cartProducts = await getCartProductsByCartId(cart.id);
+
+//     let productFound = false;
+//     cartProducts.array.forEach(async (element) => {
+//       if (element.productId === productId) {
+//         // update quantity if cartProduct already exists
+//         productFound = true;
+//         const updatedCartProduct = await updateCartProduct({
+//           id: element.id,
+//           quantity: element.quantity + 1,
+//         });
+//         res.send(updatedCartProduct);
+//       }
+//     });
+
+//     //create cartProduct if it isn't in your cart already
+//     if (!productFound) {
+//       const newCartProduct = await createCartProduct({
+//         id: cart.id,
+//         productId,
+//         quantity: 1,
+//       });
+//       res.send(newCartProduct);
+//     }
+//   } catch ({ name, message }) {
+//     next({ name, message });
+//   }
+// });
+
 cartsRouter.post("/add-to-cart", requireUser, async (req, res, next) => {
   try {
-    //receive productId from req.body
-    const { productId } = req.body;
-    // get active cart for user
+    // Receive product_id from req.body
+    const { product_id } = req.body;
+    // Get active cart for user
     const cart = await getActiveCartByUsername(req.user.username);
     const cartProducts = await getCartProductsByCartId(cart.id);
+    console.log(cart.id, "cart id");
+    console.log(product_id, "product id");
 
     let productFound = false;
-    cartProducts.array.forEach(async (element) => {
-      if (element.productId === productId) {
-        // update quantity if cartProduct already exists
+    cartProducts.forEach(async (element) => {
+      console.log(element.product_id, "element product id");
+      console.log(product_id, "product id chosen");
+      if (element.product_id === product_id) {
+        // Update quantity if cartProduct already exists
         productFound = true;
         const updatedCartProduct = await updateCartProduct({
           id: element.id,
@@ -151,11 +190,12 @@ cartsRouter.post("/add-to-cart", requireUser, async (req, res, next) => {
       }
     });
 
-    //create cartProduct if it isn't in your cart already
+    // If product not found in cart, add it to the cart
     if (!productFound) {
+      // Add the new cartProduct
       const newCartProduct = await createCartProduct({
-        id: cart.id,
-        productId,
+        username: req.user.username,
+        product_id: product_id,
         quantity: 1,
       });
       res.send(newCartProduct);

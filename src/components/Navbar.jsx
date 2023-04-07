@@ -3,26 +3,30 @@ import { useNavigate, Link } from "react-router-dom";
 import { getLoggedInUserFromDB } from "../api-adapters/users";
 
 const Navbar = (props) => {
-  const navigate = useNavigate()
-  const [admin, setAdmin] = useState(false)
+  const navigate = useNavigate();
+  const [admin, setAdmin] = useState(false);
   const isLoggedIn = props.isLoggedIn;
   const setIsLoggedIn = props.setIsLoggedIn;
   const [username, setUsername] = useState("");
-  
+
   const grabUser = async () => {
-    const data = await getLoggedInUserFromDB()
-    if(data.is_admin){
-      setAdmin(true)
+    const data = await getLoggedInUserFromDB();
+    if (data.is_admin) {
+      setAdmin(true);
     }
-  }
+  };
   useEffect(() => {
-    grabUser()
+    grabUser();
     const localStorageUsername = localStorage.getItem("username");
     if (localStorageUsername) {
       setUsername(localStorageUsername);
       // navigate("/")
     }
   }, [isLoggedIn]);
+
+  function handleViewCart() {
+    navigate("/my-cart");
+  }
 
   return (
     <div className="navbar bg-base-100">
@@ -66,7 +70,7 @@ const Navbar = (props) => {
                 <Link to="/createProduct">Create Listing</Link>
               </li>
             )}
-             {admin && (
+            {admin && (
               <li>
                 <Link to="/panel">Admin</Link>
               </li>
@@ -79,8 +83,8 @@ const Navbar = (props) => {
                     localStorage.removeItem("username");
                     setUsername("");
                     setIsLoggedIn(false);
-                    setAdmin(false)
-                    navigate("/")
+                    setAdmin(false);
+                    navigate("/");
                   }}
                 >
                   Logout
@@ -139,7 +143,10 @@ const Navbar = (props) => {
                 <span className="font-bold text-lg">8 Items</span>
                 <span className="text-info">Subtotal: $999</span>
                 <div className="card-actions">
-                  <button className="btn btn-primary btn-block">
+                  <button
+                    onClick={handleViewCart}
+                    className="btn btn-primary btn-block"
+                  >
                     View cart
                   </button>
                 </div>
