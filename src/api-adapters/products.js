@@ -21,7 +21,7 @@ export const getAllProductsDB = async () => {
 export const getProductByIdDB = async (id) => {
   try {
     const response = await fetch(`${BASE_URL}/products/${id}`, {
-      METHOD: "GET",
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
