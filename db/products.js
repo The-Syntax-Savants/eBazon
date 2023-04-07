@@ -89,26 +89,36 @@ export async function getProductByID(productId) {
     throw error;
   }
 }
-// *** Forgot to not make functions we were not using. my bad -Emilio & Charles
 
-// async function getProductsByTag(tag) {
-//   try {
-//     const { rows: products} = await client.query(
-//         `
-//         SELECT * FROM products
-//         WHERE tags=$1;
-//         `,
-//         [tag]
-//     )
-//     return products;
-//   } catch (error){throw error}
-// }
+//search-product-by-tag branch -->>>>
 
-// async function getProductsBySeller(username) {
-//   try {
-//   } catch {}
-// }
+export async function getProductsByTagId(tagId) {
+  try {
+    const { rows: productIds } = await client.query(
+      `
+        SELECT product_tags.product_id 
+        FROM product_tags
+        WHERE product_tags.tag_id=$1
+        `,
+      [tagId]
+    );
 
+    const products = await Promise.all(
+      productIds.map((product) => getProductByID(product.product_id))
+    );
+    return products;
+  } catch (error) {
+    console.error("Error in DB -> products -> getProductsByTag");
+    throw error;
+  }
+}
+
+export async function getProductsBySeller(username) {
+  try {
+  } catch {}
+}
+
+//search-product-by-tag branch <<<<----
 
 //We can also use this to deactivate a product by updating active to false
 export async function updateProduct(productId, fields = {}) {
