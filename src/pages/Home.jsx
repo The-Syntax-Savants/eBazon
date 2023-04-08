@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { SingleProductCard } from "../components";
 import { getAllProductsDB, getProductsByTagIdDB } from "../api-adapters/products";
+import { Pagination } from "../components";
 // require("../style.css");
 // require("../tailwind.config.js");
 
@@ -21,7 +22,7 @@ const Home = () => {
   return (
     <div id="home-page">
       <div id="sub-header">
-        <br></br>
+        <br />
         <h1>Welcome to eBazon! The home of all your shopping needs</h1>
         {alert === "success" && (
           <div className="alert alert-success shadow-lg">
@@ -68,7 +69,7 @@ const Home = () => {
               setAlert={setAlert}
               cardLocation={"home"}
               key={`This is the key: ${product.id}`}
-            ></SingleProductCard>
+            />
           );
         })}
       </div>
