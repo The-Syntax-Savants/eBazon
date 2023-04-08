@@ -1,5 +1,5 @@
-// const BASE_URL = "http://localhost:3001/api";
-const BASE_URL = "https://ebazon.onrender.com/api"
+const BASE_URL = "http://localhost:3001/api";
+// const BASE_URL = "https://ebazon.onrender.com/api"
 
 export const createUserInDB = async (
   username,
@@ -53,16 +53,19 @@ export const loginUserDB = async (username, password) => {
 };
 
 export const editUserDB = async (user) => {
-  console.log(user, "WHAT IS BEING PASSED IN")
+  console.log(user, "WHAT IS BEING PASSED IN");
   try {
-    const response = await fetch(`${BASE_URL}/users/${user.username}/profile/edit`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(user),
-    });
+    const response = await fetch(
+      `${BASE_URL}/users/${user.username}/profile/edit`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(user),
+      }
+    );
 
     const result = await response.json();
     console.log(result);
@@ -81,6 +84,7 @@ export const getLoggedInUserFromDB = async () => {
       },
     });
     const result = await response.json();
+    //Because of the navbar, this console log causes the user information to be logged for every single render of the page. annoying. should get rid of it -Emilio
     console.log(result);
     return result;
   } catch (err) {
