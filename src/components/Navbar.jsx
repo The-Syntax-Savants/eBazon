@@ -6,14 +6,19 @@ import { getActiveCartProductsDB } from "../api-adapters/carts";
 const Navbar = (props) => {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState(false);
-  const isLoggedIn = props.isLoggedIn;
-  const setIsLoggedIn = props.setIsLoggedIn;
   const [username, setUsername] = useState("");
   const [cartProductsCount, setCartProductsCount] = useState([]);
+  const [subTotal, setSubTotal] = useState(0);
+  const isLoggedIn = props.isLoggedIn;
+  const setIsLoggedIn = props.setIsLoggedIn;
 
   const grabCartProducts = async () => {
     const data = await getActiveCartProductsDB();
-    console.log("data", "CART PRODUCTS COUNT");
+    let subTotal = 0;
+    for (let i = 0; i < data.length; i++) {
+      subTotal += data[i].product.price;
+    }
+    setSubTotal(subTotal / 100);
     setCartProductsCount(data.length);
   };
 
@@ -105,7 +110,9 @@ const Navbar = (props) => {
         </div>
       </div>
       <div className="navbar-center">
-        <a className="btn btn-ghost normal-case text-xl">eBazon</a>
+        <Link to="/" className="btn btn-ghost normal-case text-xl">
+          eBazon
+        </Link>
       </div>
       <div className="navbar-end">
         <button className="btn btn-ghost btn-circle">
@@ -155,7 +162,7 @@ const Navbar = (props) => {
                 <span className="font-bold text-lg">
                   {cartProductsCount} Items In Cart
                 </span>
-                <span className="text-info">Subtotal: $999</span>
+                <span className="text-info">Subtotal: ${subTotal}</span>
                 <div className="card-actions">
                   <button
                     onClick={handleViewCart}
