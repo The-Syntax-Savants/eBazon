@@ -113,10 +113,10 @@ export async function getProductsByTagId(tagId) {
   }
 }
 
-export async function getProductsBySeller(username) {
-  try {
-  } catch {}
-}
+// export async function getProductsBySeller(username) {
+//   try {
+//   } catch {}
+// }
 
 //search-product-by-tag branch <<<<----
 
