@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getLoggedInUserFromDB } from "../api-adapters/users";
+import { getActiveCartProductsDB } from "../api-adapters/carts";
 
 const Navbar = (props) => {
   const navigate = useNavigate();
@@ -8,6 +9,13 @@ const Navbar = (props) => {
   const isLoggedIn = props.isLoggedIn;
   const setIsLoggedIn = props.setIsLoggedIn;
   const [username, setUsername] = useState("");
+  const [cartProductsCount, setCartProductsCount] = useState([]);
+
+  const grabCartProducts = async () => {
+    const data = await getActiveCartProductsDB();
+    console.log("data", "CART PRODUCTS COUNT");
+    setCartProductsCount(data.length);
+  };
 
   const grabUser = async () => {
     const data = await getLoggedInUserFromDB();
@@ -15,11 +23,13 @@ const Navbar = (props) => {
       setAdmin(true);
     }
   };
+
   useEffect(() => {
     const localStorageUsername = localStorage.getItem("username");
     if (localStorageUsername) {
-      grabUser()
+      grabUser();
       setUsername(localStorageUsername);
+      grabCartProducts();
       // navigate("/")
     }
   }, [isLoggedIn]);
@@ -132,7 +142,9 @@ const Navbar = (props) => {
                     d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                   />
                 </svg>
-                <span className="badge badge-sm indicator-item">8</span>
+                <span className="badge badge-sm indicator-item">
+                  {cartProductsCount}
+                </span>
               </div>
             </label>
             <div
@@ -140,7 +152,9 @@ const Navbar = (props) => {
               className="mt-3 card card-compact dropdown-content w-52 bg-base-100 shadow"
             >
               <div className="card-body">
-                <span className="font-bold text-lg">8 Items</span>
+                <span className="font-bold text-lg">
+                  {cartProductsCount} Items In Cart
+                </span>
                 <span className="text-info">Subtotal: $999</span>
                 <div className="card-actions">
                   <button

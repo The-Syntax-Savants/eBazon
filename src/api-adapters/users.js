@@ -1,5 +1,4 @@
-// const BASE_URL = "http://localhost:3001/api";
-const BASE_URL = "https://ebazon.onrender.com/api"
+import { BASE_URL } from "./index.js";
 
 export const createUserInDB = async (
   username,
@@ -53,16 +52,19 @@ export const loginUserDB = async (username, password) => {
 };
 
 export const editUserDB = async (user) => {
-  console.log(user, "WHAT IS BEING PASSED IN")
+  console.log(user, "WHAT IS BEING PASSED IN");
   try {
-    const response = await fetch(`${BASE_URL}/users/${user.username}/profile/edit`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(user),
-    });
+    const response = await fetch(
+      `${BASE_URL}/users/${user.username}/profile/edit`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(user),
+      }
+    );
 
     const result = await response.json();
     console.log(result);

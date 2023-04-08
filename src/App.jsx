@@ -11,9 +11,10 @@ import {
   AdminPanel,
   Cart,
 } from "./pages";
-import { Navbar, Footer } from "./components";
+import { Navbar, Footer, Pagination } from "./components";
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   useEffect(() => {
     const localStorageToken = localStorage.getItem("token");
     const localStorageUsername = localStorage.getItem("username");
@@ -49,6 +50,9 @@ const App = () => {
           <Route path="/panel" element={<AdminPanel />} />
           <Route path="/my-cart" element={<Cart />} />
         </Routes>
+      </div>
+      <div id="footer-container">
+        <Footer />
       </div>
     </div>
   );
