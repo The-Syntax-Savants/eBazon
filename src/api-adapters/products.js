@@ -1,5 +1,6 @@
 import { BASE_URL } from "./index.js";
 
+
 export const getAllProductsDB = async () => {
   try {
     const response = await fetch(`${BASE_URL}/products`, {
@@ -31,6 +32,22 @@ export const getProductByIdDB = async (id) => {
   } catch (error) {
     console.log("Error in getProductByID product Call!");
     console.error(error);
+  }
+};
+
+export const getProductsByTagIdDB = async (tagId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/products/${tagId}/tags`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.log("Error in api-adapters -> products -> getProductByTagIdDB");
+    throw error;
   }
 };
 

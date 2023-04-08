@@ -1,4 +1,6 @@
+
 import { BASE_URL } from "./index.js";
+
 
 export const deleteProductInDB = async (id, token) => {
   try {

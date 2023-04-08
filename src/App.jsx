@@ -25,7 +25,7 @@ const App = () => {
 
   return (
     <div id="main">
-      <div id="navbar-container">
+      <div id="navbar-container mb-10">
         <Navbar setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
       </div>
 

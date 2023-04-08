@@ -1,5 +1,6 @@
 import { BASE_URL } from "./index.js";
 
+
 export const getActiveCartProductsDB = async () => {
   try {
     const response = await fetch(`${BASE_URL}/carts/myCart`, {

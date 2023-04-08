@@ -5,6 +5,7 @@ import {
   createProduct,
   getAllProducts,
   getProductByID,
+  getProductsByTagId,
   deleteProductByID,
   updateProduct,
 } from "../db/products.js";
@@ -41,13 +42,31 @@ productsRouter.get("/:id", async (req, res, next) => {
     const product = await getProductByID(id);
     console.log(product);
     res.send({
-      product,
+      product, //The reason we have to do product.product sometimes is because we wrap the fuckin object we are sending in yet another object. I think. -Emilio
     });
   } catch ({ name, message }) {
     next({
       name: "Error fetching product by ID",
       message: "Could not fetch product. ",
     });
+  }
+});
+
+// GET /api/products/:tagId/tags
+productsRouter.get("/:tagId/tags", async (req, res, next) => {
+  try {
+    const { tagId: id } = req.params;
+    const products = await getProductsByTagId(id);
+    if (products) {
+      res.send(products);
+    } else {
+      next({
+        name: "NoProducts",
+        message: "No products exist with that tag",
+      });
+    }
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
 

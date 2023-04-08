@@ -1,5 +1,6 @@
 import { BASE_URL } from "./index.js";
 
+
 export const createUserInDB = async (
   username,
   password,
@@ -83,6 +84,7 @@ export const getLoggedInUserFromDB = async () => {
       },
     });
     const result = await response.json();
+    //Because of the navbar, this console log causes the user information to be logged for every single render of the page. annoying. should get rid of it -Emilio
     console.log(result);
     return result;
   } catch (err) {

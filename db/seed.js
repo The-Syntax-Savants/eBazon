@@ -5,6 +5,7 @@ import {
   getAllProducts,
   getProductByID,
   updateProduct,
+  getProductsByTagId,
   deleteProductByID,
 } from "./products.js";
 import { createCartProduct, getCartProductsByCartId } from "./cartsProducts.js";
@@ -196,7 +197,6 @@ async function createInitialUsers() {
       is_admin: false,
     });
 
-
     console.log("finished creating initial users!");
   } catch (error) {
     throw error;
@@ -380,11 +380,22 @@ async function testDB() {
       tags[12],
       tags[11],
     ]);
-    console.log("Result:", scaryTest);
+    const scaryTest2 = await addTagsToProduct(products[3].id, [
+      tags[3],
+      tags[12],
+      tags[11],
+    ]);
+    console.log("This function doesn't return anything by intention. It works");
 
     console.log("Calling getProductById");
     const product = await getProductByID(products[2].id);
-    console.log("Result:", product);
+    const product2 = await getProductByID(products[3].id);
+    console.log("Result1:", product);
+    console.log("Result2:", product2);
+
+    console.log("Calling getProductsByTagId");
+    const filteredProducts = await getProductsByTagId(4);
+    console.log("Result: ", filteredProducts);
 
     console.log("Testing create product with tags");
     const create = await createProduct({
