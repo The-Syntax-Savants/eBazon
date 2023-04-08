@@ -60,7 +60,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div id="product-cards-container">
+      <div id="product-cards-container" className="flex flex-wrap">
         {products.map((product) => {
           return (
             <SingleProductCard
