@@ -9,7 +9,7 @@ const CreateProduct = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [image, setImage] = useState(null);
+  const [image_url, setImage_url] = useState(null);
   const [tags, setTags] = useState([]);
   const [allTags, setAllTags] = useState([]);
   const [dimensions, setDimensions] = useState("");
@@ -39,10 +39,10 @@ const CreateProduct = () => {
 
   useEffect(() => {
     tagGrabber();
-    if (tags.length && typeof image === "string") {
+    if (tags.length && typeof image_url === "string") {
       createProduct();
     }
-  }, [tags, image]);
+  }, [tags, image_url]);
 
   const updateTagsFunc = async () => {
     values.map((tagID) => {
@@ -64,7 +64,7 @@ const CreateProduct = () => {
         dimensions,
         quantity,
         tags,
-        image,
+        image_url,
       });
 
       navigate("/"); //this will end up taking to single product view
@@ -99,7 +99,7 @@ const CreateProduct = () => {
           const uploadedImageUrl = await uploadImage(
             e.target.elements.imageInput.files[0]
           );
-          setImage(uploadedImageUrl);
+          setImage_url(uploadedImageUrl);
           await updateTagsFunc();
         }}
       >
@@ -187,7 +187,7 @@ const CreateProduct = () => {
             type="file"
             name="imageInput"
             className="file-input file-input-bordered file-input-info w-full max-w-xs"
-            onChange={(e) => setImage(e.target.files[0])}
+            onChange={(e) => setImage_url(e.target.files[0])}
           />
         </label>
         <button className="btn btn-primary" type="submit">

@@ -45,8 +45,9 @@ const SingleProductView = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Image container */}
           <div className="relative w-full h-80 md:h-96">
+            {console.log(product, "THIS IS PRODUCT")}
             <img
-              src="https://www.shutterstock.com/image-vector/profile-blank-icon-empty-photo-260nw-535853269.jpg"
+              src={product.product && product.product.image_url}
               alt="Product"
               className="w-full h-full object-cover rounded-md shadow-md"
             />
@@ -105,16 +106,16 @@ const SingleProductView = () => {
                               <div className="flex justify-end">
                                 <button
                                   className="mr-4 px-4 py-2 bg-gray-300 text-gray-800 font-semibold rounded-md shadow-md hover:bg-gray-400"
-                                  onClick={()=>{
-                                    setShowConfirmDelete(false)
+                                  onClick={() => {
+                                    setShowConfirmDelete(false);
                                   }}
                                 >
                                   Cancel
                                 </button>
                                 <button
                                   className="px-4 py-2 bg-red-500 text-white font-semibold rounded-md shadow-md hover:bg-red-600"
-                                  onClick={()=>{
-                                    handleDelete()
+                                  onClick={() => {
+                                    handleDelete();
                                   }}
                                 >
                                   Confirm

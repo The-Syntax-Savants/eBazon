@@ -248,6 +248,8 @@ async function createInitialProducts() {
       description: "This is a waffle maker",
       dimensions: "10x10x10",
       quantity: 5,
+      image_url:
+        "https://target.scene7.com/is/image/Target/GUEST_44fc59b0-d3f9-462f-a37b-87ff7372c3c3?wid=488&hei=488&fmt=pjpeg",
     });
 
     await createProduct({
