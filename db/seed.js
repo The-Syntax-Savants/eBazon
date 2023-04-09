@@ -62,7 +62,7 @@ async function createTables() {
             seller_name VARCHAR(50) REFERENCES users(username) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
             is_active BOOLEAN DEFAULT true,
             price INTEGER,
-            images BYTEA,
+            image_url VARCHAR(255),
             description VARCHAR(3000),
             dimensions VARCHAR(255),
             quantity INTEGER NOT NULL,
@@ -203,24 +203,6 @@ async function createInitialUsers() {
   }
 }
 
-// async function createInitialCarts() {
-//   try {
-//     console.log("creating initial carts");
-//     createCart({
-//       username: "DrizzyJ",
-//       isComplete: false,
-//       city: "San Francisco",
-//       state: "CA",
-//       zipcode: "94107",
-//       address_line_1: "1234 Main St",
-//       address_line_2: "Apt 1",
-//       price: 1500,
-//       time_of_purchase: "2021-07-01 00:00:00",
-//     });
-//   } catch (error) {
-//     throw error;
-//   }
-// }
 async function createInitialCartProducts() {
   try {
     console.log("creating initial cart products");
