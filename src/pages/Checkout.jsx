@@ -6,6 +6,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import { placeOrderDB } from "../api-adapters/carts";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -76,6 +77,8 @@ export default function CheckoutForm() {
       setMessage("An unexpected error occurred.");
     }
 
+    console.log("ABOUT TO PLACE ORDER");
+    await placeOrderDB();
     setIsLoading(false);
   };
 
