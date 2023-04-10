@@ -11,10 +11,27 @@ import {
   AdminPanel,
   Cart,
   SearchResults,
+  Checkout,
+  // Stripe,
 } from "./pages";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { Navbar, Footer, Pagination } from "./components";
+import { createPaymentIntent } from "./api-adapters/stripe";
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [clientSecret, setClientSecret] = useState("");
+  const stripePromise = loadStripe(
+    "pk_test_51MvOTQLhGAqNc30vaCPHwOYngRS0iERaK2A9QymnF3g6Y0VUDpNBiB5Wveb9Vt62YZ3NyXMWwjonuaKiOBHl4mZQ00gY6bvm8D"
+  );
+
+  // useEffect(() => {
+  //   createPaymentIntent().then((data) => {
+  //     console.log(data.clientSecret, "CLIENT SECRET");
+  //     setClientSecret(data.clientSecret);
+  //   });
+  // }, []);
 
   useEffect(() => {
     const localStorageToken = localStorage.getItem("token");
@@ -22,7 +39,21 @@ const App = () => {
     if (localStorageToken && localStorageUsername) {
       setIsLoggedIn(true);
     }
+    console.log("RUNNING USE EFFECT");
+    createPaymentIntent().then((data) => {
+      setClientSecret(data.clientSecret);
+      console.log(data.clientSecret, "CLIENT SECRET");
+      console.log(clientSecret, "CLIENT SECRET STATE");
+    });
   }, []);
+
+  const appearance = {
+    theme: "stripe",
+  };
+  const options = {
+    clientSecret,
+    appearance,
+  };
 
   return (
     <div id="main">
@@ -53,6 +84,16 @@ const App = () => {
           <Route
             path="/search-results/:searchInput/:tagInput"
             element={<SearchResults />}
+          />
+          <Route
+            path="/checkout"
+            element={
+              clientSecret && (
+                <Elements options={options} stripe={stripePromise}>
+                  <Checkout />
+                </Elements>
+              )
+            }
           />
         </Routes>
       </div>

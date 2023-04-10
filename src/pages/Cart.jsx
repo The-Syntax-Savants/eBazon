@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getActiveCartProductsDB } from "../api-adapters/carts";
 import { SingleCartProduct } from "../components";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const [cartProducts, setCartProducts] = useState([]);
@@ -23,7 +24,12 @@ const Cart = () => {
     <div id="cart-container">
       <h1>hello</h1>
       {/* {cartProducts[0] && <h2>{cartProducts[0].product}</h2>} */}
-      <button className="btn btn-success">CHECKOUT</button>
+
+      {/* Link to checkout page */}
+      <Link to="/checkout">
+        <button className="btn btn-success">CHECKOUT</button>
+      </Link>
+
       <div id="products-container">
         {cartProducts.map((cartProduct) => {
           console.log(cartProduct.product, "INSIDE MAP");
