@@ -13,7 +13,7 @@ export const getActiveCartProductsDB = async () => {
     console.log(result, " getActiveCartProductsDB result");
     return result;
   } catch (error) {
-    console.log("Error in getAllProductsDB Call!");
+    console.log("Error in getActiveCartProductsDB Call!");
     console.error(error);
   }
 };
@@ -32,7 +32,7 @@ export const deleteCartProductDB = async (cartProductId) => {
     console.log(result, " deleteCartProductDB result");
     return result;
   } catch (error) {
-    console.log("Error in getAllProductsDB Call!");
+    console.log("Error in deleteCartProductDB Call!");
     console.error(error);
   }
 };
@@ -51,7 +51,7 @@ export const createCartProductDB = async (product_id) => {
     console.log(result, " createCartProductDB result");
     return result;
   } catch (error) {
-    console.log("Error in getAllProductsDB Call!");
+    console.log("Error in createCartProductDB Call!");
     console.error(error);
   }
 };
@@ -73,7 +73,25 @@ export const updateCartProductDB = async (cartProductId, quantity) => {
     console.log(result, " updateCartProductDB result");
     return result;
   } catch (error) {
-    console.log("Error in getAllProductsDB Call!");
+    console.log("Error in updateCartProductDB Call!");
+    console.error(error);
+  }
+};
+
+export const placeOrderDB = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/carts/place-order`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    const result = await response.json();
+    console.log(result, " placeOrderDB result");
+    return result;
+  } catch (error) {
+    console.log("Error in placeOrderDB Call!");
     console.error(error);
   }
 };
