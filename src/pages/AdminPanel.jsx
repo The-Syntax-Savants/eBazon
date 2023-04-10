@@ -48,7 +48,7 @@ const AdminPanel = () => {
   return (
     <>
       {allUsers.length ? (
-        <div id="container" className="container flex flex-col items-center justify-center max-h-screen overflow-auto mt-[60px]">
+        <div id="container" className="container flex flex-col items-center h-screen overflow-auto mt-[60px]">
           <div id="admin-title" className="text-center mt-[30px]">
           <h3 className="text-3xl font-bold text-gray-800">Welcome {admin.first_name} To Your Admin Panel</h3>
           </div>
