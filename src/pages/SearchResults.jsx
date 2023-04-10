@@ -78,7 +78,7 @@ const SearchResults = () => {
     return (
         <>
 
-            <div className="flex flex-row justify-center border border-1 border-black">
+            <div className="flex flex-row justify-center border border-1 border-black flex-wrap ">
 
                 {
                     allTags.map((tag) => {
@@ -86,7 +86,7 @@ const SearchResults = () => {
 
                             <button key={`tag name in searchResults map: ${tag.name}`} 
                                 value={tag.id}
-                                className=" flex justify-center btn-ghost border-solid m-2 border-black border-1  pl-2 pr-2"
+                                className=" flex justify-center btn-ghost border-solid m-2 border-black border-1 pl-2 pr-2"
                                 onClick={(evt) => {
                                     setSelectedTag(evt.target.value)
                                 }}

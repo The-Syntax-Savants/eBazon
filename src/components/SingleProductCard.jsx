@@ -5,11 +5,12 @@ import { createCartProductDB } from "../api-adapters/carts";
 const SingleProductCard = (props) => {
   const product = props.product;
   const setAlert = props.setAlert;
-  console.log(product, "PRODUCT");
+  const grabCartProducts = props.grabCartProducts;
 
   async function handleAddToCart() {
     try {
       await createCartProductDB(product.id);
+      grabCartProducts();
       console.log(product.name + " added to cart!");
       setAlert("success");
     } catch (error) {
@@ -44,12 +45,24 @@ const SingleProductCard = (props) => {
           </h2>
           <h5>Seller: {product.seller_name}</h5>
           <p>{product.description}</p>
+          
+          <div className="flex flex-row flex-wrap max-h-20 overflow-auto">
+            {
+              (product.tags.length > 0 &&  product.tags.map((tag, idx) => {
+                return(
+                  <p key={`paragraph in SingleProductCard: ${idx}`}
+                    className="badge badge-outline min-h-fit max-w-fit mb-2 mr-2"
+                  >{tag.name}</p>)
+              }))
+
+            }
+
+          </div>
+          
           <div className="card-actions justify-end">
             <button onClick={handleAddToCart} className="btn btn-success">
               Add to Cart
-            </button>
-            {/* <div className="badge badge-outline">Fashion</div>
-        <div className="badge badge-outline">Products</div> */}
+            </button> 
           </div>
         </div>
       </div>

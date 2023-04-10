@@ -7,11 +7,13 @@ import { createCartProductDB } from "../api-adapters/carts";
 // require("../styles/style.css");
 // require("../tailwind.config.js");
 
-const SingleProductView = () => {
+const SingleProductView = (props) => {
   const [product, setProduct] = useState({});
   const [user, setUser] = useState({});
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [alert, setAlert] = useState("");
+
+  const grabCartProducts = props.grabCartProducts;
 
   const { productId } = useParams();
 
@@ -41,6 +43,7 @@ const SingleProductView = () => {
   async function handleAddToCart() {
     try {
       await createCartProductDB(product.product.id);
+      grabCartProducts();
       console.log(product.product.name + " added to cart!");
       setAlert("success");
     } catch (error) {
