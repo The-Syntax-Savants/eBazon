@@ -1,6 +1,5 @@
 import { BASE_URL } from "./index.js";
 
-
 export const getActiveCartProductsDB = async () => {
   try {
     const response = await fetch(`${BASE_URL}/carts/myCart`, {
@@ -11,7 +10,7 @@ export const getActiveCartProductsDB = async () => {
       },
     });
     const result = await response.json();
-    console.log(result);
+    console.log(result, " getActiveCartProductsDB result");
     return result;
   } catch (error) {
     console.log("Error in getAllProductsDB Call!");
@@ -30,7 +29,7 @@ export const deleteCartProductDB = async (cartProductId) => {
       body: JSON.stringify({ cartProductId: cartProductId }),
     });
     const result = await response.json();
-    console.log(result);
+    console.log(result, " deleteCartProductDB result");
     return result;
   } catch (error) {
     console.log("Error in getAllProductsDB Call!");
@@ -49,7 +48,7 @@ export const createCartProductDB = async (product_id) => {
       body: JSON.stringify({ product_id: product_id }),
     });
     const result = await response.json();
-    console.log(result);
+    console.log(result, " createCartProductDB result");
     return result;
   } catch (error) {
     console.log("Error in getAllProductsDB Call!");
@@ -71,7 +70,7 @@ export const updateCartProductDB = async (cartProductId, quantity) => {
       }),
     });
     const result = await response.json();
-    console.log(result);
+    console.log(result, " updateCartProductDB result");
     return result;
   } catch (error) {
     console.log("Error in getAllProductsDB Call!");
