@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getLoggedInUserFromDB } from "../api-adapters/users";
 import { getActiveCartProductsDB } from "../api-adapters/carts";
+import { getAllTagsDB } from "../api-adapters/tags";
+import {Space, Select} from "antd"
 
 const Navbar = (props) => {
   const navigate = useNavigate();
@@ -11,11 +13,18 @@ const Navbar = (props) => {
   const [subTotal, setSubTotal] = useState(0);
   const isLoggedIn = props.isLoggedIn;
   const setIsLoggedIn = props.setIsLoggedIn;
+  const [search, setSearch] = useState()
+  const [values, setValues] = useState([]);
+  const options = [];
+  const tagsWithValue = [];
 
-  const refOne = useRef(null)
 
+
+  
   const [visible, setVisible] = useState("hidden")
-
+  const refOne = useRef(null)
+  
+  
   const grabCartProducts = async () => {
     const data = await getActiveCartProductsDB();
     let subTotal = 0;
@@ -32,6 +41,7 @@ const Navbar = (props) => {
       setAdmin(true);
     }
   };
+
 
   useEffect(() => {
     const localStorageUsername = localStorage.getItem("username");
@@ -134,12 +144,25 @@ const Navbar = (props) => {
       </div>
       <div className="navbar-end">
 
-        <form action="" ref={ refOne } className="relative w-max flex flex-row ">
+        <form action="" ref={ refOne } id="search-form" className="relative w-max flex flex-row " onSubmit={async (e)=>{
+          e.preventDefault()
+
+          if(search !== undefined && search.length > 0) {
+            document.getElementById("search-form").reset()
+            navigate(`/search-results/${search}`)
+          } 
+
+        }}>
           {/* THIS IS THE SEARCH INPUT */}
           <input type="search" placeholder="Search Products" name="search" id="search" 
             className="relative peer z-10 bg-transparent w-12 h-12 rounded-full border cursor-pointer outline-none
             pl-12 
             focus:w-full focus:border-indigo-600 focus:cursor-text focus:pl-16 focus:pr-4" 
+            autoComplete="off"
+            onChange={(e)=>{
+              e.preventDefault()
+              setSearch(e.target.value)
+            }}
           />
 
           {/* THIS IS THE SEARCH SVG*/}
@@ -158,33 +181,7 @@ const Navbar = (props) => {
             />
           </svg>
 
-          {/* THIS IS THE TAGS INPUT */}
-
-          <div className="relative ml-2">
-
-            <input type="search"  placeholder="Search Tags"  name="search-tag" id="search-tag" 
-              className={`relative peer z-10 bg-transparent w-12 h-12 rounded-full border cursor-pointer outline-none pl-12 focus:w-full focus:border-indigo-600 focus:cursor-text focus:pl-16 focus:pr-4 ${visible}`} 
-            />
-
-
-            {/* THIS IS THE TAGS SVG */}
-
-            <svg xmlns="http://www.w3.org/2000/svg" 
-              className={`absolute inset-y-0 my-auto h-8 w-12 px-3.5 stroke-gray-500 border-r border-transparent peer-focus:border-indigo-600 peer-focus: stroke-indigo-600  ${visible}`} fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor" 
-              strokeWidth={2}
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" 
-                />
-            </svg>
-
-          </div>
-
-
+          <button type="submit" className={`btn btn-ghost border-solid border-1 border-indigo-600 w-20 ml-2 mr-2 ${visible}`}>Search</button>
 
         </form>
 

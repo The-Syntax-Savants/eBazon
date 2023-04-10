@@ -9,47 +9,23 @@ const SearchResults = () => {
     const [products, setProducts] = useState([])
     const [alert, setAlert] = useState("");
 
-    let {searchInput, tagInput} = useParams()
+    let {searchInput} = useParams()
 
     const fetchSearchResults = async () => {
 
-        //If No tag input
-        //If no searchInput
-        //If neither input
-        //If both inputs
+        let filteredProducts = await getAllProductsDB();
+        filteredProducts = filteredProducts.products
 
-        let filteredProducts = [];
+        filteredProducts = filteredProducts.filter((product) => {
+            return (product.name.toLowerCase().includes(searchInput.toLowerCase()))
+        })
 
-        if(Number(tagInput) === 0 && searchInput.length === 0) {
-            
-            
-            
-        } else if (searchInput.length === 0) {
-            
-            filteredProducts = await getProductsByTagIdDB(tagInput)
-            
-        } else if(Number(tagInput) === 0) {
-            
-            filteredProducts = await getAllProductsDB() 
-            
-        } else {
-            
-            filteredProducts = await getProductsByTagIdDB(tagInput)
-            //.filter with a .includes searchInput
+        setProducts(filteredProducts)
 
-
-        }
-        
-        
-
-        // setProducts(filteredProducts)
-        
-        
     }
 
+    
     useEffect(() => {
-        console.log(searchInput, "searchInput")
-        console.log(tagInput, "tagInput")
 
         fetchSearchResults();
 
@@ -73,5 +49,48 @@ const SearchResults = () => {
     )
 
 }
+
+
+{/* THIS IS THE TAGS INPUT */}
+
+          {/* <div className="relative ml-2" ref={refTwo}>
+
+            <Space
+              className={`relative peer z-10 flex justify-center pr-10 bg-transparent w-12 h-12 rounded-full border cursor-pointer outline-none pl-12 focus:w-full focus:border-indigo-600 focus:cursor-text focus:pl-16 focus:pr-4 ${visible}`}
+              style={{width: "100%"}}
+              direction="vertical"
+            >
+              <div className={`absolute inset-0  ${showDropdown}`}>
+                <Select
+                  className={`w-full h-full bg-transparent `}
+                  style={{
+                    width: '100%',
+                  }}
+                  allowClear
+                  placeholder="Please select"
+                  onChange={handleChange}
+                  options={options}
+                />
+              </div>
+            </Space>
+
+
+            
+
+            <svg xmlns="http://www.w3.org/2000/svg" 
+              className={`absolute inset-y-0 my-auto h-8 w-12 px-3.5 stroke-gray-500 border-r border-transparent peer-focus:border-indigo-600 peer-focus: stroke-indigo-600  ${visible}`} fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor" 
+              strokeWidth={2}
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" 
+                />
+            </svg>
+
+          </div> */}
+
 
 export default SearchResults
