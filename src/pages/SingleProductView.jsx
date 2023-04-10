@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { getProductByIdDB, editProductInDB } from "../api-adapters/products";
 import { getLoggedInUserFromDB } from "../api-adapters/users";
+import { createCartProductDB } from "../api-adapters/carts";
 
 // require("../styles/style.css");
 // require("../tailwind.config.js");
@@ -10,8 +11,12 @@ const SingleProductView = () => {
   const [product, setProduct] = useState({});
   const [user, setUser] = useState({});
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [alert, setAlert] = useState("");
+
   const { productId } = useParams();
+
   const navigate = useNavigate();
+
   const getProduct = async () => {
     try {
       const data = await getProductByIdDB(productId);
@@ -24,7 +29,6 @@ const SingleProductView = () => {
   const fetchUser = async () => {
     const data = await getLoggedInUserFromDB();
     if (data.username) {
-      console.log(data, "This is the data i want");
       setUser(data);
     }
   };
@@ -33,6 +37,18 @@ const SingleProductView = () => {
     await editProductInDB({ id: product.product.id, is_active: false });
     navigate("/");
   };
+
+  async function handleAddToCart() {
+    try {
+      await createCartProductDB(product.product.id);
+      console.log(product.product.name + " added to cart!");
+      setAlert("success");
+    } catch (error) {
+      console.log(error);
+      setAlert("error");
+      throw error;
+    }
+  }
 
   useEffect(() => {
     getProduct();
@@ -68,10 +84,7 @@ const SingleProductView = () => {
                 </p>
                 <button
                   className="mt-4 px-4 py-2 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    console.log(user, "THIS IS USER");
-                  }}
+                  onClick={handleAddToCart}
                 >
                   Add to Cart
                 </button>
@@ -105,16 +118,16 @@ const SingleProductView = () => {
                               <div className="flex justify-end">
                                 <button
                                   className="mr-4 px-4 py-2 bg-gray-300 text-gray-800 font-semibold rounded-md shadow-md hover:bg-gray-400"
-                                  onClick={()=>{
-                                    setShowConfirmDelete(false)
+                                  onClick={() => {
+                                    setShowConfirmDelete(false);
                                   }}
                                 >
                                   Cancel
                                 </button>
                                 <button
                                   className="px-4 py-2 bg-red-500 text-white font-semibold rounded-md shadow-md hover:bg-red-600"
-                                  onClick={()=>{
-                                    handleDelete()
+                                  onClick={() => {
+                                    handleDelete();
                                   }}
                                 >
                                   Confirm
