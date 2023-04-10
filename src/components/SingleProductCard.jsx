@@ -5,10 +5,12 @@ import { createCartProductDB } from "../api-adapters/carts";
 const SingleProductCard = (props) => {
   const product = props.product;
   const setAlert = props.setAlert;
+  const grabCartProducts = props.grabCartProducts;
 
   async function handleAddToCart() {
     try {
       await createCartProductDB(product.id);
+      grabCartProducts();
       console.log(product.name + " added to cart!");
       setAlert("success");
     } catch (error) {
