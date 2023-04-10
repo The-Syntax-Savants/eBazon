@@ -14,14 +14,8 @@ const Navbar = (props) => {
   const isLoggedIn = props.isLoggedIn;
   const setIsLoggedIn = props.setIsLoggedIn;
   const [search, setSearch] = useState()
-  const [values, setValues] = useState([]);
-  const options = [];
-  const tagsWithValue = [];
-
-
-
-  
   const [visible, setVisible] = useState("hidden")
+
   const refOne = useRef(null)
   
   
@@ -149,6 +143,7 @@ const Navbar = (props) => {
 
           if(search !== undefined && search.length > 0) {
             document.getElementById("search-form").reset()
+            setVisible("hidden")
             navigate(`/search-results/${search}`)
           } 
 
