@@ -61,8 +61,9 @@ const SingleProductView = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Image container */}
           <div className="relative w-full h-80 md:h-96">
+            {console.log(product, "THIS IS PRODUCT")}
             <img
-              src="https://www.shutterstock.com/image-vector/profile-blank-icon-empty-photo-260nw-535853269.jpg"
+              src={product.product && product.product.image_url}
               alt="Product"
               className="w-full h-full object-cover rounded-md shadow-md"
             />

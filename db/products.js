@@ -9,17 +9,18 @@ export async function createProduct({
   dimensions,
   quantity,
   tags = [],
+  image_url,
 }) {
   try {
     const {
       rows: [product],
     } = await client.query(
       `
-      INSERT INTO products( name, seller_name, price, description, dimensions, quantity)
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO products( name, seller_name, price, description, dimensions, quantity, image_url)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *;
     `,
-      [name, seller_name, price, description, dimensions, quantity]
+      [name, seller_name, price, description, dimensions, quantity, image_url]
     );
 
     await addTagsToProduct(product.id, tags);

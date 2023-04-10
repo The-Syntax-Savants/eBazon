@@ -5,6 +5,7 @@ import { createCartProductDB } from "../api-adapters/carts";
 const SingleProductCard = (props) => {
   const product = props.product;
   const setAlert = props.setAlert;
+  console.log(product, "PRODUCT");
 
   async function handleAddToCart() {
     try {
@@ -24,8 +25,12 @@ const SingleProductCard = (props) => {
         <figure>
           <img
             id="product-image"
-            src="https://i1.wp.com/www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg?resize=624%2C421&ssl=1"
-            alt="Shoes"
+            src={
+              product.image_url
+                ? product.image_url
+                : "https://i1.wp.com/www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg?resize=624%2C421&ssl=1"
+            }
+            alt="Product Image"
           />
         </figure>
         <div className="card-body">
