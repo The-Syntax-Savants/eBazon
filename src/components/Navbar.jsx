@@ -9,27 +9,16 @@ const Navbar = (props) => {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState(false);
   const [username, setUsername] = useState("");
-  const [cartProductsCount, setCartProductsCount] = useState([]);
-  const [subTotal, setSubTotal] = useState(0);
+  const cartProductsCount = props.cartProductsCount;
+  const subTotal = props.subTotal;
   const isLoggedIn = props.isLoggedIn;
   const setIsLoggedIn = props.setIsLoggedIn;
   const [search, setSearch] = useState()
   const [visible, setVisible] = useState("hidden")
-
   const refOne = useRef(null)
-  
-  
-  const grabCartProducts = async () => {
-    const data = await getActiveCartProductsDB();
-    let subTotal = 0;
-    for (let i = 0; i < data.length; i++) {
-      subTotal += data[i].product.price;
-    }
-    setSubTotal(subTotal / 100);
-    setCartProductsCount(data.length);
-  };
+  const grabCartProducts = props.grabCartProducts;
 
-  const grabUser = async () => {
+  const setAdminStatus = async () => {
     const data = await getLoggedInUserFromDB();
     if (data.is_admin) {
       setAdmin(true);
@@ -40,10 +29,9 @@ const Navbar = (props) => {
   useEffect(() => {
     const localStorageUsername = localStorage.getItem("username");
     if (localStorageUsername) {
-      grabUser();
+      setAdminStatus();
       setUsername(localStorageUsername);
       grabCartProducts();
-      // navigate("/")
     }
   }, [isLoggedIn]);
 
