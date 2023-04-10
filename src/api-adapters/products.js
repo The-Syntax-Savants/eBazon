@@ -1,6 +1,5 @@
 import { BASE_URL } from "./index.js";
 
-
 export const getAllProductsDB = async () => {
   try {
     const response = await fetch(`${BASE_URL}/products`, {
@@ -10,7 +9,7 @@ export const getAllProductsDB = async () => {
       },
     });
     const result = await response.json();
-    console.log(result);
+    console.log(result, " getAllProductsDB result");
     return result;
   } catch (error) {
     console.log("Error in getAllProductsDB Call!");
@@ -27,7 +26,7 @@ export const getProductByIdDB = async (id) => {
       },
     });
     const result = await response.json();
-    console.log(result);
+    console.log(result, " getProductByIdDB result");
     return result;
   } catch (error) {
     console.log("Error in getProductByID product Call!");
@@ -68,7 +67,7 @@ export const createProductInDB = async (product) => {
     });
 
     const result = await response.json();
-    console.log(result);
+    console.log(result, " createProductInDB result");
     return result;
   } catch (error) {
     console.log("Error in createProduct Call!");
@@ -93,7 +92,7 @@ export const editProductInDB = async (product) => {
     });
 
     const result = await response.json();
-    console.log(result, "THIS IS RESULT");
+    console.log(result, " editProductInDB result");
     return result;
   } catch (error) {
     console.error(error);
