@@ -1,4 +1,5 @@
 import { client } from "./index.js";
+import {faker} from "@faker-js/faker"
 import { createUser, getAllUsers, getUserById, updateUser } from "./users.js";
 import {
   createProduct,
@@ -270,6 +271,18 @@ async function createInitialProducts() {
       dimensions: "10x100x10",
       quantity: 1,
     });
+
+    for(let i = 0; i < 100; i++){
+      await createProduct({
+        name: faker.commerce.productName(),
+        seller_name: faker.helpers.arrayElement(["DrizzyJ", "crooney", "Phillip", "unforgottable", "topstown", "Cashing", "randomTest"]),
+        description: faker.lorem.sentence(),
+        price: parseInt(parseFloat(faker.commerce.price()) * 100),
+        quantity: faker.datatype.number(),
+        dimensions: `${faker.datatype.number()} x ${faker.datatype.number()}`,
+        image_url: faker.image.imageUrl(null, null, "", true)
+      })
+    }
 
     console.log("Finished creating initial products");
   } catch (error) {
