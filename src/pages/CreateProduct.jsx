@@ -57,8 +57,7 @@ const CreateProduct = () => {
   const createProduct = async () => {
     try {
       const seller_name = localStorage.getItem("username");
-      console.log(price);
-      await createProductInDB({
+      const data = await createProductInDB({
         name,
         seller_name,
         description,
@@ -68,8 +67,11 @@ const CreateProduct = () => {
         tags,
         image_url,
       });
-
-      navigate("/"); //this will end up taking to single product view
+      if(data.message){
+        setAlert(`Error: ${data.message}`)
+      }else{
+        navigate("/"); //this will end up taking to single product view
+      }
     } catch (err) {
       console.log(err);
       setAlert(`Error: ${err}`)
@@ -95,7 +97,7 @@ const CreateProduct = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-[90vh] w-[95vw] my-[5vh] overflow-hidden">
+    <div className="flex flex-col items-center justify-center h-fit w-[95vw] my-[5vh] overflow-hidden">
       <form
         className=""
         onSubmit={async (e) => {
@@ -104,8 +106,8 @@ const CreateProduct = () => {
           const file = e.target.elements.imageInput.files[0];
 
           if (file.size > MAX_FILE_SIZE) {
-            alert(
-              "File size exceeds the 5 MB limit. Please choose a smaller file."
+            setAlert(
+              "Error: File size exceeds the 5 MB limit. Please choose a smaller file."
             );
             return;
           }
