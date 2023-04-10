@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getLoggedInUserFromDB } from "../api-adapters/users";
 import { getActiveCartProductsDB } from "../api-adapters/carts";
@@ -11,6 +11,10 @@ const Navbar = (props) => {
   const [subTotal, setSubTotal] = useState(0);
   const isLoggedIn = props.isLoggedIn;
   const setIsLoggedIn = props.setIsLoggedIn;
+
+  const refOne = useRef(null)
+
+  const [visible, setVisible] = useState("hidden")
 
   const grabCartProducts = async () => {
     const data = await getActiveCartProductsDB();
@@ -38,6 +42,20 @@ const Navbar = (props) => {
       // navigate("/")
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    
+    document.addEventListener("click", (evt) => {
+
+      if(!refOne.current.contains(evt.target)) {
+        setVisible("hidden")
+      } else {
+        setVisible("visible")
+      }
+
+    }, true)
+
+  }, [])
 
   function handleViewCart() {
     navigate("/my-cart");
@@ -115,7 +133,10 @@ const Navbar = (props) => {
         </Link>
       </div>
       <div className="navbar-end">
-        <button className="btn btn-ghost btn-circle">
+
+        {/* --->>>>> Search Button */}
+
+        {/* <button className="btn btn-ghost btn-circle border-dashed border-2 border-indigo-600">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
@@ -130,10 +151,58 @@ const Navbar = (props) => {
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             />
           </svg>
-        </button>
+        </button> */}
+
+        <form action="" ref={ refOne } className="relative w-max flex flex-row border-dashed border-2 border-indigo-600">
+          <input type="search" value="Search Products" name="search" id="search" 
+            className="relative peer z-10 bg-transparent w-12 h-12 rounded-full border cursor-pointer outline-none
+            pl-12 
+            focus:w-full focus:border-indigo-600 focus:cursor-text focus:pl-16 focus:pr-4" 
+          />
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute inset-y-0 my-auto h-8 w-12 px-3.5 stroke-gray-500 border-r border-transparent peer-focus:border-indigo-600 peer-focus:stroke-indigo-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+
+          <input type="search"  value="Search Tags"  name="search-tag" id="search-tag" 
+            className={`relative peer z-10 bg-transparent w-12 h-12 rounded-full border cursor-pointer outline-none
+            pl-12 
+            focus:w-full focus:border-indigo-600 focus:cursor-text focus:pl-16 focus:pr-4 ${visible}`} 
+          />
+
+        <svg xmlns="http://www.w3.org/2000/svg" 
+          className={`absolute inset-y-0 my-auto h-8 w-12 px-3.5 stroke-gray-500 border-r border-transparent peer-focus:border-indigo-600 peer-focus: stroke-indigo-600 ${visible}`} fill="none" 
+          viewBox="0 0 24 24" 
+          stroke="currentColor" 
+          strokeWidth={2}
+        >
+          <path 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" 
+            />
+        </svg>
+
+
+
+        </form>
+
+        {/* <<<<<----- End of Search Button */}
+
         <div className="flex-none">
           <div className="dropdown dropdown-end">
-            <label tabIndex={0} className="btn btn-ghost btn-circle">
+            <label tabIndex={0} className="btn btn-ghost btn-circle ">
               <div className="indicator">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

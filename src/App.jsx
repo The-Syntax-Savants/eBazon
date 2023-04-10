@@ -10,6 +10,7 @@ import {
   EditProduct,
   AdminPanel,
   Cart,
+  SearchResults,
 } from "./pages";
 import { Navbar, Footer, Pagination } from "./components";
 const App = () => {
@@ -49,6 +50,7 @@ const App = () => {
           <Route path="/edit-product/:id" element={<EditProduct />} />
           <Route path="/panel" element={<AdminPanel />} />
           <Route path="/my-cart" element={<Cart />} />
+          <Route path="/search-results/:searchInput/:tagInput" element={<SearchResults />} />
         </Routes>
       </div>
       <div id="footer-container">

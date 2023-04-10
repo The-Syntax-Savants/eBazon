@@ -124,6 +124,8 @@ const CreateProduct = () => {
           />
         </label>
 
+        
+
         <label className="input-group">
           <span>Product Category</span>
           <Space
