@@ -1,5 +1,4 @@
-// const BASE_URL = "http://localhost:3001/api";
-const BASE_URL = "https://ebazon.onrender.com/api"
+import { BASE_URL } from "./index.js";
 
 export const getAllProductsDB = async () => {
   try {
@@ -10,7 +9,7 @@ export const getAllProductsDB = async () => {
       },
     });
     const result = await response.json();
-    console.log(result);
+    console.log(result, " getAllProductsDB result");
     return result;
   } catch (error) {
     console.log("Error in getAllProductsDB Call!");
@@ -27,11 +26,27 @@ export const getProductByIdDB = async (id) => {
       },
     });
     const result = await response.json();
-    console.log(result);
+    console.log(result, " getProductByIdDB result");
     return result;
   } catch (error) {
     console.log("Error in getProductByID product Call!");
     console.error(error);
+  }
+};
+
+export const getProductsByTagIdDB = async (tagId) => {
+  try {
+    const response = await fetch(`${BASE_URL}/products/${tagId}/tags`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.log("Error in api-adapters -> products -> getProductByTagIdDB");
+    throw error;
   }
 };
 
@@ -52,7 +67,7 @@ export const createProductInDB = async (product) => {
     });
 
     const result = await response.json();
-    console.log(result);
+    console.log(result, " createProductInDB result");
     return result;
   } catch (error) {
     console.log("Error in createProduct Call!");
@@ -77,7 +92,7 @@ export const editProductInDB = async (product) => {
     });
 
     const result = await response.json();
-    console.log(result, "THIS IS RESULT");
+    console.log(result, " editProductInDB result");
     return result;
   } catch (error) {
     console.error(error);

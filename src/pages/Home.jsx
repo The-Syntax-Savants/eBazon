@@ -2,13 +2,18 @@ import React, { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
 import { SingleProductCard } from "../components";
-import { getAllProductsDB } from "../api-adapters/products";
+import {
+  getAllProductsDB,
+  getProductsByTagIdDB,
+} from "../api-adapters/products";
+import { Pagination } from "../components";
 // require("../style.css");
 // require("../tailwind.config.js");
 
-const Home = () => {
+const Home = (props) => {
   const [products, setProducts] = useState([]);
   const [alert, setAlert] = useState("");
+  const grabCartProducts = props.grabCartProducts;
 
   const fetchAllProducts = async () => {
     const fetchedProducts = await getAllProductsDB();
@@ -21,7 +26,7 @@ const Home = () => {
   return (
     <div id="home-page">
       <div id="sub-header">
-        <br></br>
+        <br />
         <h1>Welcome to eBazon! The home of all your shopping needs</h1>
         {alert === "success" && (
           <div className="alert alert-success shadow-lg">
@@ -44,23 +49,39 @@ const Home = () => {
           </div>
         )}
 
-        <div>
-          <button className="category-button">Insert Tag Name Here</button>
-          <button className="category-button">Insert Tag Name Here</button>
-          <button className="category-button">Insert Tag Name Here</button>
-          <button className="category-button">Insert Tag Name Here</button>
+        <div
+          onClick={async (evt) => {
+            //Since the whole div is clickable, we have to check if an actual HTML element with a value attribute was clicked.
+            if (evt.target.value) {
+              const tagProducts = await getProductsByTagIdDB(evt.target.value);
+              setProducts(tagProducts);
+            }
+          }}
+        >
+          <button className="category-button" value={3}>
+            Home Goods
+          </button>
+          <button className="category-button" value={4}>
+            Decoration
+          </button>
+          <button className="category-button" value={11}>
+            Sports
+          </button>
+          <button className="category-button" value={12}>
+            Toys
+          </button>
         </div>
       </div>
 
-      <div id="product-cards-container">
+      <div id="product-cards-container" className="flex flex-wrap">
         {products.map((product) => {
           return (
             <SingleProductCard
               product={product}
               setAlert={setAlert}
-              cardLocation={"home"}
+              grabCartProducts={grabCartProducts}
               key={`This is the key: ${product.id}`}
-            ></SingleProductCard>
+            />
           );
         })}
       </div>

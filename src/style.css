@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  margin: 0;
+}
+
+body {
+  @apply min-h-screen flex flex-col;
+}
 * {
   margin: 0;
   padding: 0;
@@ -9,12 +17,26 @@
 }
 
 #main {
+  @apply flex-1;
+  flex-grow: 1; /* Add this line */
   /* display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center; */
-  height: 100vh;
+  /* height: 100vh; */
   background-color: #f5f5f5;
+}
+
+#footer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  width: 100%;
+  background-color: #f5f5f5;
+  bottom: 0;
+  position: absolute;
 }
 
 #navbar-container {
