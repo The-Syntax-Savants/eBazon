@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getLoggedInUserFromDB } from "../api-adapters/users";
 import { getActiveCartProductsDB } from "../api-adapters/carts";
+import { getAllTagsDB } from "../api-adapters/tags";
+import {Space, Select} from "antd"
 
 const Navbar = (props) => {
   const navigate = useNavigate();
@@ -11,17 +13,10 @@ const Navbar = (props) => {
   const subTotal = props.subTotal;
   const isLoggedIn = props.isLoggedIn;
   const setIsLoggedIn = props.setIsLoggedIn;
+  const [search, setSearch] = useState()
+  const [visible, setVisible] = useState("hidden")
+  const refOne = useRef(null)
   const grabCartProducts = props.grabCartProducts;
-
-  // const grabCartProducts = async () => {
-  //   const data = await getActiveCartProductsDB();
-  //   let tempSubTotal = 0;
-  //   for (let i = 0; i < data.length; i++) {
-  //     tempSubTotal += data[i].product.price * data[i].quantity;
-  //   }
-  //   setSubTotal(tempSubTotal / 100);
-  //   setCartProductsCount(data.length);
-  // };
 
   const setAdminStatus = async () => {
     const data = await getLoggedInUserFromDB();
@@ -29,6 +24,7 @@ const Navbar = (props) => {
       setAdmin(true);
     }
   };
+
 
   useEffect(() => {
     const localStorageUsername = localStorage.getItem("username");
@@ -38,6 +34,20 @@ const Navbar = (props) => {
       grabCartProducts();
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    
+    document.addEventListener("click", (evt) => {
+
+      if(!refOne.current.contains(evt.target)) {
+        setVisible("hidden")
+      } else {
+        setVisible("visible")
+      }
+
+    }, true)
+
+  }, [])
 
   function handleViewCart() {
     navigate("/my-cart");
@@ -115,10 +125,33 @@ const Navbar = (props) => {
         </Link>
       </div>
       <div className="navbar-end">
-        <button className="btn btn-ghost btn-circle">
+
+        <form action="" ref={ refOne } id="search-form" className="relative w-max flex flex-row " onSubmit={async (e)=>{
+          e.preventDefault()
+
+          if(search !== undefined && search.length > 0) {
+            document.getElementById("search-form").reset()
+            setVisible("hidden")
+            navigate(`/search-results/${search}`)
+          } 
+
+        }}>
+          {/* THIS IS THE SEARCH INPUT */}
+          <input type="search" placeholder="Search Products" name="search" id="search" 
+            className="relative peer z-10 bg-transparent w-12 h-12 rounded-full border cursor-pointer outline-none
+            pl-12 
+            focus:w-full focus:border-indigo-600 focus:cursor-text focus:pl-16 focus:pr-4" 
+            autoComplete="off"
+            onChange={(e)=>{
+              e.preventDefault()
+              setSearch(e.target.value)
+            }}
+          />
+
+          {/* THIS IS THE SEARCH SVG*/}
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
+            className="absolute inset-y-0 my-auto h-8 w-12 px-3.5 stroke-gray-500 border-r border-transparent peer-focus:border-indigo-600 peer-focus:stroke-indigo-600"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -130,10 +163,16 @@ const Navbar = (props) => {
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
             />
           </svg>
-        </button>
+
+          <button type="submit" className={`btn btn-ghost border-solid border-1 border-indigo-600 w-20 ml-2 mr-2 ${visible}`}>Search</button>
+
+        </form>
+
+        {/* <<<<<----- End of Search Button */}
+
         <div className="flex-none">
           <div className="dropdown dropdown-end">
-            <label tabIndex={0} className="btn btn-ghost btn-circle">
+            <label tabIndex={0} className="btn btn-ghost btn-circle ">
               <div className="indicator">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

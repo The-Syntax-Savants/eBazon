@@ -7,4 +7,5 @@ export { default as SingleProductView } from "./SingleProductView";
 export { default as EditProduct } from "./EditProduct";
 export { default as AdminPanel } from "./AdminPanel";
 export { default as Cart } from "./Cart";
+export { default as SearchResults } from "./SearchResults";
 export { default as Checkout } from "./Checkout";
