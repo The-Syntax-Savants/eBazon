@@ -75,7 +75,8 @@ productsRouter.post("/createProduct", requireUser, async (req, res, next) => {
   try {
     const seller_name = req.user.username;
 
-    const { name, description, price, dimensions, quantity, tags } = req.body;
+    const { name, description, price, dimensions, quantity, tags, image_url } =
+      req.body;
     const product = await createProduct({
       name,
       seller_name,
@@ -84,6 +85,7 @@ productsRouter.post("/createProduct", requireUser, async (req, res, next) => {
       dimensions,
       quantity,
       tags,
+      image_url,
     });
     res.send({ product });
   } catch ({ name, message }) {
