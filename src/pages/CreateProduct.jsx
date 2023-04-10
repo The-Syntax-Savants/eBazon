@@ -16,6 +16,7 @@ const CreateProduct = () => {
   const [quantity, setQuantity] = useState("");
   const [values, setValues] = useState([]);
   const navigate = useNavigate();
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
   const options = [];
   const tagsWithValue = [];
@@ -96,6 +97,15 @@ const CreateProduct = () => {
       <form
         onSubmit={async (e) => {
           e.preventDefault();
+
+          const file = e.target.elements.imageInput.files[0];
+
+          if (file.size > MAX_FILE_SIZE) {
+            alert(
+              "File size exceeds the 5 MB limit. Please choose a smaller file."
+            );
+            return;
+          }
           const uploadedImageUrl = await uploadImage(
             e.target.elements.imageInput.files[0]
           );

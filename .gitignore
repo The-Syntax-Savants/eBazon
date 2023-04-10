@@ -12,7 +12,6 @@ dist
 dist-ssr
 *.local
 build
-aws.config.js
 
 # Editor directories and files
 .vscode/*
