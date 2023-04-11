@@ -47,8 +47,12 @@ const SingleCartProduct = (props) => {
         <figure>
           <img
             id="product-image"
-            src="https://i1.wp.com/www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg?resize=624%2C421&ssl=1"
-            alt="Shoes"
+            src={
+              product.image_url
+                ? product.image_url
+                : "https://i1.wp.com/www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg?resize=624%2C421&ssl=1"
+            }
+            alt="Product Image"
           />
         </figure>
         <div className="card-body">
@@ -69,12 +73,24 @@ const SingleCartProduct = (props) => {
                 required
                 type="number"
                 value={quantity}
-                // onChange={(e) => setQuantity(e.target.value)}
                 onChange={(event) => handleUpdateCart(event)}
                 placeholder={quantity}
                 className="input input-bordered"
               />
             </label>
+            <div className="flex flex-row flex-wrap max-h-20 overflow-auto">
+              {product.tags.length > 0 &&
+                product.tags.map((tag, idx) => {
+                  return (
+                    <p
+                      key={`paragraph in SingleProductCard: ${idx}`}
+                      className="badge badge-outline min-h-fit max-w-fit mb-2 mr-2"
+                    >
+                      {tag.name}
+                    </p>
+                  );
+                })}
+            </div>
 
             <button onClick={handleRemoveFromCart} className="btn btn-error">
               Remove
