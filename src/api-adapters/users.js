@@ -23,7 +23,7 @@ export const createUserInDB = async (
     });
 
     const result = await response.json();
-    console.log(result, " createUserInDB result");
+    // console.log(result, " createUserInDB result");
     return result;
   } catch (error) {
     console.error(error);
@@ -44,7 +44,7 @@ export const loginUserDB = async (username, password) => {
     });
 
     const result = await response.json();
-    console.log(result, " loginUserDB result");
+    // console.log(result, " loginUserDB result");
     return result;
   } catch (error) {
     console.error(error);
@@ -52,9 +52,8 @@ export const loginUserDB = async (username, password) => {
 };
 
 export const editUserDB = async (user) => {
-  console.log(user, "WHAT IS BEING PASSED IN");
-  if(user.password === "" || user.password.length < 8){
-    delete user.password
+  if (user.password === "" || user.password.length < 8) {
+    delete user.password;
   }
   try {
     const response = await fetch(
@@ -70,7 +69,7 @@ export const editUserDB = async (user) => {
     );
 
     const result = await response.json();
-    console.log(result, " editUserDB result");
+    // console.log(result, " editUserDB result");
     return result;
   } catch (error) {
     console.error(error);
@@ -86,8 +85,7 @@ export const getLoggedInUserFromDB = async () => {
       },
     });
     const result = await response.json();
-    //Because of the navbar, this console log causes the user information to be logged for every single render of the page. annoying. should get rid of it -Emilio
-    console.log(result, " getLoggedInUserFromDB result");
+    // console.log(result, " getLoggedInUserFromDB result");
     return result;
   } catch (err) {
     console.error(err);
