@@ -2,7 +2,7 @@ import { BASE_URL } from "./index.js";
 
 export const getActiveCartProductsDB = async () => {
   try {
-    const response = await fetch(`${BASE_URL}/carts/myCart`, {
+    const response = await fetch(`${BASE_URL}/carts/my-cart`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -78,7 +78,7 @@ export const updateCartProductDB = async (cartProductId, quantity) => {
   }
 };
 
-export const placeOrderDB = async () => {
+export const placeOrderDB = async (cartNumber) => {
   try {
     console.log("PLACING ORDER");
     const response = await fetch(`${BASE_URL}/carts/place-order`, {
@@ -87,12 +87,34 @@ export const placeOrderDB = async () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
+      body: JSON.stringify({
+        cartNumber: cartNumber,
+      }),
     });
     const result = await response.json();
     console.log(result, " placeOrderDB result");
     return result;
   } catch (error) {
     console.log("Error in placeOrderDB Call!");
+    console.error(error);
+  }
+};
+
+export const getMyCartNumberDB = async () => {
+  try {
+    console.log("GETTING CART NUMBER");
+    const response = await fetch(`${BASE_URL}/carts/my-cart-number`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    const result = await response.json();
+    console.log(result, " getMyCartNumberDB result");
+    return result.cartId;
+  } catch (error) {
+    console.log("Error in getMyCartNumberDB Call!");
     console.error(error);
   }
 };

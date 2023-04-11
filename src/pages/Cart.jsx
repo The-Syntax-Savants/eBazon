@@ -23,27 +23,28 @@ const Cart = (props) => {
 
   return (
     <div id="cart-container">
-      <h1>hello</h1>
-      {/* {cartProducts[0] && <h2>{cartProducts[0].product}</h2>} */}
-
-      {/* Link to checkout page */}
-      <Link to="/checkout">
-        <button className="btn btn-success">CHECKOUT</button>
-      </Link>
-
-      <div id="products-container">
-        {cartProducts.map((cartProduct) => {
-          console.log(cartProduct.product, "INSIDE MAP");
-          return (
-            <SingleCartProduct
-              key={"product id: " + cartProduct.product_id}
-              cartProduct={cartProduct}
-              getCartProducts={getCartProducts}
-              grabCartProducts={grabCartProducts}
-            />
-          );
-        })}
-      </div>
+      {cartProducts.length === 0 ? (
+        <h1>No items in cart</h1>
+      ) : (
+        <>
+          <Link to="/checkout">
+            <button className="btn btn-success">CHECKOUT</button>
+          </Link>
+          <div id="products-container">
+            {cartProducts.map((cartProduct) => {
+              console.log(cartProduct.product, "INSIDE MAP");
+              return (
+                <SingleCartProduct
+                  key={"product id: " + cartProduct.product_id}
+                  cartProduct={cartProduct}
+                  getCartProducts={getCartProducts}
+                  grabCartProducts={grabCartProducts}
+                />
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
 };
