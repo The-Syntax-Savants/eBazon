@@ -225,7 +225,7 @@ async function createInitialCartProducts() {
 
 async function createInitialProducts() {
   try {
-    console.log("Creating Initial Products AND More Users with carts...");
+    console.log("Creating Initial Products");
     await createProduct({
       name: "MLP Action Figure",
       seller_name: "DrizzyJ",
@@ -274,33 +274,6 @@ async function createInitialProducts() {
       quantity: 1,
     });
 
-    for(let i = 1; i < 100; i++){
-      await createProduct({
-        name: faker.commerce.productName(),
-        seller_name: faker.helpers.arrayElement(["DrizzyJ", "crooney", "Phillip", "unforgottable", "topstown", "Cashing", "randomTest"]),
-        description: faker.lorem.sentence(),
-        price: parseInt(parseFloat(faker.commerce.price()) * 100),
-        quantity: faker.datatype.number(),
-        dimensions: `${faker.datatype.number()} x ${faker.datatype.number()}`,
-        image_url: faker.image.imageUrl(null, null, "", true)
-      })
-      const first_name = faker.name.firstName()
-      const username = faker.internet.userName(first_name)
-      await createUser({
-        first_name: first_name,
-        last_name: faker.name.lastName(),
-        username: username,
-        password: 'password',
-        email: faker.internet.email(first_name),
-        is_admin: false
-      })
-
-      await createCartProduct({
-        username: username,
-        product_id: i,
-        quantity: faker.datatype.number({max: 10})
-      })
-    }
 
     console.log("Finished creating initial products");
   } catch (error) {
@@ -311,7 +284,7 @@ async function createInitialProducts() {
 
 async function createInitialTags() {
   try {
-    console.log("Starting to create tags...");
+    console.log("Starting to create tags AND More Users with carts......");
 
     let tags = [
       "Jewelry",
@@ -334,6 +307,39 @@ async function createInitialTags() {
 
     for (let i = 0; i < tags.length; i++) {
       await createTag(tags[i]);
+    }
+
+    const data = await getAllTags()
+    console.log(data, "HERE AGAUIN")
+
+    for(let i = 1; i < 100; i++){
+      const tag = [data[faker.datatype.number({min:1,max:7})], data[faker.datatype.number({min: 8, max:15})]]
+      await createProduct({
+        name: faker.commerce.productName(),
+        seller_name: faker.helpers.arrayElement(["DrizzyJ", "crooney", "Phillip", "unforgottable", "topstown", "Cashing", "randomTest"]),
+        description: faker.lorem.sentence(),
+        price: parseInt(parseFloat(faker.commerce.price()) * 100),
+        quantity: faker.datatype.number(),
+        dimensions: `${faker.datatype.number()} x ${faker.datatype.number()}`,
+        image_url: faker.image.imageUrl(null, null, "", true),
+        tags: tag
+      })
+      const first_name = faker.name.firstName()
+      const username = faker.internet.userName(first_name)
+      await createUser({
+        first_name: first_name,
+        last_name: faker.name.lastName(),
+        username: username,
+        password: 'password',
+        email: faker.internet.email(first_name),
+        is_admin: false
+      })
+
+      await createCartProduct({
+        username: username,
+        product_id: i,
+        quantity: faker.datatype.number({max: 10})
+      })
     }
 
     console.log("Finished creating tags");
