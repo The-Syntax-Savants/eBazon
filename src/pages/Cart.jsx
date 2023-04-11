@@ -11,7 +11,9 @@ const Cart = (props) => {
     try {
       const cartProductsDB = await getActiveCartProductsDB();
       console.log(cartProductsDB, "CART PRODUCTS DB");
-      setCartProducts(cartProductsDB);
+      if (Array.isArray(cartProductsDB)) {
+        setCartProducts(cartProductsDB);
+      }
     } catch (error) {
       console.log(error);
     }
