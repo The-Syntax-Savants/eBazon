@@ -43,7 +43,10 @@ const Cart = (props) => {
             })}
           </div>
           <div id="checkout-details" className="ml-10 flex flex-col">
-            <div id="cart-total" className="mt-10 mb-5 badge badge-accent">
+            <div
+              id="cart-total"
+              className="mt-10 mb-5 badge badge-accent text-xl"
+            >
               <h1>Total: ${subTotal.toFixed(2)}</h1>
             </div>
             <Link to="/checkout">

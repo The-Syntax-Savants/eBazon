@@ -79,7 +79,7 @@ const SingleCartProduct = (props) => {
             </h2>
             <h5>Seller: {product.seller_name}</h5>
             <p>{product.description}</p>
-            <div className="card-actions justify-end">
+            <div className="card-actions flex-start">
               <label className="input-group">
                 <span>Product Quantity: </span>
                 <input
