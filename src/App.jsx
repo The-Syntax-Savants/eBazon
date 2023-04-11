@@ -12,6 +12,7 @@ import {
   Cart,
   SearchResults,
   Checkout,
+  Confirmation,
 } from "./pages";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -114,6 +115,7 @@ const App = () => {
               )
             }
           />
+          <Route path="/confirmation/:cartNumber" element={<Confirmation />} />
         </Routes>
       </div>
       <Footer />

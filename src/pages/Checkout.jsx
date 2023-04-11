@@ -6,7 +6,8 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { placeOrderDB } from "../api-adapters/carts";
+import { getMyCartNumberDB, placeOrderDB } from "../api-adapters/carts";
+import { BASE_URL } from "../api-adapters";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -15,6 +16,26 @@ export default function CheckoutForm() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [confirmationURL, setConfirmationURL] = useState("");
+
+  const getConfirmationURL = async () => {
+    try {
+      const BASE_URL =
+        process.env.NODE_ENV === "production"
+          ? "https://google.com"
+          : "http://localhost:3000";
+
+      const cartNumber = await getMyCartNumberDB();
+
+      setConfirmationURL(`${BASE_URL}/confirmation/${cartNumber}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getConfirmationURL();
+  }, []);
 
   useEffect(() => {
     if (!stripe) {
@@ -62,7 +83,8 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000",
+        return_url: confirmationURL,
+        // return_url: "http://localhost:3000/",
       },
     });
 
@@ -77,8 +99,6 @@ export default function CheckoutForm() {
       setMessage("An unexpected error occurred.");
     }
 
-    console.log("ABOUT TO PLACE ORDER");
-    await placeOrderDB();
     setIsLoading(false);
   };
 

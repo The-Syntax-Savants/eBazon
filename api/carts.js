@@ -34,27 +34,50 @@ cartsRouter.get("/health", async (req, res, next) => {
 
 cartsRouter.post("/place-order", requireUser, async (req, res, next) => {
   try {
+    console.log("%%%%%");
     const cart = await getActiveCartByUsername(req.user.username);
 
-    if (
-      cart.city &&
-      cart.state &&
-      cart.address_line_1 &&
-      cart.address_line_2 &&
-      cart.zipcode
-    ) {
-      //close the current cart for user
-      updateCart({ id: cart.id, isComplete: true });
-      //make a new cart for the user
-      const newCart = createCart({
-        username: req.user.username,
-        isComplete: false,
-      });
+    const { cartNumber } = req.body;
 
-      res.send(newCart);
+    console.log("$$$$cartNumber ", cartNumber);
+    console.log("$$$$cart.id ", cart.id);
+
+    if (cartNumber == cart.id) {
+      if (
+        // cart.city &&
+        // cart.state &&
+        // cart.address_line_1 &&
+        // cart.address_line_2 &&
+        // cart.zipcode
+        true
+      ) {
+        //close the current cart for user
+        updateCart({ id: cart.id, is_complete: true });
+        //make a new cart for the user
+        const newCart = createCart({
+          username: req.user.username,
+          isComplete: false,
+        });
+
+        res.send(newCart);
+      } else {
+        console.log("Please fill out all fields before placing order");
+      }
     } else {
-      console.log("Please fill out all fields before placing order");
+      next({
+        name: "ErrorPlacingOrder",
+        message: "You do not have access to place this order",
+      });
     }
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
+
+cartsRouter.get("/my-cart-number", requireUser, async (req, res, next) => {
+  try {
+    const cart = await getActiveCartByUsername(req.user.username);
+    res.send({ cartId: cart.id });
   } catch ({ name, message }) {
     next({ name, message });
   }
@@ -81,10 +104,8 @@ cartsRouter.patch("/edit-address", requireUser, async (req, res, next) => {
 });
 
 // Go to users cart page
-cartsRouter.get("/myCart", async (req, res, next) => {
+cartsRouter.get("/my-cart", async (req, res, next) => {
   try {
-    console.log("testststst");
-    console.log(req.user.username, "username //////////");
     const cart = await getActiveCartByUsername(req.user.username);
     console.log(cart, "cart");
     const cartProducts = await getCartProductsByCartId(cart.id);
