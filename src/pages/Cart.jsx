@@ -11,7 +11,10 @@ const Cart = (props) => {
   async function getCartProducts() {
     try {
       const cartProductsDB = await getActiveCartProductsDB();
-      setCartProducts(cartProductsDB);
+      console.log(cartProductsDB, "CART PRODUCTS DB");
+      if (Array.isArray(cartProductsDB)) {
+        setCartProducts(cartProductsDB);
+      }
     } catch (error) {
       console.log(error);
     }

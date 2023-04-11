@@ -54,7 +54,9 @@ const SingleProductView = (props) => {
 
   useEffect(() => {
     getProduct();
-    fetchUser();
+    if(localStorage.getItem("token")){
+      fetchUser()
+    }
   }, []);
 
   return (
