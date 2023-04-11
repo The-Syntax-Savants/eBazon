@@ -34,13 +34,9 @@ cartsRouter.get("/health", async (req, res, next) => {
 
 cartsRouter.post("/place-order", requireUser, async (req, res, next) => {
   try {
-    console.log("%%%%%");
     const cart = await getActiveCartByUsername(req.user.username);
 
     const { cartNumber } = req.body;
-
-    console.log("$$$$cartNumber ", cartNumber);
-    console.log("$$$$cart.id ", cart.id);
 
     if (cartNumber == cart.id) {
       if (
@@ -54,9 +50,16 @@ cartsRouter.post("/place-order", requireUser, async (req, res, next) => {
         //close the current cart for user
         updateCart({ id: cart.id, is_complete: true });
         //make a new cart for the user
-        const newCart = createCart({
+        const newCart = await createCart({
           username: req.user.username,
-          isComplete: false,
+          is_complete: false,
+          city: null,
+          state: null,
+          zipcode: null,
+          address_line_1: null,
+          address_line_2: null,
+          price: 0,
+          time_of_purchase: null,
         });
 
         res.send(newCart);
@@ -107,9 +110,7 @@ cartsRouter.patch("/edit-address", requireUser, async (req, res, next) => {
 cartsRouter.get("/my-cart", async (req, res, next) => {
   try {
     const cart = await getActiveCartByUsername(req.user.username);
-    console.log(cart, "cart");
     const cartProducts = await getCartProductsByCartId(cart.id);
-    console.log(cartProducts, "cartProducts");
 
     const cartProductsWithProducts = await Promise.all(
       cartProducts.map(async (cartProduct) => {
@@ -117,7 +118,6 @@ cartsRouter.get("/my-cart", async (req, res, next) => {
         return { ...cartProduct, product };
       })
     );
-    console.log(cartProductsWithProducts, "CART PRODUCTS WITH PRODUCTS");
     res.send(cartProductsWithProducts);
 
     // cartProducts.map(async (cartProduct) => {
@@ -140,7 +140,6 @@ cartsRouter.get(
       const cartsWithProducts = await Promise.all(
         carts.map(async (cart) => {
           const cartProducts = await getCartProductsByCartId(cart.id);
-          console.log(cart);
           return { ...cart, cartProducts };
         })
       );
@@ -193,13 +192,9 @@ cartsRouter.post("/add-to-cart", requireUser, async (req, res, next) => {
     // Get active cart for user
     const cart = await getActiveCartByUsername(req.user.username);
     const cartProducts = await getCartProductsByCartId(cart.id);
-    console.log(cart.id, "cart id");
-    console.log(product_id, "product id");
 
     let productFound = false;
     cartProducts.forEach(async (element) => {
-      console.log(element.product_id, "element product id");
-      console.log(product_id, "product id chosen");
       if (element.product_id === product_id) {
         // Update quantity if cartProduct already exists
         productFound = true;
