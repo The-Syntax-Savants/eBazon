@@ -170,23 +170,17 @@ usersRouter.patch(
     try {
       const { username } = req.params;
       const SALT_COUNT = 10;
+      let hashedPassword = ""
 
       const info = req.body;
-      if(info.password && info.password.length){
+      if(info.password){
         hashedPassword = await bcrypt.hash(info.password, SALT_COUNT);
+        info.password = hashedPassword;
       }
       if (info.is_admin) {
         delete info.is_admin;
       }
-      if(info.password && info.password.length){
-        info.password = hashedPassword;
-        console.log(hashedPassword, "HASHED")
-        console.log(info.password, "INFO PASS")
-      }else{
-        delete info.password
-      }
       info.username = username;
-      console.log(info.username, "WTF IS HAPPENING")
       const update = await updateUser(info);
       if (update) {
         res.send(update);

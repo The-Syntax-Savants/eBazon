@@ -17,7 +17,7 @@ const Profile = () => {
   const [about, setAbout] = useState("");
   const [profilePicture, setProfilePicture] = useState("");
   const [active, setActive] = useState("");
-  const [id, setId] = useState(0)
+  const [id, setId] = useState(0);
   const [alert, setAlert] = useState("");
 
   // const handleFileChange = async (event) => {
@@ -28,7 +28,7 @@ const Profile = () => {
   const grabUserInfo = async () => {
     let user = await getLoggedInUserFromDB();
     if (user) {
-      setId(user.id)
+      setId(user.id);
       setFirstName(user.first_name || "");
       setLastName(user.last_name || "");
       setEmail(user.email || "");
@@ -48,44 +48,49 @@ const Profile = () => {
   }, []);
 
   const submitChanges = async () => {
-    const data = await editUserDB({
-      id,
-      username,
-      password,
-      first_name: firstName,
-      last_name: lastName,
-      email,
-      address_line_1: address1,
-      address_line_2: address2,
-      city,
-      state,
-      zipcode,
-      about,
-      profile_picture: profilePicture,
-      active
-  });
-    if (data.message) {
-      setAlert(`Error: ${data.message}`);
+    if (password && password.length < 8) {
+      setAlert(`Error: Your password must be at least 8 characters!`);
     } else {
-      console.log(data);
+      const data = await editUserDB({
+        id,
+        username,
+        password,
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        address_line_1: address1,
+        address_line_2: address2,
+        city,
+        state,
+        zipcode,
+        about,
+        profile_picture: profilePicture,
+        active,
+      });
+      if (data.message) {
+        setAlert(`Error: ${data.message}`);
+      } else {
+        setAlert(`You have successfully updated your Profile!`);
+        console.log(data);
+      }
     }
   };
 
   return (
-    <div className="container m-8">
+    <div className="flex flex-col items-center justify-center h-screen w-screen my-[5vh] overflow-hidden">
       <form
-        className="shrink"
+        className=""
         onSubmit={(e) => {
           e.preventDefault();
           submitChanges();
         }}
       >
-        <div className="hero max-h-screen bg-base-200">
-          <div className="hero-content flex-col lg:flex-row-reverse">
+        <div className="hero h-fit w-full bg-base-200">
+          <div className="hero-content flex flex-col w-screen">
             <div className="text-center lg:text-left">
-              <h1 className="text-5xl font-bold">{username}'s Profile</h1>
+              <h1 className="text-5xl font-bold">Profile!</h1>
             </div>
-            <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+            <div className="card mb-[16vh] flex-shrink-0 w-full max-w-lg h-[60vh] shadow-2xl bg-base-100 overflow-y-auto">
               <div className="card-body">
                 <div className="form-control">
                   <label className="label">
@@ -109,7 +114,7 @@ const Profile = () => {
                     placeholder="password"
                     className="input input-bordered"
                     onChange={(e) => {
-                        setPassword(e.target.value);
+                      setPassword(e.target.value);
                     }}
                   />
                 </div>
@@ -234,6 +239,45 @@ const Profile = () => {
           </div>
         </div>
       </form>
+      {alert.startsWith("Error") ? (
+        <div className="alert alert-error shadow-lg">
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-current flex-shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>{alert}</span>
+          </div>
+        </div>
+      ) : alert ? (
+        <div className="alert alert-success shadow-lg">
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="stroke-current flex-shrink-0 h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>{alert}</span>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };

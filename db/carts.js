@@ -58,7 +58,7 @@ export async function updateCart({ id, ...fields }) {
         Object.values(fields)
       );
 
-      return await getCartById(id);
+      // return await getCartById(id);
     }
   } catch (error) {
     throw error;

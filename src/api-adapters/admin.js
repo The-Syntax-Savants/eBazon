@@ -11,7 +11,7 @@ export const deleteProductInDB = async (id, token) => {
     });
 
     const result = await response.json();
-    console.log(result, " deleteProductInDB result");
+    // console.log(result, " deleteProductInDB result");
     return result;
   } catch (error) {
     console.error(error);
@@ -32,7 +32,7 @@ export const addTagInDB = async (name) => {
       }),
     });
     const result = await response.json();
-    console.log(result, " addTagInDB result");
+    // console.log(result, " addTagInDB result");
     return result;
   } catch (error) {
     console.error("Error in api-adapters -> addTagInDB");
@@ -72,7 +72,7 @@ export const deleteTagInDB = async (tagId) => {
     });
 
     const result = await response.json();
-    console.log(result, " deleteTagInDB result");
+    // console.log(result, " deleteTagInDB result");
     return result;
   } catch (error) {
     console.error("Error in api-adapters -> deleteTagInDB");
@@ -91,7 +91,7 @@ export const getAllUsersFromDB = async () => {
     });
 
     const result = await response.json();
-    console.log(result, " getAllUsersFromDB result");
+    // console.log(result, " getAllUsersFromDB result");
     return result;
   } catch (error) {
     console.error("Error in api-adapters -> getAllUsersFromDB");

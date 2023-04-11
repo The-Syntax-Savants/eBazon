@@ -36,25 +36,51 @@ cartsRouter.post("/place-order", requireUser, async (req, res, next) => {
   try {
     const cart = await getActiveCartByUsername(req.user.username);
 
-    if (
-      cart.city &&
-      cart.state &&
-      cart.address_line_1 &&
-      cart.address_line_2 &&
-      cart.zipcode
-    ) {
-      //close the current cart for user
-      updateCart({ id: cart.id, isComplete: true });
-      //make a new cart for the user
-      const newCart = createCart({
-        username: req.user.username,
-        isComplete: false,
-      });
+    const { cartNumber } = req.body;
 
-      res.send(newCart);
+    if (cartNumber == cart.id) {
+      if (
+        // cart.city &&
+        // cart.state &&
+        // cart.address_line_1 &&
+        // cart.address_line_2 &&
+        // cart.zipcode
+        true
+      ) {
+        //close the current cart for user
+        updateCart({ id: cart.id, is_complete: true });
+        //make a new cart for the user
+        const newCart = await createCart({
+          username: req.user.username,
+          is_complete: false,
+          city: null,
+          state: null,
+          zipcode: null,
+          address_line_1: null,
+          address_line_2: null,
+          price: 0,
+          time_of_purchase: null,
+        });
+
+        res.send(newCart);
+      } else {
+        console.log("Please fill out all fields before placing order");
+      }
     } else {
-      console.log("Please fill out all fields before placing order");
+      next({
+        name: "ErrorPlacingOrder",
+        message: "You do not have access to place this order",
+      });
     }
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
+
+cartsRouter.get("/my-cart-number", requireUser, async (req, res, next) => {
+  try {
+    const cart = await getActiveCartByUsername(req.user.username);
+    res.send({ cartId: cart.id });
   } catch ({ name, message }) {
     next({ name, message });
   }
@@ -81,14 +107,10 @@ cartsRouter.patch("/edit-address", requireUser, async (req, res, next) => {
 });
 
 // Go to users cart page
-cartsRouter.get("/myCart", async (req, res, next) => {
+cartsRouter.get("/my-cart", async (req, res, next) => {
   try {
-    console.log("testststst");
-    console.log(req.user.username, "username //////////");
     const cart = await getActiveCartByUsername(req.user.username);
-    console.log(cart, "cart");
     const cartProducts = await getCartProductsByCartId(cart.id);
-    console.log(cartProducts, "cartProducts");
 
     const cartProductsWithProducts = await Promise.all(
       cartProducts.map(async (cartProduct) => {
@@ -96,7 +118,6 @@ cartsRouter.get("/myCart", async (req, res, next) => {
         return { ...cartProduct, product };
       })
     );
-    console.log(cartProductsWithProducts, "CART PRODUCTS WITH PRODUCTS");
     res.send(cartProductsWithProducts);
 
     // cartProducts.map(async (cartProduct) => {
@@ -119,7 +140,6 @@ cartsRouter.get(
       const cartsWithProducts = await Promise.all(
         carts.map(async (cart) => {
           const cartProducts = await getCartProductsByCartId(cart.id);
-          console.log(cart);
           return { ...cart, cartProducts };
         })
       );
@@ -172,13 +192,9 @@ cartsRouter.post("/add-to-cart", requireUser, async (req, res, next) => {
     // Get active cart for user
     const cart = await getActiveCartByUsername(req.user.username);
     const cartProducts = await getCartProductsByCartId(cart.id);
-    console.log(cart.id, "cart id");
-    console.log(product_id, "product id");
 
     let productFound = false;
     cartProducts.forEach(async (element) => {
-      console.log(element.product_id, "element product id");
-      console.log(product_id, "product id chosen");
       if (element.product_id === product_id) {
         // Update quantity if cartProduct already exists
         productFound = true;

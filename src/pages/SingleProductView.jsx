@@ -44,7 +44,6 @@ const SingleProductView = (props) => {
     try {
       await createCartProductDB(product.product.id);
       grabCartProducts();
-      console.log(product.product.name + " added to cart!");
       setAlert("success");
     } catch (error) {
       console.log(error);
@@ -55,7 +54,9 @@ const SingleProductView = (props) => {
 
   useEffect(() => {
     getProduct();
-    fetchUser();
+    if(localStorage.getItem("token")){
+      fetchUser()
+    }
   }, []);
 
   return (
@@ -65,7 +66,7 @@ const SingleProductView = (props) => {
           {/* Image container */}
           <div className="relative w-full h-80 md:h-96">
             <img
-              src="https://www.shutterstock.com/image-vector/profile-blank-icon-empty-photo-260nw-535853269.jpg"
+              src={product.product && product.product.image_url}
               alt="Product"
               className="w-full h-full object-cover rounded-md shadow-md"
             />
@@ -78,6 +79,9 @@ const SingleProductView = (props) => {
                 <h1 className="text-2xl font-semibold">
                   {product.product.name}
                 </h1>
+                <h2 className="text-2l font-semibold">
+                  Seller: {product.product.seller_name}
+                </h2>
                 <p className="text-xl text-gray-600">
                   Price: ${product.product.price / 100}
                 </p>
@@ -85,12 +89,14 @@ const SingleProductView = (props) => {
                 <p className="text-gray-600">
                   Dimensions: {product.product.dimensions}
                 </p>
-                <button
-                  className="mt-4 px-4 py-2 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600"
-                  onClick={handleAddToCart}
-                >
-                  Add to Cart
-                </button>
+                {user.username && (
+                  <button
+                    className="mt-4 px-4 py-2 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600"
+                    onClick={handleAddToCart}
+                  >
+                    Add to Cart
+                  </button>
+                )}
                 {((user && user.username === product.product.seller_name) ||
                   user.is_admin) && (
                   <div>

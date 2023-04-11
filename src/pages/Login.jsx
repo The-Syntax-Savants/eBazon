@@ -10,7 +10,6 @@ const Login = (props) => {
   const navigate = useNavigate();
 
   const loginUser = async () => {
-    console.log(username, password, "!!!!!!!!!");
     const data = await loginUserDB(username, password);
 
     if (data.name) {
@@ -25,22 +24,22 @@ const Login = (props) => {
   };
 
   return (
-    <div id="login-page">
-      <form
+    <div id="login-page" className="flex items-center justify-center h-screen w-[97vw] overflow-hidden">
+      <form className=""
         onSubmit={(e) => {
           e.preventDefault();
           loginUser();
         }}
       >
-        <div className="hero min-h-screen bg-base-200">
-          <div className="hero-content flex-col lg:flex-row-reverse">
+        <div className="hero h-fit w-full bg-base-200">
+          <div className="hero-content flex flex-col w-screen">
             <div className="text-center lg:text-left">
               <h1 className="text-5xl font-bold">Login now!</h1>
               <Link className="py-6 link link-hover" to="/register">
                 Don't have an account? Sign up here.
               </Link>
             </div>
-            <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+            <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 mb-[10vh]">
               <div className="card-body">
                 <div className="form-control">
                   <label className="label">

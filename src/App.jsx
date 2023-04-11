@@ -12,15 +12,22 @@ import {
   Cart,
   SearchResults,
   Checkout,
+  Confirmation,
 } from "./pages";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { Navbar, Footer, Pagination } from "./components";
+import { createPaymentIntent } from "./api-adapters/stripe";
 import { getActiveCartProductsDB } from "./api-adapters/carts";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [subTotal, setSubTotal] = useState(0);
+  const [clientSecret, setClientSecret] = useState("");
   const [cartProductsCount, setCartProductsCount] = useState([]);
-
+  const [subTotal, setSubTotal] = useState(0);
+  const stripePromise = loadStripe(
+    "pk_test_51MvOTQLhGAqNc30vaCPHwOYngRS0iERaK2A9QymnF3g6Y0VUDpNBiB5Wveb9Vt62YZ3NyXMWwjonuaKiOBHl4mZQ00gY6bvm8D"
+  );
   const grabCartProducts = async () => {
     const data = await getActiveCartProductsDB();
     let tempSubTotal = 0;
@@ -34,10 +41,23 @@ const App = () => {
   useEffect(() => {
     const localStorageToken = localStorage.getItem("token");
     const localStorageUsername = localStorage.getItem("username");
+
     if (localStorageToken && localStorageUsername) {
       setIsLoggedIn(true);
     }
+
+    createPaymentIntent().then((data) => {
+      setClientSecret(data.clientSecret);
+    });
   }, []);
+
+  const appearance = {
+    theme: "stripe",
+  };
+  const options = {
+    clientSecret,
+    appearance,
+  };
 
   return (
     <div id="main">
@@ -74,19 +94,30 @@ const App = () => {
           <Route path="/:username/profile" element={<Profile />} />
           <Route path="/edit-product/:id" element={<EditProduct />} />
           <Route path="/panel" element={<AdminPanel />} />
-          <Route path="/search-results/:searchInput" element={<SearchResults />} />
           <Route
             path="/my-cart"
             element={
               <Cart subTotal={subTotal} grabCartProducts={grabCartProducts} />
             }
           />
-          <Route path="/checkout" element={<Checkout subTotal={subTotal} />} />
+          <Route
+            path="/search-results/:searchInput"
+            element={<SearchResults />}
+          />
+          <Route
+            path="/checkout"
+            element={
+              clientSecret && (
+                <Elements options={options} stripe={stripePromise}>
+                  <Checkout />
+                </Elements>
+              )
+            }
+          />
+          <Route path="/confirmation/:cartNumber" element={<Confirmation />} />
         </Routes>
       </div>
-      <div id="footer-container">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };

@@ -48,14 +48,14 @@ const AdminPanel = () => {
   return (
     <>
       {allUsers.length ? (
-        <div id="container" className="container flex flex-col items-center justify-center max-h-screen overflow-auto mt-[60px]">
-          <div id="admin-title" className="text-center mt-[30px]">
+        <div id="container" className="container flex flex-col items-center h-screen overflow-auto">
+          <div id="admin-title" className="text-center mt-[4vh]">
           <h3 className="text-3xl font-bold text-gray-800">Welcome {admin.first_name} To Your Admin Panel</h3>
           </div>
-          <div id="admin-tables" className="flex max-h-[300px]">
+          <div id="admin-tables" className="flex max-h-[60vh]">
               <div
                 id="users-table"
-                className="overflow-x-scroll overflow-y-scroll table-responsive max-w-[35vw] max-h-screen m-5"
+                className="overflow-x-scroll overflow-y-scroll table-responsive max-w-[50vw] max-h-screen m-5"
               >
                 {allTags.length && (
                   <table className="table w-full table-compact">
@@ -108,7 +108,7 @@ const AdminPanel = () => {
               </div>
               <div
                 id="tags-table"
-                className="overflow-x-auto overflow-y-scroll table-responsive max-h-screen m-5"
+                className="overflow-x-auto overflow-y-scroll mt-5 table-responsive h-full"
               >
                 {allTags.length && (
                   <table className="table w-full table-compact">
@@ -156,17 +156,17 @@ const AdminPanel = () => {
                     </tbody>
                   </table>
                 )}
+              </div>
+          </div>
                 <input
                   type="text"
                   placeholder="New Tag Or Edit Tag"
-                  className="input input-bordered input-primary w-full max-w-xs"
+                  className="input mt-[2.8vh] ml-[53vw] input-bordered input-primary w-[18vw]"
                   onChange={(e) => {
                     setNewTag(e.target.value);
                   }}
                 />
-              </div>
-          </div>
-                <div className="ml-[27vw]">
+                <div className="ml-[53vw]">
                 <button
                   className="btn btn-outline btn-primary"
                   type="Submit"

@@ -9,3 +9,5 @@ export { default as AdminPanel } from "./AdminPanel";
 export { default as Cart } from "./Cart";
 export { default as SearchResults } from "./SearchResults";
 export { default as Checkout } from "./Checkout";
+export { default as Confirmation } from "./Confirmation";
+// export { default as Stripe } from "./Stripe";

@@ -38,89 +38,107 @@ const Register = (props) => {
     }
   };
   return (
-    <div>
-      <form
+    <div className="flex items-center justify-center h-screen w-[97vw] my-[5vh] overflow-hidden">
+      <form className=""
         onSubmit={(e) => {
           e.preventDefault();
           createUser();
         }}
       >
-        <h2>Register</h2>
-        <label className="input-group">
-          <span>Username</span>
-          <input
-            required
-            type="text"
-            placeholder="User1"
-            className="input input-bordered"
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
-          />
-        </label>
-        <label className="input-group">
-          <span>Password</span>
-          <input
-            required
-            type="password"
-            placeholder="minimum 8 characters"
-            className="input input-bordered"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-        </label>
-        <label className="input-group">
-          <span>Confirm Password</span>
-          <input
-            required
-            type="password"
-            placeholder="minimum 8 characters"
-            className="input input-bordered"
-            onChange={(e) => {
-              setConfirmedPassword(e.target.value);
-            }}
-          />
-        </label>
-        <label className="input-group">
-          <span>First Name</span>
-          <input
-            required
-            type="text"
-            placeholder="John"
-            className="input input-bordered"
-            onChange={(e) => {
-              setFirstName(e.target.value);
-            }}
-          />
-        </label>
-        <label className="input-group">
-          <span>Last Name</span>
-          <input
-            required
-            type="text"
-            placeholder="Doe"
-            className="input input-bordered"
-            onChange={(e) => {
-              setLastName(e.target.value);
-            }}
-          />
-        </label>
-        <label className="input-group">
-          <span>Email</span>
-          <input
-            required
-            type="text"
-            placeholder="info@site.com"
-            className="input input-bordered"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-        </label>
-        <button type="submit" className="btn btn-info">
-          Submit
-        </button>
+        <div className="hero h-fit w-full bg-base-200">
+          <div className="hero-content flex flex-col w-screen">
+            <div className="text-center lg:text-left">
+              <h1 className="text-5xl font-bold">Register!</h1>
+            </div>
+            <div className="card mb-[16vh] flex-shrink-0 w-full max-w-sm h-[60vh] shadow-2xl bg-base-100 overflow-y-auto">
+              <div className="card-body">
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Username</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="username"
+                    className="input input-bordered"
+                    onChange={(e) => {
+                      setUsername(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Email</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="email"
+                    className="input input-bordered"
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">First Name</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="first name"
+                    className="input input-bordered"
+                    onChange={(e) => {
+                      setFirstName(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Last Name</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="last name"
+                    className="input input-bordered"
+                    onChange={(e) => {
+                      setLastName(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Password</span>
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="password"
+                    className="input input-bordered"
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Confirmed Password</span>
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="confirm password"
+                    className="input input-bordered"
+                    onChange={(e) => {
+                      setConfirmedPassword(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="form-control mt-6">
+                  <button className="btn btn-primary" type="submit">
+                    Login
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
       {alert.startsWith("Error") ? (
         <div className="alert alert-error shadow-lg">

@@ -201,15 +201,15 @@ const Navbar = (props) => {
                 <span className="font-bold text-lg">
                   {cartProductsCount} Items In Cart
                 </span>
-                <span className="text-info">Subtotal: ${subTotal}</span>
-                <div className="card-actions">
+                {username ? <span className="text-info">Subtotal: ${subTotal}</span> : <span className="text-info">You must be logged in!</span>}
+                {username && <div className="card-actions">
                   <button
                     onClick={handleViewCart}
                     className="btn btn-primary btn-block"
                   >
                     View cart
                   </button>
-                </div>
+                </div>}
               </div>
             </div>
           </div>
