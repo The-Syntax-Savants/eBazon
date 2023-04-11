@@ -22,7 +22,8 @@ import { getActiveCartProductsDB } from "./api-adapters/carts";
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
-    const [cartProductsCount, setCartProductsCount] = useState([]);
+  const [cartProductsCount, setCartProductsCount] = useState([]);
+  const [subTotal, setSubTotal] = useState(0);
   const stripePromise = loadStripe(
     "pk_test_51MvOTQLhGAqNc30vaCPHwOYngRS0iERaK2A9QymnF3g6Y0VUDpNBiB5Wveb9Vt62YZ3NyXMWwjonuaKiOBHl4mZQ00gY6bvm8D"
   );
@@ -99,7 +100,10 @@ const App = () => {
               <Cart subTotal={subTotal} grabCartProducts={grabCartProducts} />
             }
           />
-           <Route path="/search-results/:searchInput" element={<SearchResults />} />
+          <Route
+            path="/search-results/:searchInput"
+            element={<SearchResults />}
+          />
           <Route
             path="/checkout"
             element={
