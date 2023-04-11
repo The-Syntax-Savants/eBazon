@@ -2,44 +2,36 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getLoggedInUserFromDB } from "../api-adapters/users";
 import { getActiveCartProductsDB } from "../api-adapters/carts";
+import { getAllTagsDB } from "../api-adapters/tags";
+import {Space, Select} from "antd"
 
 const Navbar = (props) => {
   const navigate = useNavigate();
   const [admin, setAdmin] = useState(false);
   const [username, setUsername] = useState("");
-  const [cartProductsCount, setCartProductsCount] = useState([]);
-  const [subTotal, setSubTotal] = useState(0);
+  const cartProductsCount = props.cartProductsCount;
+  const subTotal = props.subTotal;
   const isLoggedIn = props.isLoggedIn;
   const setIsLoggedIn = props.setIsLoggedIn;
-
-  const refOne = useRef(null)
-
+  const [search, setSearch] = useState()
   const [visible, setVisible] = useState("hidden")
+  const refOne = useRef(null)
+  const grabCartProducts = props.grabCartProducts;
 
-  const grabCartProducts = async () => {
-    const data = await getActiveCartProductsDB();
-    let subTotal = 0;
-    for (let i = 0; i < data.length; i++) {
-      subTotal += data[i].product.price;
-    }
-    setSubTotal(subTotal / 100);
-    setCartProductsCount(data.length);
-  };
-
-  const grabUser = async () => {
+  const setAdminStatus = async () => {
     const data = await getLoggedInUserFromDB();
     if (data.is_admin) {
       setAdmin(true);
     }
   };
 
+
   useEffect(() => {
     const localStorageUsername = localStorage.getItem("username");
     if (localStorageUsername) {
-      grabUser();
+      setAdminStatus();
       setUsername(localStorageUsername);
       grabCartProducts();
-      // navigate("/")
     }
   }, [isLoggedIn]);
 
@@ -134,32 +126,29 @@ const Navbar = (props) => {
       </div>
       <div className="navbar-end">
 
-        {/* --->>>>> Search Button */}
+        <form action="" ref={ refOne } id="search-form" className="relative w-max flex flex-row " onSubmit={async (e)=>{
+          e.preventDefault()
 
-        {/* <button className="btn btn-ghost btn-circle border-dashed border-2 border-indigo-600">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
-        </button> */}
+          if(search !== undefined && search.length > 0) {
+            document.getElementById("search-form").reset()
+            setVisible("hidden")
+            navigate(`/search-results/${search}`)
+          } 
 
-        <form action="" ref={ refOne } className="relative w-max flex flex-row border-dashed border-2 border-indigo-600">
-          <input type="search" value="Search Products" name="search" id="search" 
+        }}>
+          {/* THIS IS THE SEARCH INPUT */}
+          <input type="search" placeholder="Search Products" name="search" id="search" 
             className="relative peer z-10 bg-transparent w-12 h-12 rounded-full border cursor-pointer outline-none
             pl-12 
             focus:w-full focus:border-indigo-600 focus:cursor-text focus:pl-16 focus:pr-4" 
+            autoComplete="off"
+            onChange={(e)=>{
+              e.preventDefault()
+              setSearch(e.target.value)
+            }}
           />
 
+          {/* THIS IS THE SEARCH SVG*/}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="absolute inset-y-0 my-auto h-8 w-12 px-3.5 stroke-gray-500 border-r border-transparent peer-focus:border-indigo-600 peer-focus:stroke-indigo-600"
@@ -175,26 +164,7 @@ const Navbar = (props) => {
             />
           </svg>
 
-          <input type="search"  value="Search Tags"  name="search-tag" id="search-tag" 
-            className={`relative peer z-10 bg-transparent w-12 h-12 rounded-full border cursor-pointer outline-none
-            pl-12 
-            focus:w-full focus:border-indigo-600 focus:cursor-text focus:pl-16 focus:pr-4 ${visible}`} 
-          />
-
-        <svg xmlns="http://www.w3.org/2000/svg" 
-          className={`absolute inset-y-0 my-auto h-8 w-12 px-3.5 stroke-gray-500 border-r border-transparent peer-focus:border-indigo-600 peer-focus: stroke-indigo-600 ${visible}`} fill="none" 
-          viewBox="0 0 24 24" 
-          stroke="currentColor" 
-          strokeWidth={2}
-        >
-          <path 
-            strokeLinecap="round" 
-            strokeLinejoin="round" 
-            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" 
-            />
-        </svg>
-
-
+          <button type="submit" className={`btn btn-ghost border-solid border-1 border-indigo-600 w-20 ml-2 mr-2 ${visible}`}>Search</button>
 
         </form>
 

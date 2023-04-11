@@ -53,6 +53,9 @@ export const loginUserDB = async (username, password) => {
 
 export const editUserDB = async (user) => {
   console.log(user, "WHAT IS BEING PASSED IN");
+  if(user.password === "" || user.password.length < 8){
+    delete user.password
+  }
   try {
     const response = await fetch(
       `${BASE_URL}/users/${user.username}/profile/edit`,

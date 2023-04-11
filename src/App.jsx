@@ -13,26 +13,30 @@ import {
   SearchResults,
   Checkout,
   Confirmation,
-  // Stripe,
 } from "./pages";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { Navbar, Footer, Pagination } from "./components";
 import { createPaymentIntent } from "./api-adapters/stripe";
+import { getActiveCartProductsDB } from "./api-adapters/carts";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
+  const [cartProductsCount, setCartProductsCount] = useState([]);
+  const [subTotal, setSubTotal] = useState(0);
   const stripePromise = loadStripe(
     "pk_test_51MvOTQLhGAqNc30vaCPHwOYngRS0iERaK2A9QymnF3g6Y0VUDpNBiB5Wveb9Vt62YZ3NyXMWwjonuaKiOBHl4mZQ00gY6bvm8D"
   );
-
-  // useEffect(() => {
-  //   createPaymentIntent().then((data) => {
-  //     console.log(data.clientSecret, "CLIENT SECRET");
-  //     setClientSecret(data.clientSecret);
-  //   });
-  // }, []);
+  const grabCartProducts = async () => {
+    const data = await getActiveCartProductsDB();
+    let tempSubTotal = 0;
+    for (let i = 0; i < data.length; i++) {
+      tempSubTotal += data[i].product.price * data[i].quantity;
+    }
+    setSubTotal(tempSubTotal / 100);
+    setCartProductsCount(data.length);
+  };
 
   useEffect(() => {
     const localStorageToken = localStorage.getItem("token");
@@ -59,12 +63,22 @@ const App = () => {
   return (
     <div id="main">
       <div id="navbar-container mb-10">
-        <Navbar setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
+        <Navbar
+          setIsLoggedIn={setIsLoggedIn}
+          isLoggedIn={isLoggedIn}
+          subTotal={subTotal}
+          cartProductsCount={cartProductsCount}
+          grabCartProducts={grabCartProducts}
+        />
       </div>
 
       <div id="content">
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route
+            exact
+            path="/"
+            element={<Home grabCartProducts={grabCartProducts} />}
+          />
           <Route
             path="/register"
             element={<Register setIsLoggedIn={setIsLoggedIn} />}
@@ -76,14 +90,19 @@ const App = () => {
           <Route path="/createProduct" element={<CreateProduct />} />
           <Route
             path="/product-view/:productId"
-            element={<SingleProductView />}
+            element={<SingleProductView grabCartProducts={grabCartProducts} />}
           />
           <Route path="/:username/profile" element={<Profile />} />
           <Route path="/edit-product/:id" element={<EditProduct />} />
           <Route path="/panel" element={<AdminPanel />} />
-          <Route path="/my-cart" element={<Cart />} />
           <Route
-            path="/search-results/:searchInput/:tagInput"
+            path="/my-cart"
+            element={
+              <Cart subTotal={subTotal} grabCartProducts={grabCartProducts} />
+            }
+          />
+          <Route
+            path="/search-results/:searchInput"
             element={<SearchResults />}
           />
           <Route
