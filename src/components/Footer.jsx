@@ -5,7 +5,7 @@ const Footer = () => {
     <footer className="footer flex flex-col items-center justify-center mt-auto bg-neutral text-neutral-content">
       <div className="text-center flex flex-col items-center justify-center gap-2">
         <span className="footer-title">Social</span>
-        <div className="flex justify-evenly gap-4">
+        <div className="flex justify-evenly">
           <a href="https://twitter.com/ebazonofficial" target="_blank">
             <svg
               xmlns="http://www.w3.org/2000/svg"
