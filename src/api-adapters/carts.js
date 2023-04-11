@@ -10,7 +10,7 @@ export const getActiveCartProductsDB = async () => {
       },
     });
     const result = await response.json();
-    console.log(result, " getActiveCartProductsDB result");
+    // console.log(result, " getActiveCartProductsDB result");
     return result;
   } catch (error) {
     console.log("Error in getActiveCartProductsDB Call!");
@@ -29,7 +29,7 @@ export const deleteCartProductDB = async (cartProductId) => {
       body: JSON.stringify({ cartProductId: cartProductId }),
     });
     const result = await response.json();
-    console.log(result, " deleteCartProductDB result");
+    // console.log(result, " deleteCartProductDB result");
     return result;
   } catch (error) {
     console.log("Error in deleteCartProductDB Call!");
@@ -48,7 +48,7 @@ export const createCartProductDB = async (product_id) => {
       body: JSON.stringify({ product_id: product_id }),
     });
     const result = await response.json();
-    console.log(result, " createCartProductDB result");
+    // console.log(result, " createCartProductDB result");
     return result;
   } catch (error) {
     console.log("Error in createCartProductDB Call!");
@@ -70,7 +70,7 @@ export const updateCartProductDB = async (cartProductId, quantity) => {
       }),
     });
     const result = await response.json();
-    console.log(result, " updateCartProductDB result");
+    // console.log(result, " updateCartProductDB result");
     return result;
   } catch (error) {
     console.log("Error in updateCartProductDB Call!");
@@ -80,7 +80,6 @@ export const updateCartProductDB = async (cartProductId, quantity) => {
 
 export const placeOrderDB = async (cartNumber) => {
   try {
-    console.log("PLACING ORDER");
     const response = await fetch(`${BASE_URL}/carts/place-order`, {
       method: "POST",
       headers: {
@@ -92,7 +91,7 @@ export const placeOrderDB = async (cartNumber) => {
       }),
     });
     const result = await response.json();
-    console.log(result, " placeOrderDB result");
+    // console.log(result, " placeOrderDB result");
     return result;
   } catch (error) {
     console.log("Error in placeOrderDB Call!");
@@ -102,7 +101,6 @@ export const placeOrderDB = async (cartNumber) => {
 
 export const getMyCartNumberDB = async () => {
   try {
-    console.log("GETTING CART NUMBER");
     const response = await fetch(`${BASE_URL}/carts/my-cart-number`, {
       method: "GET",
       headers: {
@@ -111,7 +109,7 @@ export const getMyCartNumberDB = async () => {
       },
     });
     const result = await response.json();
-    console.log(result, " getMyCartNumberDB result");
+    // console.log(result, " getMyCartNumberDB result");
     return result.cartId;
   } catch (error) {
     console.log("Error in getMyCartNumberDB Call!");

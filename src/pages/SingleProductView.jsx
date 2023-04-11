@@ -44,7 +44,6 @@ const SingleProductView = (props) => {
     try {
       await createCartProductDB(product.product.id);
       grabCartProducts();
-      console.log(product.product.name + " added to cart!");
       setAlert("success");
     } catch (error) {
       console.log(error);
@@ -66,7 +65,6 @@ const SingleProductView = (props) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Image container */}
           <div className="relative w-full h-80 md:h-96">
-            {console.log(product, "THIS IS PRODUCT")}
             <img
               src={product.product && product.product.image_url}
               alt="Product"
@@ -81,6 +79,9 @@ const SingleProductView = (props) => {
                 <h1 className="text-2xl font-semibold">
                   {product.product.name}
                 </h1>
+                <h2 className="text-2l font-semibold">
+                  Seller: {product.product.seller_name}
+                </h2>
                 <p className="text-xl text-gray-600">
                   Price: ${product.product.price / 100}
                 </p>
@@ -88,12 +89,14 @@ const SingleProductView = (props) => {
                 <p className="text-gray-600">
                   Dimensions: {product.product.dimensions}
                 </p>
-                {user.username && <button
-                  className="mt-4 px-4 py-2 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600"
-                  onClick={handleAddToCart}
-                >
-                  Add to Cart
-                </button>}
+                {user.username && (
+                  <button
+                    className="mt-4 px-4 py-2 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600"
+                    onClick={handleAddToCart}
+                  >
+                    Add to Cart
+                  </button>
+                )}
                 {((user && user.username === product.product.seller_name) ||
                   user.is_admin) && (
                   <div>

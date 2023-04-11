@@ -10,7 +10,6 @@ const Login = (props) => {
   const navigate = useNavigate();
 
   const loginUser = async () => {
-    console.log(username, password, "!!!!!!!!!");
     const data = await loginUserDB(username, password);
 
     if (data.name) {

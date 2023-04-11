@@ -9,7 +9,7 @@ export const getAllTagsDB = async () => {
       },
     });
     const result = await response.json();
-    console.log(result.tags, " getAllTagsDB result");
+    // console.log(result.tags, " getAllTagsDB result");
     return result.tags;
   } catch (error) {
     console.log("Error in getAllTagsDB Call!");

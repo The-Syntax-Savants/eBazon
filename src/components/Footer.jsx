@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="footer flex flex-col items-center justify-center mt-auto bg-neutral text-neutral-content">
+    <footer className="footer flex flex-col items-center justify-center mt-20 bg-neutral text-neutral-content">
       <div className="text-center flex flex-col items-center justify-center gap-2">
         <span className="footer-title">Social</span>
         <div className="flex justify-evenly">
