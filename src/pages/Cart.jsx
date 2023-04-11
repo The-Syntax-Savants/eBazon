@@ -3,8 +3,9 @@ import { getActiveCartProductsDB } from "../api-adapters/carts";
 import { SingleCartProduct } from "../components";
 import { Link } from "react-router-dom";
 
-const Cart = () => {
+const Cart = (props) => {
   const [cartProducts, setCartProducts] = useState([]);
+  const grabCartProducts = props.grabCartProducts;
 
   async function getCartProducts() {
     try {
@@ -38,6 +39,7 @@ const Cart = () => {
               key={"product id: " + cartProduct.product_id}
               cartProduct={cartProduct}
               getCartProducts={getCartProducts}
+              grabCartProducts={grabCartProducts}
             />
           );
         })}

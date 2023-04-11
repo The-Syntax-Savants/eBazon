@@ -10,11 +10,14 @@ const SingleCartProduct = (props) => {
   const cartProduct = props.cartProduct;
   const product = cartProduct.product;
   const getCartProducts = props.getCartProducts;
+  const grabCartProducts = props.grabCartProducts;
+
   const [quantity, setQuantity] = useState(cartProduct.quantity);
 
   async function handleRemoveFromCart() {
     try {
       await deleteCartProductDB(cartProduct.id);
+      grabCartProducts();
       console.log(product.name + " removed from cart!");
       getCartProducts();
     } catch (error) {
@@ -29,6 +32,7 @@ const SingleCartProduct = (props) => {
       let tempQuantity = event.target.value;
       setQuantity(tempQuantity);
       await updateCartProductDB(cartProduct.id, tempQuantity);
+      grabCartProducts();
       console.log(product.name + " updated cart product!");
     } catch (error) {
       console.log(error);

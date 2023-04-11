@@ -2,14 +2,18 @@ import React, { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
 import { SingleProductCard } from "../components";
-import { getAllProductsDB, getProductsByTagIdDB } from "../api-adapters/products";
+import {
+  getAllProductsDB,
+  getProductsByTagIdDB,
+} from "../api-adapters/products";
 import { Pagination } from "../components";
 // require("../style.css");
 // require("../tailwind.config.js");
 
-const Home = () => {
+const Home = (props) => {
   const [products, setProducts] = useState([]);
   const [alert, setAlert] = useState("");
+  const grabCartProducts = props.grabCartProducts;
 
   const fetchAllProducts = async () => {
     const fetchedProducts = await getAllProductsDB();
@@ -45,19 +49,27 @@ const Home = () => {
           </div>
         )}
 
-        <div onClick={async (evt) => {
-
-          //Since the whole div is clickable, we have to check if an actual HTML element with a value attribute was clicked.
-          if (evt.target.value ) {
-            const tagProducts = await getProductsByTagIdDB(evt.target.value)
-            setProducts(tagProducts)
-          }
-
-        }}>
-          <button className="category-button" value={3} >Home Goods</button>
-          <button className="category-button" value={4}>Decoration</button>
-          <button className="category-button" value={11}>Sports</button>
-          <button className="category-button" value={12}>Toys</button>
+        <div
+          onClick={async (evt) => {
+            //Since the whole div is clickable, we have to check if an actual HTML element with a value attribute was clicked.
+            if (evt.target.value) {
+              const tagProducts = await getProductsByTagIdDB(evt.target.value);
+              setProducts(tagProducts);
+            }
+          }}
+        >
+          <button className="category-button" value={3}>
+            Home Goods
+          </button>
+          <button className="category-button" value={4}>
+            Decoration
+          </button>
+          <button className="category-button" value={11}>
+            Sports
+          </button>
+          <button className="category-button" value={12}>
+            Toys
+          </button>
         </div>
       </div>
 
@@ -67,7 +79,7 @@ const Home = () => {
             <SingleProductCard
               product={product}
               setAlert={setAlert}
-              cardLocation={"home"}
+              grabCartProducts={grabCartProducts}
               key={`This is the key: ${product.id}`}
             />
           );
