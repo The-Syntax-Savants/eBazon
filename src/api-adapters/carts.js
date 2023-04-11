@@ -80,6 +80,7 @@ export const updateCartProductDB = async (cartProductId, quantity) => {
 
 export const placeOrderDB = async () => {
   try {
+    console.log("PLACING ORDER");
     const response = await fetch(`${BASE_URL}/carts/place-order`, {
       method: "POST",
       headers: {

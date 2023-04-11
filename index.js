@@ -5,7 +5,11 @@ import express from "express";
 import { client } from "./db/index.js";
 import morgan from "morgan";
 import apiRouter from "./api/index.js";
+import StripePackage from "stripe";
 const server = express();
+const Stripe = new StripePackage(
+  "sk_test_51MvOTQLhGAqNc30vEsExUrFXzbDpsKHcOIGxxIAmuYLf6DD3gYXMqyFzC9MEJz9aJ8cnUayMiK3MGbUtb4y5qBcP00OkK8mCMx"
+);
 const PORT = 3001;
 
 morgan.token("body", (req) => JSON.stringify(req.body));
@@ -16,18 +20,37 @@ client.connect();
 
 server.use(morgan(customMorganFormat));
 
+// app.use(bodyParser.json());
+
 server.use(cors());
 
-// server.use((req, res, next) => {
-//   console.log("<____Body Logger START____>");
-//   console.log(req.body);n
-//   console.log("<_____Body Logger END_____>");
-
-//   next();
-// });
 server.use(express.json());
 
 server.use("/api", apiRouter);
+
+// const calculateOrderAmount = (items) => {
+//   // Replace this constant with a calculation of the order's amount
+//   // Calculate the order total on the server to prevent
+//   // people from directly manipulating the amount on the client
+//   return 1400;
+// };
+
+// server.post("/create-payment-intent", async (req, res) => {
+//   const { items } = req.body;
+
+//   // Create a PaymentIntent with the order amount and currency
+//   const paymentIntent = await stripe.paymentIntents.create({
+//     amount: calculateOrderAmount(items),
+//     currency: "usd",
+//     automatic_payment_methods: {
+//       enabled: true,
+//     },
+//   });
+
+//   res.send({
+//     clientSecret: paymentIntent.client_secret,
+//   });
+// });
 
 // 404 handler
 server.get("*", (req, res) => {
