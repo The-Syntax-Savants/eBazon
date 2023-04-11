@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { createCartProductDB } from "../api-adapters/carts";
+import { getLoggedInUserFromDB } from "../api-adapters/users";
 
 const SingleProductCard = (props) => {
   const product = props.product;
   const setAlert = props.setAlert;
   const grabCartProducts = props.grabCartProducts;
+  const [user, setUser] = useState({})
 
   async function handleAddToCart() {
     try {
@@ -19,6 +21,17 @@ const SingleProductCard = (props) => {
       throw error;
     }
   }
+
+  const fetchUser = async () => {
+    const data = await getLoggedInUserFromDB()
+    if(data.username){
+      setUser(data)
+    }
+  }
+
+  useEffect(()=>{
+    fetchUser()
+  }, [])
 
   return (
     <div id="product-card" className="max-w-sm w-full">
@@ -59,11 +72,11 @@ const SingleProductCard = (props) => {
 
           </div>
           
-          <div className="card-actions justify-end">
+          {user.username && <div className="card-actions justify-end">
             <button onClick={handleAddToCart} className="btn btn-success">
               Add to Cart
             </button> 
-          </div>
+          </div>}
         </div>
       </div>
     </div>

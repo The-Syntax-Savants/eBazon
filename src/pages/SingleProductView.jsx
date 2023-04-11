@@ -86,12 +86,12 @@ const SingleProductView = (props) => {
                 <p className="text-gray-600">
                   Dimensions: {product.product.dimensions}
                 </p>
-                <button
+                {user.username && <button
                   className="mt-4 px-4 py-2 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600"
                   onClick={handleAddToCart}
                 >
                   Add to Cart
-                </button>
+                </button>}
                 {((user && user.username === product.product.seller_name) ||
                   user.is_admin) && (
                   <div>
