@@ -30,7 +30,9 @@ const SingleProductCard = (props) => {
   }
 
   useEffect(()=>{
-    fetchUser()
+    if(localStorage.getItem("token")){
+      fetchUser()
+    }
   }, [])
 
   return (
