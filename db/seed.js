@@ -198,6 +198,8 @@ async function createInitialUsers() {
       is_admin: false,
     });
 
+    
+
     console.log("finished creating initial users!");
   } catch (error) {
     throw error;
@@ -223,7 +225,7 @@ async function createInitialCartProducts() {
 
 async function createInitialProducts() {
   try {
-    console.log("Creating Initial Products...");
+    console.log("Creating Initial Products AND More Users with carts...");
     await createProduct({
       name: "MLP Action Figure",
       seller_name: "DrizzyJ",
@@ -272,7 +274,7 @@ async function createInitialProducts() {
       quantity: 1,
     });
 
-    for(let i = 0; i < 100; i++){
+    for(let i = 1; i < 100; i++){
       await createProduct({
         name: faker.commerce.productName(),
         seller_name: faker.helpers.arrayElement(["DrizzyJ", "crooney", "Phillip", "unforgottable", "topstown", "Cashing", "randomTest"]),
@@ -281,6 +283,22 @@ async function createInitialProducts() {
         quantity: faker.datatype.number(),
         dimensions: `${faker.datatype.number()} x ${faker.datatype.number()}`,
         image_url: faker.image.imageUrl(null, null, "", true)
+      })
+      const first_name = faker.name.firstName()
+      const username = faker.internet.userName(first_name)
+      await createUser({
+        first_name: first_name,
+        last_name: faker.name.lastName(),
+        username: username,
+        password: 'password',
+        email: faker.internet.email(first_name),
+        is_admin: false
+      })
+
+      await createCartProduct({
+        username: username,
+        product_id: i,
+        quantity: faker.datatype.number({max: 10})
       })
     }
 
