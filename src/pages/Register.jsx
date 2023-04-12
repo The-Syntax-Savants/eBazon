@@ -38,7 +38,7 @@ const Register = (props) => {
     }
   };
   return (
-    <div className="flex items-center justify-center h-screen w-[97vw] my-[5vh] overflow-hidden">
+    <div className="flex flex-col items-center justify-center h-fit w-[97vw] my-[5vh]">
       <form className=""
         onSubmit={(e) => {
           e.preventDefault();
