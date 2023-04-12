@@ -21,7 +21,7 @@ export default function CheckoutForm() {
     try {
       const BASE_URL =
         process.env.NODE_ENV === "production"
-          ? "https://ebazon.netlify.app"
+          ? "https://google.com"
           : "http://localhost:3000";
 
       const cartNumber = await getMyCartNumberDB();
@@ -98,7 +98,6 @@ export default function CheckoutForm() {
     } else {
       setMessage("An unexpected error occurred.");
     }
-
     await placeOrderDB();
     setIsLoading(false);
   };
@@ -108,7 +107,7 @@ export default function CheckoutForm() {
   };
 
   return (
-    <form id="payment-form" className="mt-10 mb-50" onSubmit={handleSubmit}>
+    <form id="payment-form" onSubmit={handleSubmit}>
       <PaymentElement id="payment-element" options={paymentElementOptions} />
       <h3>Shipping</h3>
       <AddressElement
@@ -116,7 +115,7 @@ export default function CheckoutForm() {
       />
       <button disabled={isLoading || !stripe || !elements} id="submit">
         <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner" /> : "Pay now"}
+          {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
         </span>
       </button>
       {/* Show any error or success messages */}

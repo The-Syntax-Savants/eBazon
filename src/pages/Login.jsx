@@ -24,7 +24,7 @@ const Login = (props) => {
   };
 
   return (
-    <div id="login-page" className="flex flex-col items-center justify-center h-fit w-[97vw] my-[5vh]">
+    <div id="login-page" className="flex items-center justify-center h-screen w-[97vw] overflow-hidden">
       <form className=""
         onSubmit={(e) => {
           e.preventDefault();

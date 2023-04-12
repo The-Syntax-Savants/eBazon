@@ -77,7 +77,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-fit w-screen my-[5vh]">
+    <div className="flex flex-col items-center justify-center h-screen w-screen my-[5vh] overflow-hidden">
       <form
         className=""
         onSubmit={(e) => {
