@@ -10,7 +10,6 @@ const Login = (props) => {
   const navigate = useNavigate();
 
   const loginUser = async () => {
-    console.log(username, password, "!!!!!!!!!");
     const data = await loginUserDB(username, password);
 
     if (data.name) {
@@ -25,7 +24,7 @@ const Login = (props) => {
   };
 
   return (
-    <div id="login-page" className="flex items-center justify-center h-[90vh] w-[97vw] my-[2vh] overflow-hidden">
+    <div id="login-page" className="flex items-center justify-center h-screen w-[97vw] overflow-hidden">
       <form className=""
         onSubmit={(e) => {
           e.preventDefault();

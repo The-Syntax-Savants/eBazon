@@ -102,8 +102,8 @@ async function createTables() {
     console.log(`creating PRODUCT_TAGS table...`);
     await client.query(`CREATE TABLE product_tags(
             id SERIAL PRIMARY KEY,
-            product_id INTEGER REFERENCES products(id),
-            tag_id INTEGER REFERENCES tags(id),
+            product_id INTEGER REFERENCES products(id) ON UPDATE CASCADE ON DELETE CASCADE,
+            tag_id INTEGER REFERENCES tags(id) ON UPDATE CASCADE ON DELETE CASCADE,
             UNIQUE(product_id, tag_id)
         );`);
 

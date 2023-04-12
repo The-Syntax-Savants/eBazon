@@ -1,4 +1,5 @@
 import { BASE_URL } from "./index.js";
+// const BASE_URL = "http://localhost:3001/api"
 
 export const getAllTagsDB = async () => {
   try {
@@ -9,7 +10,7 @@ export const getAllTagsDB = async () => {
       },
     });
     const result = await response.json();
-    console.log(result.tags, " getAllTagsDB result");
+    // console.log(result.tags, " getAllTagsDB result");
     return result.tags;
   } catch (error) {
     console.log("Error in getAllTagsDB Call!");

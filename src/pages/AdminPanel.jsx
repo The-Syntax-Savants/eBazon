@@ -16,186 +16,166 @@ const AdminPanel = (props) => {
   const [alert, setAlert] = useState("");
   const isLoading = props.isLoading;
   const setIsLoading = props.setIsLoading;
-
-  const fetchUsersAndTags = async () => {
-    setIsLoading(true);
-    setTimeout(async () => {
-      const data = await getAllUsersFromDB();
-      setAllUsers(data.users);
-      const grabTags = await getAllTagsDB();
-      setAllTags(grabTags);
-      setIsLoading(false);
-    }, 1000);
-  };
-
-  const fetchAdmin = async () => {
-    setIsLoading(true);
-    setTimeout(async () => {
-      if (localStorage.getItem("token")) {
+  const allAdminFunc = async () => {
+    const fetchAdmin = async () => {
+      if(localStorage.getItem("token")){
         const data = await getLoggedInUserFromDB();
         if (data.is_admin) {
           setAdmin(data);
-        } else {
-          setAlert(`Error: You must be an Admin to access this page`);
+        }else{
+          setAlert(`Error: You must be an Admin to access this page`)
         }
-      } else {
-        setAlert(`Error: You must be an Admin to access this page`);
+      }else{
+        setAlert(`Error: You must be an Admin to access this page`)
       }
-      setIsLoading(false);
-    }, 100);
+    };
+    await fetchAdmin()
+  }
+  const fetchUsersAndTags = async () => {
+    if(admin.is_admin){
+      const data = await getAllUsersFromDB();
+      setAllUsers(data.users);
+  
+      const grabTags = await getAllTagsDB();
+      setAllTags(grabTags);
+    }
+    
   };
 
   useEffect(() => {
-    fetchAdmin();
+      allAdminFunc();
   }, []);
 
   useEffect(() => {
-    if (admin.is_admin) {
       fetchUsersAndTags();
-    }
   }, [admin]);
+
+  useEffect(()=>{
+    fetchUsersAndTags()
+  }, [alert])
+
   return (
-    <div>
-      {isLoading ? (
-        <div className="flex justify-center items-center min-h-screen">
-          <progress className="progress w-56"></progress>
-        </div>
-      ) : (
-        <>
-          {allUsers.length ? (
-            <div
-              id="container"
-              className="container flex flex-col items-center h-screen overflow-auto mt-[60px]"
-            >
-              <div id="admin-title" className="text-center mt-[30px]">
-                <h3 className="text-3xl font-bold text-gray-800">
-                  Welcome {admin.first_name} To Your Admin Panel
-                </h3>
+    <>
+      {allUsers.length ? (
+        <div id="container" className="container flex flex-col items-center h-screen overflow-auto">
+          <div id="admin-title" className="text-center mt-[4vh]">
+          <h3 className="text-3xl font-bold text-gray-800">Welcome {admin.first_name} To Your Admin Panel</h3>
+          </div>
+          <div id="admin-tables" className="flex max-h-[60vh]">
+              <div
+                id="users-table"
+                className="overflow-x-scroll overflow-y-scroll table-responsive max-w-[50vw] max-h-screen m-5"
+              >
+                {allTags.length && (
+                  <table className="table w-full table-compact">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Active?</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Address1</th>
+                        <th>Address2</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>Zipcode</th>
+                        <th>ID</th>
+                        <th>Admin?</th>
+                        <th>Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {allUsers.map((user, idx) => {
+                        delete user.password
+                        return (
+                          <tr key={user.id} className="hover">
+                            <th>{idx + 1}</th>
+                            <td>{user.username}</td>
+                            <td>{user.email}</td>
+                            {user.active ? <td>True</td> : <td>False</td>}
+                            <td>{user.first_name}</td>
+                            <td>{user.last_name}</td>
+                            <td>{user.address_line_1}</td>
+                            <td>{user.address_line_2}</td>
+                            <td>{user.city}</td>
+                            <td>{user.state}</td>
+                            <td>{user.zipcode}</td>
+                            <td>{user.id}</td>
+                            {user.is_admin ? <td>True</td> : <td>False</td>}
+                            <td><button onClick={async ()=>{
+                              user.active = false
+                              await editUserDB(user)
+                            }}>Delete</button></td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                )}
               </div>
-              <div id="admin-tables" className="flex max-h-[300px]">
-                <div
-                  id="users-table"
-                  className="overflow-x-scroll overflow-y-scroll table-responsive max-w-[35vw] max-h-screen m-5"
-                >
-                  {allTags.length && (
-                    <table className="table w-full table-compact">
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th>Username</th>
-                          <th>Email</th>
-                          <th>Active?</th>
-                          <th>First Name</th>
-                          <th>Last Name</th>
-                          <th>Address1</th>
-                          <th>Address2</th>
-                          <th>City</th>
-                          <th>State</th>
-                          <th>Zipcode</th>
-                          <th>ID</th>
-                          <th>Admin?</th>
-                          <th>Delete</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {allUsers.map((user, idx) => {
-                          delete user.password;
-                          return (
-                            <tr key={user.id} className="hover">
-                              <th>{idx + 1}</th>
-                              <td>{user.username}</td>
-                              <td>{user.email}</td>
-                              {user.active ? <td>True</td> : <td>False</td>}
-                              <td>{user.first_name}</td>
-                              <td>{user.last_name}</td>
-                              <td>{user.address_line_1}</td>
-                              <td>{user.address_line_2}</td>
-                              <td>{user.city}</td>
-                              <td>{user.state}</td>
-                              <td>{user.zipcode}</td>
-                              <td>{user.id}</td>
-                              {user.is_admin ? <td>True</td> : <td>False</td>}
-                              <td>
-                                <button
-                                  onClick={async () => {
-                                    user.active = false;
-                                    await editUserDB(user);
-                                  }}
-                                >
-                                  Delete
-                                </button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  )}
-                </div>
-                <div
-                  id="tags-table"
-                  className="overflow-x-auto overflow-y-scroll table-responsive max-h-screen m-5"
-                >
-                  {allTags.length && (
-                    <table className="table w-full table-compact">
-                      <thead>
-                        <tr>
-                          <th></th>
-                          <th>Name</th>
-                          <th>Delete</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {allTags.map((tag, idx) => {
-                          return (
-                            <tr key={tag.id} className="hover">
-                              <th>{idx + 1}</th>
-                              <td
-                                onClick={async (e) => {
-                                  e.preventDefault();
-                                  const data = await editTagInDB(
-                                    tag.id,
-                                    newTag
-                                  );
-                                  if (data.name) {
-                                    setAlert(`Error: ${data.message}`);
-                                  } else {
-                                    setAlert(data.message);
-                                  }
-                                }}
+              <div
+                id="tags-table"
+                className="overflow-x-auto overflow-y-scroll mt-5 table-responsive h-full"
+              >
+                {allTags.length && (
+                  <table className="table w-full table-compact">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>ID</th>
+                        <th>Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {allTags.map((tag, idx) => {
+                        return (
+                          <tr key={tag.id} className="hover">
+                            <td
+                              onClick={async (e) => {
+                                e.preventDefault();
+                                const data = await editTagInDB(tag.id, newTag);
+                                if (data.name) {
+                                  setAlert(`Error: ${data.message}`);
+                                } else {
+                                  setAlert(data.message);
+                                }
+                              }}
                               >
-                                {tag.name}
-                              </td>
-                              <td
-                                onClick={async (e) => {
-                                  e.preventDefault();
-                                  const data = await deleteTagInDB(tag.id);
-                                  if (data.name) {
-                                    setAlert(`Error: ${data.message}`);
-                                  } else {
-                                    setAlert(data.message);
-                                  }
-                                }}
-                              >
-                                <button>delete</button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  )}
-                  <input
-                    type="text"
-                    placeholder="New Tag Or Edit Tag"
-                    className="input input-bordered input-primary w-full max-w-xs"
-                    onChange={(e) => {
-                      setNewTag(e.target.value);
-                    }}
-                  />
-                </div>
+                              {tag.name}
+                            </td>
+                              <td>{tag.id}</td>
+                            <td
+                              onClick={async (e) => {
+                                e.preventDefault();
+                                const data = await deleteTagInDB(tag.id);
+                                if (data.name) {
+                                  setAlert(`Error: ${data.message}`);
+                                } else {
+                                  setAlert(data.message);
+                                }
+                              }}
+                            >
+                              <button>delete</button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                )}
               </div>
-              <div className="ml-[27vw]">
+          </div>
+                <input
+                  type="text"
+                  placeholder="Edit or New Tag"
+                  className="input mt-[2.8vh] ml-[53vw] input-bordered input-primary w-[18vw]"
+                  onChange={(e) => {
+                    setNewTag(e.target.value);
+                  }}
+                />
+                <div className="ml-[53vw]">
                 <button
                   className="btn btn-outline btn-primary"
                   type="Submit"

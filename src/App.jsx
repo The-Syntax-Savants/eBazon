@@ -42,14 +42,13 @@ const App = () => {
   useEffect(() => {
     const localStorageToken = localStorage.getItem("token");
     const localStorageUsername = localStorage.getItem("username");
+
     if (localStorageToken && localStorageUsername) {
       setIsLoggedIn(true);
     }
-    console.log("RUNNING USE EFFECT");
+
     createPaymentIntent().then((data) => {
       setClientSecret(data.clientSecret);
-      console.log(data.clientSecret, "CLIENT SECRET");
-      console.log(clientSecret, "CLIENT SECRET STATE");
     });
   }, []);
 

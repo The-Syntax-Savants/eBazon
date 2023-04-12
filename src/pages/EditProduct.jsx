@@ -103,7 +103,7 @@ const EditProduct = () => {
   // };
 
   return (
-    <div className="flex items-center justify-center h-fit w-[95vw] my-[5vh] overflow-hidden">
+    <div className="flex items-center justify-center h-screen w-screen my-[5vh] overflow-hidden">
       {product && (
         <form
           className=""

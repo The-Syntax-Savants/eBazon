@@ -1,4 +1,5 @@
 import { BASE_URL } from "./index.js";
+// const BASE_URL = "http://localhost:3001/api"
 
 export const getAllProductsDB = async () => {
   try {
@@ -9,7 +10,7 @@ export const getAllProductsDB = async () => {
       },
     });
     const result = await response.json();
-    console.log(result, " getAllProductsDB result");
+    // console.log(result, " getAllProductsDB result");
     return result;
   } catch (error) {
     console.log("Error in getAllProductsDB Call!");
@@ -26,7 +27,7 @@ export const getProductByIdDB = async (id) => {
       },
     });
     const result = await response.json();
-    console.log(result, " getProductByIdDB result");
+    // console.log(result, " getProductByIdDB result");
     return result;
   } catch (error) {
     console.log("Error in getProductByID product Call!");
@@ -51,11 +52,6 @@ export const getProductsByTagIdDB = async (tagId) => {
 };
 
 export const createProductInDB = async (product) => {
-  console.log(
-    `post call to ${BASE_URL}/products/createProduct: ${JSON.stringify(
-      product
-    )}}`
-  );
   try {
     const response = await fetch(`${BASE_URL}/products/createProduct`, {
       method: "POST",
@@ -67,7 +63,7 @@ export const createProductInDB = async (product) => {
     });
 
     const result = await response.json();
-    console.log(result, " createProductInDB result");
+    // console.log(result, " createProductInDB result");
     return result;
   } catch (error) {
     console.log("Error in createProduct Call!");
@@ -80,7 +76,6 @@ export const editProductInDB = async (product) => {
     if (product.tags && product.tags.length < 1) {
       delete product.tags;
     }
-    console.log(product, "THIS IS WHAT IS BEING SENT IN");
     const id = product.id;
     const response = await fetch(`${BASE_URL}/products/${id}/edit`, {
       method: "PATCH",
@@ -92,7 +87,7 @@ export const editProductInDB = async (product) => {
     });
 
     const result = await response.json();
-    console.log(result, " editProductInDB result");
+    // console.log(result, " editProductInDB result");
     return result;
   } catch (error) {
     console.error(error);
