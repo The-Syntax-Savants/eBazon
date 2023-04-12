@@ -3,23 +3,20 @@ import { useNavigate, Link } from "react-router-dom";
 import { getLoggedInUserFromDB } from "../api-adapters/users";
 import { getActiveCartProductsDB } from "../api-adapters/carts";
 import { getAllTagsDB } from "../api-adapters/tags";
-import { Space, Select } from "antd";
+import {Space, Select} from "antd"
 
 const Navbar = (props) => {
+  const navigate = useNavigate();
   const [admin, setAdmin] = useState(false);
   const [username, setUsername] = useState("");
-  const [search, setSearch] = useState();
-  const [visible, setVisible] = useState("hidden");
-
   const cartProductsCount = props.cartProductsCount;
   const subTotal = props.subTotal;
   const isLoggedIn = props.isLoggedIn;
   const setIsLoggedIn = props.setIsLoggedIn;
+  const [search, setSearch] = useState()
+  const [visible, setVisible] = useState("hidden")
+  const refOne = useRef(null)
   const grabCartProducts = props.grabCartProducts;
-
-  const refOne = useRef(null);
-
-  const navigate = useNavigate();
 
   const setAdminStatus = async () => {
     const data = await getLoggedInUserFromDB();
@@ -27,6 +24,7 @@ const Navbar = (props) => {
       setAdmin(true);
     }
   };
+
 
   useEffect(() => {
     const localStorageUsername = localStorage.getItem("username");
@@ -38,18 +36,18 @@ const Navbar = (props) => {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    document.addEventListener(
-      "click",
-      (evt) => {
-        if (!refOne.current.contains(evt.target)) {
-          setVisible("hidden");
-        } else {
-          setVisible("visible");
-        }
-      },
-      true
-    );
-  }, []);
+    
+    document.addEventListener("click", (evt) => {
+
+      if(!refOne.current.contains(evt.target)) {
+        setVisible("hidden")
+      } else {
+        setVisible("visible")
+      }
+
+    }, true)
+
+  }, [])
 
   function handleViewCart() {
     navigate("/my-cart");
@@ -108,7 +106,6 @@ const Navbar = (props) => {
                   onClick={() => {
                     localStorage.removeItem("token");
                     localStorage.removeItem("username");
-                    grabCartProducts();
                     setUsername("");
                     setIsLoggedIn(false);
                     setAdmin(false);
@@ -128,34 +125,26 @@ const Navbar = (props) => {
         </Link>
       </div>
       <div className="navbar-end">
-        <form
-          action=""
-          ref={refOne}
-          id="search-form"
-          className="relative w-max flex flex-row "
-          onSubmit={async (e) => {
-            e.preventDefault();
 
-            if (search !== undefined && search.length > 0) {
-              document.getElementById("search-form").reset();
-              setVisible("hidden");
-              navigate(`/search-results/${search}`);
-            }
-          }}
-        >
+        <form action="" ref={ refOne } id="search-form" className="relative w-max flex flex-row " onSubmit={async (e)=>{
+          e.preventDefault()
+
+          if(search !== undefined && search.length > 0) {
+            document.getElementById("search-form").reset()
+            setVisible("hidden")
+            navigate(`/search-results/${search}`)
+          } 
+
+        }}>
           {/* THIS IS THE SEARCH INPUT */}
-          <input
-            type="search"
-            placeholder="Search Products"
-            name="search"
-            id="search"
+          <input type="search" placeholder="Search Products" name="search" id="search" 
             className="relative peer z-10 bg-transparent w-12 h-12 rounded-full border cursor-pointer outline-none
             pl-12 
-            focus:w-full focus:border-indigo-600 focus:cursor-text focus:pl-16 focus:pr-4"
+            focus:w-full focus:border-indigo-600 focus:cursor-text focus:pl-16 focus:pr-4" 
             autoComplete="off"
-            onChange={(e) => {
-              e.preventDefault();
-              setSearch(e.target.value);
+            onChange={(e)=>{
+              e.preventDefault()
+              setSearch(e.target.value)
             }}
           />
 
@@ -175,12 +164,8 @@ const Navbar = (props) => {
             />
           </svg>
 
-          <button
-            type="submit"
-            className={`btn btn-ghost border-solid border-1 border-indigo-600 w-20 ml-2 mr-2 ${visible}`}
-          >
-            Search
-          </button>
+          <button type="submit" className={`btn btn-ghost border-solid border-1 border-indigo-600 w-20 ml-2 mr-2 ${visible}`}>Search</button>
+
         </form>
 
         {/* <<<<<----- End of Search Button */}
@@ -216,21 +201,15 @@ const Navbar = (props) => {
                 <span className="font-bold text-lg">
                   {cartProductsCount} Items In Cart
                 </span>
-                {username ? (
-                  <span className="text-info">Subtotal: ${subTotal}</span>
-                ) : (
-                  <span className="text-info">You must be logged in!</span>
-                )}
-                {username && (
-                  <div className="card-actions">
-                    <button
-                      onClick={handleViewCart}
-                      className="btn btn-primary btn-block"
-                    >
-                      View cart
-                    </button>
-                  </div>
-                )}
+                {username ? <span className="text-info">Subtotal: ${subTotal}</span> : <span className="text-info">You must be logged in!</span>}
+                {username && <div className="card-actions">
+                  <button
+                    onClick={handleViewCart}
+                    className="btn btn-primary btn-block"
+                  >
+                    View cart
+                  </button>
+                </div>}
               </div>
             </div>
           </div>
