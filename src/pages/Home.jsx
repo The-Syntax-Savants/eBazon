@@ -14,6 +14,7 @@ const Home = (props) => {
   const [products, setProducts] = useState([]);
   const [alert, setAlert] = useState("");
   const grabCartProducts = props.grabCartProducts;
+  const isLoggedIn = props.isLoggedIn;
 
   //For pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,7 +39,7 @@ const Home = (props) => {
 
   useEffect(() => {
     fetchAllProducts();
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <div id="home-page">
@@ -98,6 +99,7 @@ const Home = (props) => {
               setAlert={setAlert}
               grabCartProducts={grabCartProducts}
               key={`This is the key: ${product.id}`}
+              isLoggedIn={isLoggedIn}
             />
           );
         })}

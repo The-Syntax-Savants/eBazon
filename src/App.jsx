@@ -76,7 +76,12 @@ const App = () => {
           <Route
             exact
             path="/"
-            element={<Home grabCartProducts={grabCartProducts} />}
+            element={
+              <Home
+                grabCartProducts={grabCartProducts}
+                isLoggedIn={isLoggedIn}
+              />
+            }
           />
           <Route
             path="/register"
