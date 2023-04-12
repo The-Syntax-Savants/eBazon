@@ -8,13 +8,14 @@ import {
 } from "../api-adapters/admin";
 import { getAllTagsDB } from "../api-adapters/tags";
 
-const AdminPanel = () => {
-  const [admin, setAdmin] = useState({is_admin: false});
+const AdminPanel = (props) => {
+  const [admin, setAdmin] = useState({ is_admin: false });
   const [allUsers, setAllUsers] = useState([]);
   const [allTags, setAllTags] = useState([]);
   const [newTag, setNewTag] = useState("");
   const [alert, setAlert] = useState("");
-
+  const isLoading = props.isLoading;
+  const setIsLoading = props.setIsLoading;
   const allAdminFunc = async () => {
     const fetchAdmin = async () => {
       if(localStorage.getItem("token")){
@@ -191,13 +192,15 @@ const AdminPanel = () => {
                   }}
                 >
                   Submit
-                </button></div>
-          
-        </div>
-      ) : (
-        <h1 className="text-3xl font-bold text-gray-800">Administrator login required</h1>
-      )}
-      {alert.startsWith("Error") ? (
+                </button>
+              </div>
+            </div>
+          ) : (
+            <h1 className="text-3xl font-bold text-gray-800">
+              Administrator login required
+            </h1>
+          )}
+          {alert.startsWith("Error") ? (
             <div className=" w-screen alert alert-error shadow-lg container flex flex-col items-center justify-center max-h-screen overflow-auto mt-[60px]">
               <div>
                 <svg
@@ -236,7 +239,9 @@ const AdminPanel = () => {
               </div>
             </div>
           ) : null}
-    </>
+        </>
+      )}
+    </div>
   );
 };
 

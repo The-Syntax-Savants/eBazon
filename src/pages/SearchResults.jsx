@@ -4,13 +4,15 @@ import { getAllProductsDB, getProductsByTagIdDB } from '../api-adapters/products
 import { SingleProductCard } from '../components'
 import { getAllTagsDB } from '../api-adapters/tags'
 
-const SearchResults = () => {
+const SearchResults = (props) => {
 
     //search-input tag-input
     const [products, setProducts] = useState([])
     const [alert, setAlert] = useState("");
     const [selectedTag, setSelectedTag] = useState(null)
     const [allTags, setAllTags] = useState([])
+      const isLoading = props.isLoading;
+  const setIsLoading = props.setIsLoading;
 
     let {searchInput} = useParams()
 
@@ -28,6 +30,7 @@ const SearchResults = () => {
     }
 
     const fetchSearchResults = async () => {
+        setIsLoading(true);
 
         let filteredProducts;
 
@@ -64,7 +67,7 @@ const SearchResults = () => {
         }
 
 
-
+setIsLoading(false);
     }
 
     const fetchAllTags = async () => {
@@ -89,6 +92,12 @@ const SearchResults = () => {
     }, [])
 
     return (
+        <div>
+      {isLoading ? (
+        <div className="flex justify-center items-center min-h-screen">
+          <progress className="progress w-56"></progress>
+        </div>
+      ) : (
         <>
 
             <div className="flex flex-row justify-center border border-1 border-black flex-wrap ">
@@ -171,6 +180,8 @@ const SearchResults = () => {
             
 
         </>
+                    })}
+          </div>
     )
 
 }
