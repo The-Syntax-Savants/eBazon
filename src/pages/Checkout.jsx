@@ -6,8 +6,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { getMyCartNumberDB, placeOrderDB } from "../api-adapters/carts";
-import { BASE_URL } from "../api-adapters";
+import { placeOrderDB } from "../api-adapters/carts";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -83,8 +82,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: confirmationURL,
-        // return_url: "http://localhost:3000/",
+        return_url: "http://localhost:3000",
       },
     });
 
@@ -99,6 +97,8 @@ export default function CheckoutForm() {
       setMessage("An unexpected error occurred.");
     }
 
+    console.log("ABOUT TO PLACE ORDER");
+    await placeOrderDB();
     setIsLoading(false);
   };
 
@@ -107,7 +107,7 @@ export default function CheckoutForm() {
   };
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
+    <form id="payment-form" className="mt-10 mb-50" onSubmit={handleSubmit}>
       <PaymentElement id="payment-element" options={paymentElementOptions} />
       <h3>Shipping</h3>
       <AddressElement
@@ -115,7 +115,7 @@ export default function CheckoutForm() {
       />
       <button disabled={isLoading || !stripe || !elements} id="submit">
         <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
+          {isLoading ? <div className="spinner" id="spinner" /> : "Pay now"}
         </span>
       </button>
       {/* Show any error or success messages */}
