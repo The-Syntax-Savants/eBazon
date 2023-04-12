@@ -10,8 +10,9 @@ const Confirmation = () => {
   }, [cartNumber]);
 
   return (
-    <div id="confirmation-page" className="h-screen text-center">
-      <h1>Order Placed!</h1>
+    <div id="confirmation-page">
+      <h1>Confirmed</h1>
+      {cartNumber && <h1>{cartNumber}</h1>}
     </div>
   );
 };
