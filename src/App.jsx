@@ -124,6 +124,8 @@ const App = () => {
               <SearchResults
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
+                grabCartProducts={grabCartProducts}
+                isLoggedIn={isLoggedIn}
               />
             }
           />

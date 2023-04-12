@@ -13,8 +13,10 @@ const SearchResults = (props) => {
   const [alert, setAlert] = useState("");
   const [selectedTag, setSelectedTag] = useState(null);
   const [allTags, setAllTags] = useState([]);
+  const grabCartProducts = props.grabCartProducts;
   const isLoading = props.isLoading;
   const setIsLoading = props.setIsLoading;
+  const isLoggedIn = props.isLoggedIn
 
   let { searchInput } = useParams();
 
@@ -108,7 +110,8 @@ const SearchResults = (props) => {
                 <SingleProductCard
                   product={product}
                   setAlert={setAlert}
-                  cardLocation={"home"}
+                  grabCartProducts={grabCartProducts}
+                  isLoggedIn={isLoggedIn}
                   key={`This is the key: ${product.id}`}
                 />
               );
