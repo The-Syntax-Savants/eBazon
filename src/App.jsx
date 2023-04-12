@@ -25,6 +25,7 @@ const App = () => {
   const [clientSecret, setClientSecret] = useState("");
   const [cartProductsCount, setCartProductsCount] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const stripePromise = loadStripe(
     "pk_test_51MvOTQLhGAqNc30vaCPHwOYngRS0iERaK2A9QymnF3g6Y0VUDpNBiB5Wveb9Vt62YZ3NyXMWwjonuaKiOBHl4mZQ00gY6bvm8D"
   );
@@ -77,7 +78,13 @@ const App = () => {
           <Route
             exact
             path="/"
-            element={<Home grabCartProducts={grabCartProducts} />}
+            element={
+              <Home
+                grabCartProducts={grabCartProducts}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+              />
+            }
           />
           <Route
             path="/register"
@@ -94,16 +101,31 @@ const App = () => {
           />
           <Route path="/:username/profile" element={<Profile />} />
           <Route path="/edit-product/:id" element={<EditProduct />} />
-          <Route path="/panel" element={<AdminPanel />} />
+          <Route
+            path="/panel"
+            element={
+              <AdminPanel isLoading={isLoading} setIsLoading={setIsLoading} />
+            }
+          />
           <Route
             path="/my-cart"
             element={
-              <Cart subTotal={subTotal} grabCartProducts={grabCartProducts} />
+              <Cart
+                subTotal={subTotal}
+                grabCartProducts={grabCartProducts}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+              />
             }
           />
           <Route
             path="/search-results/:searchInput"
-            element={<SearchResults />}
+            element={
+              <SearchResults
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+              />
+            }
           />
           <Route
             path="/checkout"
