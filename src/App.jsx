@@ -80,7 +80,6 @@ const App = () => {
             element={
               <Home
                 grabCartProducts={grabCartProducts}
-                isLoggedIn={isLoggedIn}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
               />
