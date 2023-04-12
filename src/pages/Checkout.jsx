@@ -6,7 +6,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { placeOrderDB } from "../api-adapters/carts";
+import { placeOrderDB, getMyCartNumberDB } from "../api-adapters/carts";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -77,6 +77,8 @@ export default function CheckoutForm() {
     }
 
     setIsLoading(true);
+
+    console.log(confirmationURL, "&&&");
 
     const { error } = await stripe.confirmPayment({
       elements,
