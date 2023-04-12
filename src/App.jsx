@@ -82,6 +82,7 @@ const App = () => {
                 grabCartProducts={grabCartProducts}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
+                isLoggedIn={isLoggedIn}
               />
             }
           />
