@@ -15,36 +15,44 @@ const AdminPanel = () => {
   const [newTag, setNewTag] = useState("");
   const [alert, setAlert] = useState("");
 
-  const fetchUsersAndTags = async () => {
-    //make api adapter for getAllUsersDB then populate diasyUI table
-    const data = await getAllUsersFromDB();
-    setAllUsers(data.users);
-
-    const grabTags = await getAllTagsDB();
-    setAllTags(grabTags);
-  };
-
-  const fetchAdmin = async () => {
-    if(localStorage.getItem("token")){
-      const data = await getLoggedInUserFromDB();
-      if (data.is_admin) {
-        setAdmin(data);
+  const allAdminFunc = async () => {
+    const fetchAdmin = async () => {
+      if(localStorage.getItem("token")){
+        const data = await getLoggedInUserFromDB();
+        if (data.is_admin) {
+          setAdmin(data);
+        }else{
+          setAlert(`Error: You must be an Admin to access this page`)
+        }
       }else{
         setAlert(`Error: You must be an Admin to access this page`)
       }
-    }else{
-      setAlert(`Error: You must be an Admin to access this page`)
+    };
+    await fetchAdmin()
+  }
+  const fetchUsersAndTags = async () => {
+    if(admin.is_admin){
+      const data = await getAllUsersFromDB();
+      setAllUsers(data.users);
+  
+      const grabTags = await getAllTagsDB();
+      setAllTags(grabTags);
     }
+    
   };
+
   useEffect(() => {
-      fetchAdmin();
+      allAdminFunc();
   }, []);
 
   useEffect(() => {
-    if (admin.is_admin) {
       fetchUsersAndTags();
-    }
   }, [admin]);
+
+  useEffect(()=>{
+    fetchUsersAndTags()
+  }, [alert])
+
   return (
     <>
       {allUsers.length ? (
@@ -114,8 +122,8 @@ const AdminPanel = () => {
                   <table className="table w-full table-compact">
                     <thead>
                       <tr>
-                        <th></th>
                         <th>Name</th>
+                        <th>ID</th>
                         <th>Delete</th>
                       </tr>
                     </thead>
@@ -123,7 +131,6 @@ const AdminPanel = () => {
                       {allTags.map((tag, idx) => {
                         return (
                           <tr key={tag.id} className="hover">
-                            <th>{idx + 1}</th>
                             <td
                               onClick={async (e) => {
                                 e.preventDefault();
@@ -134,9 +141,10 @@ const AdminPanel = () => {
                                   setAlert(data.message);
                                 }
                               }}
-                            >
+                              >
                               {tag.name}
                             </td>
+                              <td>{tag.id}</td>
                             <td
                               onClick={async (e) => {
                                 e.preventDefault();
@@ -160,7 +168,7 @@ const AdminPanel = () => {
           </div>
                 <input
                   type="text"
-                  placeholder="New Tag Or Edit Tag"
+                  placeholder="Edit or New Tag"
                   className="input mt-[2.8vh] ml-[53vw] input-bordered input-primary w-[18vw]"
                   onChange={(e) => {
                     setNewTag(e.target.value);
