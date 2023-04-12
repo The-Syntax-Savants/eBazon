@@ -114,18 +114,6 @@ const Home = (props) => {
           </div>
         </div>
       )}
-      <div id="product-cards-container" className="flex flex-wrap">
-        {currentProducts.map((product) => {
-          return (
-            <SingleProductCard
-              product={product}
-              setAlert={setAlert}
-              grabCartProducts={grabCartProducts}
-              key={`This is the key: ${product.id}`}
-            />
-          );
-        })}
-      </div>
       {totalPages.length > 0 && (
         <div className="btn-group mb-10 flex justify-center ">
           <button
