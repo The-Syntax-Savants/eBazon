@@ -7,7 +7,8 @@ const SingleProductCard = (props) => {
   const product = props.product;
   const setAlert = props.setAlert;
   const grabCartProducts = props.grabCartProducts;
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState({});
+  const isLoggedIn = props.isLoggedIn;
 
   async function handleAddToCart() {
     try {

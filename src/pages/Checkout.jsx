@@ -6,8 +6,8 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { getMyCartNumberDB, placeOrderDB } from "../api-adapters/carts";
-import { BASE_URL } from "../api-adapters";
+
+import { placeOrderDB, getMyCartNumberDB } from "../api-adapters/carts";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -79,12 +79,13 @@ export default function CheckoutForm() {
 
     setIsLoading(true);
 
+    console.log(confirmationURL, "&&&");
+
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
         return_url: confirmationURL,
-        // return_url: "http://localhost:3000/",
       },
     });
 
@@ -99,6 +100,8 @@ export default function CheckoutForm() {
       setMessage("An unexpected error occurred.");
     }
 
+
+    await placeOrderDB();
     setIsLoading(false);
   };
 
