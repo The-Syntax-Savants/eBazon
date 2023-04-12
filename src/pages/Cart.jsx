@@ -31,7 +31,7 @@ const Cart = (props) => {
   }, []);
 
   return (
-    <div>
+    <div className="h-screen">
       {isLoading ? (
         <div className="flex justify-center items-center min-h-screen">
           <progress className="progress w-56"></progress>
