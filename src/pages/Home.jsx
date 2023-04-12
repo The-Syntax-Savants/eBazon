@@ -6,7 +6,7 @@ import {
   getAllProductsDB,
   getProductsByTagIdDB,
 } from "../api-adapters/products";
-import { Pagination } from "../components"
+import { Pagination } from "../components";
 // require("../style.css");
 // require("../tailwind.config.js");
 
@@ -16,27 +16,30 @@ const Home = (props) => {
   const grabCartProducts = props.grabCartProducts;
 
   //For pagination
-  const [currentPage, setCurrentPage] = useState(1)
-  const [productsPerPage, setProductsPerPage] = useState(16)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage, setProductsPerPage] = useState(16);
 
-  const indexOfLastProduct = currentPage * productsPerPage
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct)
-  const totalPages = []
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  const totalPages = [];
 
   for (let i = 0; i < Math.ceil(products.length / productsPerPage); i++) {
-    totalPages.push(i + 1)
+    totalPages.push(i + 1);
   }
-  
+
+  const fetchAllProducts = async () => {
+    const fetchedProducts = await getAllProductsDB();
+    setProducts(fetchedProducts.products);
+  };
 
   useEffect(() => {
-    const fetchAllProducts = async () => {
-      const fetchedProducts = await getAllProductsDB();
-      setProducts(fetchedProducts.products);
-    };
-
     fetchAllProducts();
   }, []);
+
   return (
     <div id="home-page">
       <div id="sub-header">
@@ -98,59 +101,64 @@ const Home = (props) => {
             />
           );
         })}
-
-
-        
-
-
       </div>
 
-      {
-        (totalPages.length > 0 &&
-          <div className="btn-group mb-10 flex justify-center ">
+      {totalPages.length > 0 && (
+        <div className="btn-group mb-10 flex justify-center ">
+          <button
+            onClick={() => {
+              if (currentPage !== 1) {
+                setCurrentPage(currentPage - 1);
+              }
+            }}
+            className="btn"
+          >
+            «
+          </button>
 
-            <button onClick={() => {
-            if (currentPage !== 1) {
-                setCurrentPage(currentPage - 1)
-            }
-            }} className="btn">«</button>
+          {totalPages.length &&
+            totalPages.map((_, idx) => {
+              if (currentPage === idx + 1) {
+                return (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setCurrentPage(idx + 1);
+                    }}
+                    key={`pagination1 map btn idx: ${idx}`}
+                    className="btn w-20 btn-active"
+                  >
+                    {idx + 1}
+                  </button>
+                );
+              } else {
+                return (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setCurrentPage(idx + 1);
+                    }}
+                    key={`pagination2 map btn idx: ${idx}`}
+                    className="btn w-30"
+                  >
+                    {idx + 1}
+                  </button>
+                );
+              }
+            })}
 
-            {
-            (totalPages.length && 
-
-                totalPages.map((_, idx) => {
-
-                if (currentPage === (idx + 1) ) {
-
-                    return (<button  onClick={(e) => {
-                    e.preventDefault()
-                    setCurrentPage(idx + 1)
-                    }} key={`pagination1 map btn idx: ${idx}`} className="btn w-20 btn-active">{idx + 1}</button>)
-
-                } else {
-                    
-                    return (<button  onClick={(e) => {
-                    e.preventDefault()
-                    setCurrentPage(idx + 1)
-                    }} key={`pagination2 map btn idx: ${idx}`} className="btn w-30">{idx + 1}</button>)
-
-                }
-
-                }))
-            }
-
-            <button onClick={() => {
-            if (currentPage !== totalPages.length) {
-                setCurrentPage(currentPage + 1)
-            }
-            }} className="btn">»</button>
-
-
-          </div>
-        )
-      }
-
-      
+          <button
+            onClick={() => {
+              if (currentPage !== totalPages.length) {
+                setCurrentPage(currentPage + 1);
+              }
+            }}
+            className="btn"
+          >
+            »
+          </button>
+        </div>
+      )}
     </div>
   );
 };

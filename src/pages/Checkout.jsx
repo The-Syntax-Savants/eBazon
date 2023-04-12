@@ -22,7 +22,7 @@ export default function CheckoutForm() {
     try {
       const BASE_URL =
         process.env.NODE_ENV === "production"
-          ? "https://google.com"
+          ? "https://ebazon.netlify.app"
           : "http://localhost:3000";
 
       const cartNumber = await getMyCartNumberDB();
