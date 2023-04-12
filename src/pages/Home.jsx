@@ -16,34 +16,35 @@ const Home = (props) => {
   const setIsLoading = props.setIsLoading;
 
   //For pagination
-  const [currentPage, setCurrentPage] = useState(1)
-  const [productsPerPage, setProductsPerPage] = useState(16)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage, setProductsPerPage] = useState(16);
 
-  const indexOfLastProduct = currentPage * productsPerPage
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage
-  const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct)
-  const totalPages = []
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  const totalPages = [];
 
   for (let i = 0; i < Math.ceil(products.length / productsPerPage); i++) {
-    totalPages.push(i + 1)
+    totalPages.push(i + 1);
   }
 
   useEffect(() => {
     const fetchAllProducts = async () => {
-    setIsLoading(true);
-    setTimeout(async () => {
-      const fetchedProducts = await getAllProductsDB();
-      setProducts(fetchedProducts.products);
-      setIsLoading(false);
-    }, 1000);
+      setIsLoading(true);
+      setTimeout(async () => {
+        const fetchedProducts = await getAllProductsDB();
+        setProducts(fetchedProducts.products);
+        setIsLoading(false);
+      }, 1000);
     };
 
     fetchAllProducts();
   }, []);
   return (
     <div>
-    
-    
       {isLoading ? (
         <div className="flex justify-center items-center min-h-screen">
           <progress className="progress w-56"></progress>
@@ -73,7 +74,6 @@ const Home = (props) => {
                 </div>
               </div>
             )}
-
             <div
               onClick={async (evt) => {
                 //Since the whole div is clickable, we have to check if an actual HTML element with a value attribute was clicked.
@@ -101,7 +101,7 @@ const Home = (props) => {
           </div>
 
           <div id="product-cards-container" className="flex flex-wrap">
-            {products.map((product) => {
+            {currentProducts.map((product) => {
               return (
                 <SingleProductCard
                   product={product}
@@ -114,7 +114,6 @@ const Home = (props) => {
           </div>
         </div>
       )}
-      </div>
       <div id="product-cards-container" className="flex flex-wrap">
         {currentProducts.map((product) => {
           return (
@@ -127,50 +126,62 @@ const Home = (props) => {
           );
         })}
       </div>
-      {
-        (totalPages.length > 0 &&
-          <div className="btn-group mb-10 flex justify-center ">
+      {totalPages.length > 0 && (
+        <div className="btn-group mb-10 flex justify-center ">
+          <button
+            onClick={() => {
+              if (currentPage !== 1) {
+                setCurrentPage(currentPage - 1);
+              }
+            }}
+            className="btn"
+          >
+            «
+          </button>
 
-            <button onClick={() => {
-            if (currentPage !== 1) {
-                setCurrentPage(currentPage - 1)
-            }
-            }} className="btn">«</button>
+          {totalPages.length &&
+            totalPages.map((_, idx) => {
+              if (currentPage === idx + 1) {
+                return (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setCurrentPage(idx + 1);
+                    }}
+                    key={`pagination1 map btn idx: ${idx}`}
+                    className="btn w-20 btn-active"
+                  >
+                    {idx + 1}
+                  </button>
+                );
+              } else {
+                return (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setCurrentPage(idx + 1);
+                    }}
+                    key={`pagination2 map btn idx: ${idx}`}
+                    className="btn w-30"
+                  >
+                    {idx + 1}
+                  </button>
+                );
+              }
+            })}
 
-            {
-            (totalPages.length && 
-
-                totalPages.map((_, idx) => {
-
-                if (currentPage === (idx + 1) ) {
-
-                    return (<button  onClick={(e) => {
-                    e.preventDefault()
-                    setCurrentPage(idx + 1)
-                    }} key={`pagination1 map btn idx: ${idx}`} className="btn w-20 btn-active">{idx + 1}</button>)
-
-                } else {
-                    
-                    return (<button  onClick={(e) => {
-                    e.preventDefault()
-                    setCurrentPage(idx + 1)
-                    }} key={`pagination2 map btn idx: ${idx}`} className="btn w-30">{idx + 1}</button>)
-
-                }
-
-                }))
-            }
-
-            <button onClick={() => {
-            if (currentPage !== totalPages.length) {
-                setCurrentPage(currentPage + 1)
-            }
-            }} className="btn">»</button>
-
-
-          </div>
-        )
-      }
+          <button
+            onClick={() => {
+              if (currentPage !== totalPages.length) {
+                setCurrentPage(currentPage + 1);
+              }
+            }}
+            className="btn"
+          >
+            »
+          </button>
+        </div>
+      )}
     </div>
   );
 };
