@@ -14,6 +14,7 @@ const Home = (props) => {
   const grabCartProducts = props.grabCartProducts;
   const isLoading = props.isLoading;
   const setIsLoading = props.setIsLoading;
+  const isLoggedIn = props.isLoggedIn;
 
   //For pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -108,6 +109,7 @@ const Home = (props) => {
                   setAlert={setAlert}
                   grabCartProducts={grabCartProducts}
                   key={`This is the key: ${product.id}`}
+                  isLoggedIn={isLoggedIn}
                 />
               );
             })}

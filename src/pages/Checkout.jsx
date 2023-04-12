@@ -6,7 +6,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { placeOrderDB } from "../api-adapters/carts";
+import { placeOrderDB, getMyCartNumberDB } from "../api-adapters/carts";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -15,6 +15,26 @@ export default function CheckoutForm() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [confirmationURL, setConfirmationURL] = useState("");
+
+  const getConfirmationURL = async () => {
+    try {
+      const BASE_URL =
+        process.env.NODE_ENV === "production"
+          ? "https://ebazon.netlify.app"
+          : "http://localhost:3000";
+
+      const cartNumber = await getMyCartNumberDB();
+
+      setConfirmationURL(`${BASE_URL}/confirmation/${cartNumber}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getConfirmationURL();
+  }, []);
 
   useEffect(() => {
     if (!stripe) {
@@ -58,11 +78,13 @@ export default function CheckoutForm() {
 
     setIsLoading(true);
 
+    console.log(confirmationURL, "&&&");
+
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000",
+        return_url: confirmationURL,
       },
     });
 
@@ -77,7 +99,6 @@ export default function CheckoutForm() {
       setMessage("An unexpected error occurred.");
     }
 
-    console.log("ABOUT TO PLACE ORDER");
     await placeOrderDB();
     setIsLoading(false);
   };
