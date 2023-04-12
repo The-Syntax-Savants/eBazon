@@ -16,6 +16,10 @@ const Home = (props) => {
   const setIsLoading = props.setIsLoading;
   const isLoggedIn = props.isLoggedIn;
 
+  //For see all products button
+  const [tagFilterActive, setTagFilterActive] = useState(false)
+
+
   //For pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(16);
@@ -83,10 +87,12 @@ const Home = (props) => {
                     evt.target.value
                   );
                   setProducts(tagProducts);
+                  setTagFilterActive(true)
                 }
               }}
+              className="flex flex-row flex-wrap justify-evenly"
             >
-              <button className="category-button" value={3}>
+              <button className="category-button border-2 border-solid border-black" value={3}>
                 Home Goods
               </button>
               <button className="category-button" value={4}>
@@ -99,6 +105,18 @@ const Home = (props) => {
                 Toys
               </button>
             </div>
+
+            {
+              (tagFilterActive && 
+                <button className="btn" onClick={ async () => {
+                  const fetchedAllProducts = await getAllProductsDB()
+                  setProducts(fetchedAllProducts.products)
+                  setCurrentPage(1)
+                  setTagFilterActive(false)
+                }}>See All Products</button>
+              )
+            }
+
           </div>
 
           <div id="product-cards-container" className="flex flex-wrap">
