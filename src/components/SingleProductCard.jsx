@@ -7,9 +7,7 @@ const SingleProductCard = (props) => {
   const product = props.product;
   const setAlert = props.setAlert;
   const grabCartProducts = props.grabCartProducts;
-  const isLoggedIn = props.isLoggedIn;
-
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({})
 
   async function handleAddToCart() {
     try {
@@ -25,17 +23,17 @@ const SingleProductCard = (props) => {
   }
 
   const fetchUser = async () => {
-    const data = await getLoggedInUserFromDB();
-    if (data.username) {
-      setUser(data);
+    const data = await getLoggedInUserFromDB()
+    if(data.username){
+      setUser(data)
     }
-  };
+  }
 
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      fetchUser();
+  useEffect(()=>{
+    if(localStorage.getItem("token")){
+      fetchUser()
     }
-  }, []);
+  }, [])
 
   return (
     <div id="product-card" className="max-w-sm w-full">
@@ -62,28 +60,25 @@ const SingleProductCard = (props) => {
           </h2>
           <h5>Seller: {product.seller_name}</h5>
           <p>{product.description}</p>
-
+          
           <div className="flex flex-row flex-wrap max-h-20 overflow-auto">
-            {product.tags.length > 0 &&
-              product.tags.map((tag, idx) => {
-                return (
-                  <p
-                    key={`paragraph in SingleProductCard: ${idx}`}
+            {
+              (product.tags.length > 0 &&  product.tags.map((tag, idx) => {
+                return(
+                  <p key={`paragraph in SingleProductCard: ${idx}`}
                     className="badge badge-outline min-h-fit max-w-fit mb-2 mr-2"
-                  >
-                    {tag.name}
-                  </p>
-                );
-              })}
-          </div>
+                  >{tag.name}</p>)
+              }))
 
-          {user.username && isLoggedIn && (
-            <div className="card-actions justify-end">
-              <button onClick={handleAddToCart} className="btn btn-success">
-                Add to Cart
-              </button>
-            </div>
-          )}
+            }
+
+          </div>
+          
+          {user.username && <div className="card-actions justify-end">
+            <button onClick={handleAddToCart} className="btn btn-success">
+              Add to Cart
+            </button> 
+          </div>}
         </div>
       </div>
     </div>

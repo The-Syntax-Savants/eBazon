@@ -12,7 +12,6 @@ const Home = (props) => {
   const [products, setProducts] = useState([]);
   const [alert, setAlert] = useState("");
   const grabCartProducts = props.grabCartProducts;
-  const isLoggedIn = props.isLoggedIn;
   const isLoading = props.isLoading;
   const setIsLoading = props.setIsLoading;
 
@@ -42,10 +41,8 @@ const Home = (props) => {
       }, 1000);
     };
 
-  useEffect(() => {
     fetchAllProducts();
-  }, [isLoggedIn]);
-
+  }, []);
   return (
     <div>
       {isLoading ? (
@@ -125,7 +122,6 @@ const Home = (props) => {
               setAlert={setAlert}
               grabCartProducts={grabCartProducts}
               key={`This is the key: ${product.id}`}
-              isLoggedIn={isLoggedIn}
             />
           );
         })}
@@ -143,18 +139,6 @@ const Home = (props) => {
             «
           </button>
 
-      {totalPages.length > 0 && (
-        <div className="btn-group mb-10 flex justify-center ">
-          <button
-            onClick={() => {
-              if (currentPage !== 1) {
-                setCurrentPage(currentPage - 1);
-              }
-            }}
-            className="btn"
-          >
-            «
-          </button>
           {totalPages.length &&
             totalPages.map((_, idx) => {
               if (currentPage === idx + 1) {
