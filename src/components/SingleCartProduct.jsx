@@ -43,7 +43,7 @@ const SingleCartProduct = (props) => {
       id="product-card"
       className="product-card w-full md:w-1/2 lg:w-1/3 xl:w-1/4 mb-4"
     >
-      <div className="card w-auto min-w-[900px] bg-base-100 shadow-xl flex flex-row relative">
+      <div className="card w-auto min-w-[900px] bg-base-100 shadow-xl relative">
         <div className="absolute top-5 right-5">
           <button onClick={handleRemoveFromCart} className="btn btn-error">
             Remove
@@ -77,7 +77,7 @@ const SingleCartProduct = (props) => {
               </div>
             </h2>
             <h5>Seller: {product.seller_name}</h5>
-            <p>{product.description}</p>
+            <p className="line-clamp-2">{product.description}</p>
             <div className="card-actions flex-start">
               <label className="input-group">
                 <span>Product Quantity: </span>
