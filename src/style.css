@@ -82,22 +82,25 @@ body {
   height: 100px;
   width: 100px;
   margin: 50px 100px 10px 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .category-button:hover {
   background-color: lightgray;
 }
 
-#product-cards-container {
+/* #product-cards-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   height: 100%;
   width: 100%;
-}
+} */
 
-#product-card {
+/* #product-card {
   width: 33%;
   margin: 20px;
 }
@@ -106,7 +109,7 @@ body {
   height: 100px;
   width: 20vh;
   margin: 20px;
-}
+} */
 
 .hero-content {
   margin-top: 7.5rem;

@@ -16,10 +16,13 @@ const Home = (props) => {
   const setIsLoading = props.setIsLoading;
   const isLoggedIn = props.isLoggedIn;
 
+  //For see all products button
+  const [tagFilterActive, setTagFilterActive] = useState(false)
+
+
   //For pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(16);
-
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = products.slice(
@@ -39,7 +42,7 @@ const Home = (props) => {
         const fetchedProducts = await getAllProductsDB();
         setProducts(fetchedProducts.products);
         setIsLoading(false);
-      }, 1000);
+      }, 500);
     };
 
     fetchAllProducts();
@@ -83,14 +86,16 @@ const Home = (props) => {
                     evt.target.value
                   );
                   setProducts(tagProducts);
+                  setTagFilterActive(true)
                 }
               }}
+              className="flex flex-row flex-wrap justify-evenly"
             >
-              <button className="category-button" value={3}>
-                Home Goods
+              <button className="category-button border-2 border-solid border-black" value={3}>
+                Decoration
               </button>
               <button className="category-button" value={4}>
-                Decoration
+                Home Goods
               </button>
               <button className="category-button" value={11}>
                 Sports
@@ -99,9 +104,21 @@ const Home = (props) => {
                 Toys
               </button>
             </div>
+
+            {
+              (tagFilterActive && 
+                <button className="btn" onClick={ async () => {
+                  const fetchedAllProducts = await getAllProductsDB()
+                  setProducts(fetchedAllProducts.products)
+                  setCurrentPage(1)
+                  setTagFilterActive(false)
+                }}>See All Products</button>
+              )
+            }
+
           </div>
 
-          <div id="product-cards-container" className="flex flex-wrap">
+          <div id="product-cards-container" className="flex flex-wrap justify-evenly mb-10 mt-10 h-full w-full">
             {currentProducts.map((product) => {
               return (
                 <SingleProductCard

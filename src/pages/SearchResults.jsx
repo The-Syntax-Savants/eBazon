@@ -13,8 +13,10 @@ const SearchResults = (props) => {
   const [alert, setAlert] = useState("");
   const [selectedTag, setSelectedTag] = useState(null);
   const [allTags, setAllTags] = useState([]);
+  const grabCartProducts = props.grabCartProducts;
   const isLoading = props.isLoading;
   const setIsLoading = props.setIsLoading;
+  const isLoggedIn = props.isLoggedIn
 
   let { searchInput } = useParams();
 
@@ -60,8 +62,9 @@ const SearchResults = (props) => {
         setProducts(filteredProducts);
       }
     }
-
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
   };
 
   const fetchAllTags = async () => {
@@ -78,7 +81,7 @@ const SearchResults = (props) => {
   }, []);
 
   return (
-    <div>
+    <div className="min-h-screen">
       {isLoading ? (
         <div className="flex justify-center items-center min-h-screen">
           <progress className="progress w-56"></progress>
@@ -102,13 +105,14 @@ const SearchResults = (props) => {
             })}
           </div>
 
-          <div id="product-cards-container" className="flex flex-wrap">
+          <div id="product-cards-container" className="flex flex-wrap justify-evenly mb-10 mt-10 h-full w-full">
             {currentProducts.map((product) => {
               return (
                 <SingleProductCard
                   product={product}
                   setAlert={setAlert}
-                  cardLocation={"home"}
+                  grabCartProducts={grabCartProducts}
+                  isLoggedIn={isLoggedIn}
                   key={`This is the key: ${product.id}`}
                 />
               );

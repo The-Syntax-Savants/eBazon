@@ -16,7 +16,7 @@ import {
 } from "./pages";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { Navbar, Footer, Pagination } from "./components";
+import { Navbar, Footer, Gradient } from "./components";
 import { createPaymentIntent } from "./api-adapters/stripe";
 import { getActiveCartProductsDB } from "./api-adapters/carts";
 
@@ -62,6 +62,9 @@ const App = () => {
 
   return (
     <div id="main">
+      <div id="gradient-container" className="w-full h-1 relative">
+        <Gradient />
+      </div>
       <div id="navbar-container mb-10">
         <Navbar
           setIsLoggedIn={setIsLoggedIn}
@@ -124,6 +127,8 @@ const App = () => {
               <SearchResults
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
+                grabCartProducts={grabCartProducts}
+                isLoggedIn={isLoggedIn}
               />
             }
           />
@@ -140,7 +145,13 @@ const App = () => {
           <Route path="/confirmation/:cartNumber" element={<Confirmation />} />
         </Routes>
       </div>
+      <div id="gradient-container" className="w-full h-1 relative">
+        <Gradient reverse />
+      </div>
       <Footer />
+      <div id="gradient-container" className="w-full h-1 relative">
+        <Gradient />
+      </div>
     </div>
   );
 };

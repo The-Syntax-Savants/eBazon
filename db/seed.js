@@ -1,5 +1,5 @@
 import { client } from "./index.js";
-import {faker} from "@faker-js/faker"
+import { faker } from "@faker-js/faker";
 import { createUser, getAllUsers, getUserById, updateUser } from "./users.js";
 import {
   createProduct,
@@ -198,8 +198,6 @@ async function createInitialUsers() {
       is_admin: false,
     });
 
-    
-
     console.log("finished creating initial users!");
   } catch (error) {
     throw error;
@@ -227,21 +225,14 @@ async function createInitialProducts() {
   try {
     console.log("Creating Initial Products");
     await createProduct({
-      name: "MLP Action Figure",
+      name: "Microsoft",
       seller_name: "DrizzyJ",
       price: 1500,
-      description: "Priceless Inheritance",
+      description: "Small company I created",
       dimensions: "100x100x100",
       quantity: 1,
-    });
-
-    await createProduct({
-      name: "Bike",
-      seller_name: "DrizzyJ",
-      price: 10000,
-      description: "This is a bike",
-      dimensions: "10x10x10",
-      quantity: 10,
+      image_url:
+        "https://1000logos.net/wp-content/uploads/2017/04/Microsoft-Logo.png",
     });
 
     await createProduct({
@@ -254,26 +245,6 @@ async function createInitialProducts() {
       image_url:
         "https://target.scene7.com/is/image/Target/GUEST_44fc59b0-d3f9-462f-a37b-87ff7372c3c3?wid=488&hei=488&fmt=pjpeg",
     });
-
-    await createProduct({
-      name: "Sick Skateboard",
-      seller_name: "DrizzyJ",
-      price: 15673,
-      description: "This is a skateboard. its sick",
-      dimensions: "10x100x10",
-      quantity: 1,
-    });
-
-    await createProduct({
-      name: "Camping Tent",
-      seller_name: "DrizzyJ",
-      price: 20000,
-      description:
-        "lorem ipsum dolor afnlk al ak an a nal alkas oiqw  now f qonf  fai osfa fsna lfnla nfa falfn aklf na fanl a ",
-      dimensions: "10x100x10",
-      quantity: 1,
-    });
-
 
     console.log("Finished creating initial products");
   } catch (error) {
@@ -309,37 +280,48 @@ async function createInitialTags() {
       await createTag(tags[i]);
     }
 
-    const data = await getAllTags()
-    console.log(data, "HERE AGAUIN")
+    const data = await getAllTags();
+    console.log(data, "HERE AGAUIN");
 
-    for(let i = 1; i < 100; i++){
-      const tag = [data[faker.datatype.number({min:1,max:7})], data[faker.datatype.number({min: 8, max:15})]]
+    for (let i = 1; i < 100; i++) {
+      const tag = [
+        data[faker.datatype.number({ min: 1, max: 7 })],
+        data[faker.datatype.number({ min: 8, max: 15 })],
+      ];
       await createProduct({
         name: faker.commerce.productName(),
-        seller_name: faker.helpers.arrayElement(["DrizzyJ", "crooney", "Phillip", "unforgottable", "topstown", "Cashing", "randomTest"]),
+        seller_name: faker.helpers.arrayElement([
+          "DrizzyJ",
+          "crooney",
+          "Phillip",
+          "unforgottable",
+          "topstown",
+          "Cashing",
+          "randomTest",
+        ]),
         description: faker.lorem.sentence(),
         price: parseInt(parseFloat(faker.commerce.price()) * 100),
         quantity: faker.datatype.number(),
         dimensions: `${faker.datatype.number()} x ${faker.datatype.number()}`,
-        image_url: faker.image.imageUrl(null, null, "", true),
-        tags: tag
-      })
-      const first_name = faker.name.firstName()
-      const username = faker.internet.userName(first_name)
+        image_url: faker.image.imageUrl(null, null, "technic", true),
+        tags: tag,
+      });
+      const first_name = faker.name.firstName();
+      const username = faker.internet.userName(first_name);
       await createUser({
         first_name: first_name,
         last_name: faker.name.lastName(),
         username: username,
-        password: 'password',
+        password: "password",
         email: faker.internet.email(first_name),
-        is_admin: false
-      })
+        is_admin: false,
+      });
 
       await createCartProduct({
         username: username,
         product_id: i,
-        quantity: faker.datatype.number({max: 10})
-      })
+        quantity: faker.datatype.number({ max: 10 }),
+      });
     }
 
     console.log("Finished creating tags");
@@ -383,8 +365,8 @@ async function testDB() {
       first_name: "Emilio",
       email: "d2fan@info.com",
     };
-    const MLP = await updateUser(object1);
-    console.log("Result:", MLP);
+    const updateUserTest = await updateUser(object1);
+    console.log("Result:", updateUserTest);
 
     console.log("Calling getAllProducts");
     const products = await getAllProducts();
@@ -418,30 +400,30 @@ async function testDB() {
     const filteredProducts = await getProductsByTagId(4);
     console.log("Result: ", filteredProducts);
 
-    console.log("Testing create product with tags");
-    const create = await createProduct({
-      name: "newProductICreated",
-      seller_name: "DrizzyJ",
-      price: 2700,
-      description: "Priceless Inheritance",
-      dimensions: "100x100x100",
-      quantity: 1,
-      tags: product.tags,
-    });
-    console.log("Result:", create);
+    // console.log("Testing create product with tags");
+    // const create = await createProduct({
+    //   name: "newProductICreated",
+    //   seller_name: "DrizzyJ",
+    //   price: 2700,
+    //   description: "Priceless Inheritance",
+    //   dimensions: "100x100x100",
+    //   quantity: 1,
+    //   tags: product.tags,
+    // });
+    // console.log("Result:", create);
 
-    console.log("testing updateProduct");
-    console.log(
-      await updateProduct(create.id, {
-        name: "why now",
-        seller_name: "PolyNoodle",
-        price: 27770,
-        description: "Priceless Inheritance",
-        dimensions: "100x100x100",
-        quantity: 1,
-        tags: product.tags,
-      })
-    );
+    // console.log("testing updateProduct");
+    // console.log(
+    //   await updateProduct(create.id, {
+    //     name: "why now",
+    //     seller_name: "PolyNoodle",
+    //     price: 27770,
+    //     description: "Priceless Inheritance",
+    //     dimensions: "100x100x100",
+    //     quantity: 1,
+    //     tags: product.tags,
+    //   })
+    // );
 
     console.log("testing getCartProductByCartId");
     const data = await getCartProductsByCartId(1);
