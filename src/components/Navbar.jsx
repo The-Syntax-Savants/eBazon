@@ -4,13 +4,13 @@ import { getLoggedInUserFromDB } from "../api-adapters/users";
 import { getActiveCartProductsDB } from "../api-adapters/carts";
 import { getAllTagsDB } from "../api-adapters/tags";
 import { Space, Select } from "antd";
+import Logo from "../assets/Logo.svg";
 
 const Navbar = (props) => {
   const [admin, setAdmin] = useState(false);
   const [username, setUsername] = useState("");
   const [search, setSearch] = useState();
   const [visible, setVisible] = useState("hidden");
-
   const cartProductsCount = props.cartProductsCount;
   const subTotal = props.subTotal;
   const isLoggedIn = props.isLoggedIn;
@@ -123,6 +123,7 @@ const Navbar = (props) => {
         </div>
       </div>
       <div className="navbar-center">
+        <img src={Logo} alt="Logo" className="h-8 w-auto" />
         <Link to="/" className="btn btn-ghost normal-case text-xl">
           eBazon
         </Link>

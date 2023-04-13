@@ -15,7 +15,7 @@ const CreateProduct = () => {
   const [dimensions, setDimensions] = useState("");
   const [quantity, setQuantity] = useState("");
   const [values, setValues] = useState([]);
-  const [alert, setAlert] = useState("")
+  const [alert, setAlert] = useState("");
   const navigate = useNavigate();
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
@@ -29,7 +29,6 @@ const CreateProduct = () => {
   });
 
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
     setValues(value);
   };
 
@@ -67,14 +66,14 @@ const CreateProduct = () => {
         tags,
         image_url,
       });
-      if(data.message){
-        setAlert(`Error: ${data.message}`)
-      }else{
+      if (data.message) {
+        setAlert(`Error: ${data.message}`);
+      } else {
         navigate("/"); //this will end up taking to single product view
       }
     } catch (err) {
       console.log(err);
-      setAlert(`Error: ${err}`)
+      setAlert(`Error: ${err}`);
       throw err;
     }
   };
@@ -92,7 +91,7 @@ const CreateProduct = () => {
       return data.Location;
     } catch (error) {
       console.error(`Error uploading image: ${error}`);
-      setAlert(`Error uploading image: ${error}`)
+      setAlert(`Error uploading image: ${error}`);
     }
   };
 
@@ -210,14 +209,14 @@ const CreateProduct = () => {
                 </div>
                 <div className="form-control ">
                   <label className="label">
-                    <span>* Product Image</span>
+                    <span>Product Image (Max Size 5MB)</span>
                   </label>
-                    <input
-                      type="file"
-                      name="imageInput"
-                      className="file-input file-input-bordered file-input-info w-full"
-                      onChange={(e) => setImage_url(e.target.files[0])}
-                    />
+                  <input
+                    type="file"
+                    name="imageInput"
+                    className="file-input file-input-bordered file-input-info w-full"
+                    onChange={(e) => setImage_url(e.target.files[0])}
+                  />
                 </div>
                 <div className="form-control mt-6">
                   <button className="btn btn-primary" type="submit">
@@ -271,120 +270,6 @@ const CreateProduct = () => {
       ) : null}
     </div>
   );
-  // return (
-  //   <div>
-  //     <form
-  //       onSubmit={async (e) => {
-  //         e.preventDefault();
-
-  //         const file = e.target.elements.imageInput.files[0];
-
-  //         if (file.size > MAX_FILE_SIZE) {
-  //           alert(
-  //             "File size exceeds the 5 MB limit. Please choose a smaller file."
-  //           );
-  //           return;
-  //         }
-  //         const uploadedImageUrl = await uploadImage(
-  //           e.target.elements.imageInput.files[0]
-  //         );
-  //         setImage_url(uploadedImageUrl);
-  //         await updateTagsFunc();
-  //       }}
-  //     >
-  //       <h2>Create Product</h2>
-  //       <label className="input-group">
-  //         <span>Product Name</span>
-  //         <input
-  //           required
-  //           type="text"
-  //           value={name}
-  //           onChange={(e) => setName(e.target.value)}
-  //           placeholder="Product Name"
-  //           className="input input-bordered"
-  //         />
-  //       </label>
-  //       <label className="input-group">
-  //         <span>Product Description</span>
-  //         <input
-  //           required
-  //           type="text"
-  //           value={description}
-  //           onChange={(e) => setDescription(e.target.value)}
-  //           placeholder="Product Description"
-  //           className="input input-bordered"
-  //         />
-  //       </label>
-  //       <label className="input-group">
-  //         <span>Product Price</span>
-  //         <input
-  //           required
-  //           type="number"
-  //           value={price}
-  //           onChange={(e) => setPrice(e.target.value)}
-  //           placeholder="Product Price"
-  //           className="input input-bordered"
-  //         />
-  //       </label>
-
-  //       <label className="input-group">
-  //         <span>Product Category</span>
-  //         <Space
-  //           className="input input-bordered"
-  //           style={{
-  //             width: "100%",
-  //           }}
-  //           direction="vertical"
-  //         >
-  //           <Select
-  //             mode="multiple"
-  //             allowClear
-  //             style={{
-  //               width: "100%",
-  //             }}
-  //             placeholder="Please select"
-  //             onChange={handleChange}
-  //             options={options}
-  //           />
-  //         </Space>
-  //       </label>
-  //       <label className="input-group">
-  //         <span>Product Dimensions</span>
-  //         <input
-  //           required
-  //           type="text"
-  //           value={dimensions}
-  //           onChange={(e) => setDimensions(e.target.value)}
-  //           placeholder="Product Dimensions"
-  //           className="input input-bordered"
-  //         />
-  //       </label>
-  //       <label className="input-group">
-  //         <span>Product Quantity</span>
-  //         <input
-  //           required
-  //           type="number"
-  //           value={quantity}
-  //           onChange={(e) => setQuantity(e.target.value)}
-  //           placeholder="Product Quantity"
-  //           className="input input-bordered"
-  //         />
-  //       </label>
-  //       <label className="input-group">
-  //         <span>Product Image</span>
-  //         <input
-  //           type="file"
-  //           name="imageInput"
-  //           className="file-input file-input-bordered file-input-info w-full max-w-xs"
-  //           onChange={(e) => setImage_url(e.target.files[0])}
-  //         />
-  //       </label>
-  //       <button className="btn btn-primary" type="submit">
-  //         Create Product
-  //       </button>
-  //     </form>
-  //   </div>
-  // );
 };
 
 export default CreateProduct;
