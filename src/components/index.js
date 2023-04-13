@@ -3,3 +3,4 @@ export { default as Footer } from "./Footer";
 export { default as SingleProductCard } from "./SingleProductCard";
 export { default as SingleCartProduct } from "./SingleCartProduct";
 export { default as Pagination } from "./Pagination";
+export { default as Gradient } from "./Gradient";
