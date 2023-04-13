@@ -4,7 +4,7 @@ import { getLoggedInUserFromDB } from "../api-adapters/users";
 import { getActiveCartProductsDB } from "../api-adapters/carts";
 import { getAllTagsDB } from "../api-adapters/tags";
 import { Space, Select } from "antd";
-import logo from "../assets/logo.svg";
+import Logo from "../assets/Logo.svg";
 
 const Navbar = (props) => {
   const [admin, setAdmin] = useState(false);
@@ -123,7 +123,7 @@ const Navbar = (props) => {
         </div>
       </div>
       <div className="navbar-center">
-        <img src={logo} alt="Logo" className="h-8 w-auto" />
+        <img src={Logo} alt="Logo" className="h-8 w-auto" />
         <Link to="/" className="btn btn-ghost normal-case text-xl">
           eBazon
         </Link>
