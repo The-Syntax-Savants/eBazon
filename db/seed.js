@@ -236,15 +236,6 @@ async function createInitialProducts() {
     });
 
     await createProduct({
-      name: "Bike",
-      seller_name: "DrizzyJ",
-      price: 10000,
-      description: "This is a bike",
-      dimensions: "10x10x10",
-      quantity: 10,
-    });
-
-    await createProduct({
       name: "Waffle Maker",
       seller_name: "DrizzyJ",
       price: 5000,
@@ -253,25 +244,6 @@ async function createInitialProducts() {
       quantity: 5,
       image_url:
         "https://target.scene7.com/is/image/Target/GUEST_44fc59b0-d3f9-462f-a37b-87ff7372c3c3?wid=488&hei=488&fmt=pjpeg",
-    });
-
-    await createProduct({
-      name: "Sick Skateboard",
-      seller_name: "DrizzyJ",
-      price: 15673,
-      description: "This is a skateboard. its sick",
-      dimensions: "10x100x10",
-      quantity: 1,
-    });
-
-    await createProduct({
-      name: "Camping Tent",
-      seller_name: "DrizzyJ",
-      price: 20000,
-      description:
-        "lorem ipsum dolor afnlk al ak an a nal alkas oiqw  now f qonf  fai osfa fsna lfnla nfa falfn aklf na fanl a ",
-      dimensions: "10x100x10",
-      quantity: 1,
     });
 
     console.log("Finished creating initial products");
@@ -331,7 +303,7 @@ async function createInitialTags() {
         price: parseInt(parseFloat(faker.commerce.price()) * 100),
         quantity: faker.datatype.number(),
         dimensions: `${faker.datatype.number()} x ${faker.datatype.number()}`,
-        image_url: faker.image.imageUrl(null, null, "", true),
+        image_url: faker.image.imageUrl(null, null, "technic", true),
         tags: tag,
       });
       const first_name = faker.name.firstName();
@@ -428,30 +400,30 @@ async function testDB() {
     const filteredProducts = await getProductsByTagId(4);
     console.log("Result: ", filteredProducts);
 
-    console.log("Testing create product with tags");
-    const create = await createProduct({
-      name: "newProductICreated",
-      seller_name: "DrizzyJ",
-      price: 2700,
-      description: "Priceless Inheritance",
-      dimensions: "100x100x100",
-      quantity: 1,
-      tags: product.tags,
-    });
-    console.log("Result:", create);
+    // console.log("Testing create product with tags");
+    // const create = await createProduct({
+    //   name: "newProductICreated",
+    //   seller_name: "DrizzyJ",
+    //   price: 2700,
+    //   description: "Priceless Inheritance",
+    //   dimensions: "100x100x100",
+    //   quantity: 1,
+    //   tags: product.tags,
+    // });
+    // console.log("Result:", create);
 
-    console.log("testing updateProduct");
-    console.log(
-      await updateProduct(create.id, {
-        name: "why now",
-        seller_name: "PolyNoodle",
-        price: 27770,
-        description: "Priceless Inheritance",
-        dimensions: "100x100x100",
-        quantity: 1,
-        tags: product.tags,
-      })
-    );
+    // console.log("testing updateProduct");
+    // console.log(
+    //   await updateProduct(create.id, {
+    //     name: "why now",
+    //     seller_name: "PolyNoodle",
+    //     price: 27770,
+    //     description: "Priceless Inheritance",
+    //     dimensions: "100x100x100",
+    //     quantity: 1,
+    //     tags: product.tags,
+    //   })
+    // );
 
     console.log("testing getCartProductByCartId");
     const data = await getCartProductsByCartId(1);
