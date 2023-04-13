@@ -23,7 +23,7 @@ const Cart = (props) => {
       } catch (error) {
         console.log(error);
       }
-    }, 1000);
+    }, 500);
   }
 
   useEffect(() => {

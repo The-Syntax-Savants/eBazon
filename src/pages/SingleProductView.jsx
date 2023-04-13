@@ -54,8 +54,8 @@ const SingleProductView = (props) => {
 
   useEffect(() => {
     getProduct();
-    if(localStorage.getItem("token")){
-      fetchUser()
+    if (localStorage.getItem("token")) {
+      fetchUser();
     }
   }, []);
 
@@ -89,6 +89,22 @@ const SingleProductView = (props) => {
                 <p className="text-gray-600">
                   Dimensions: {product.product.dimensions}
                 </p>
+                {product.product &&
+                  product.product.tags &&
+                  product.product.tags.length > 0 && (
+                    <div className="flex flex-row flex-wrap max-h-20 overflow-auto">
+                      {product.product.tags.map((tag, idx) => {
+                        return (
+                          <p
+                            key={`paragraph in SingleProductView: ${idx}`}
+                            className="badge badge-outline min-h-fit max-w-fit mb-2 mr-2"
+                          >
+                            {tag.name}
+                          </p>
+                        );
+                      })}
+                    </div>
+                  )}
                 {user.username && (
                   <button
                     className="mt-4 px-4 py-2 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600"
@@ -153,20 +169,14 @@ const SingleProductView = (props) => {
             )}
           </div>
         </div>
-
-        {/* Reviews container */}
+        {/* 
         <div className="mt-8">
           <h2 className="text-2xl font-semibold mb-4">Reviews</h2>
-          {/* Add your reviews components here */}
         </div>
-
-        {/* Recommended products container */}
         <div className="mt-8">
           <h2 className="text-2xl font-semibold mb-4">Recommended Products</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {/* Add your single product cards here */}
-          </div>
-        </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"></div>
+        </div> */}
       </div>
     </div>
   );
