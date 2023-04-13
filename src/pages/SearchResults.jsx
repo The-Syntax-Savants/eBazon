@@ -62,8 +62,9 @@ const SearchResults = (props) => {
         setProducts(filteredProducts);
       }
     }
-
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
   };
 
   const fetchAllTags = async () => {
