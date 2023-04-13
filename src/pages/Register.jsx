@@ -132,7 +132,7 @@ const Register = (props) => {
                 </div>
                 <div className="form-control mt-6">
                   <button className="btn btn-primary" type="submit">
-                    Login
+                    Register
                   </button>
                 </div>
               </div>
