@@ -71,7 +71,6 @@ const Profile = () => {
         setAlert(`Error: ${data.message}`);
       } else {
         setAlert(`You have successfully updated your Profile!`);
-        console.log(data);
       }
     }
   };
