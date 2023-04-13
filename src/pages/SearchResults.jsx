@@ -80,7 +80,7 @@ const SearchResults = (props) => {
   }, []);
 
   return (
-    <div>
+    <div className="min-h-screen">
       {isLoading ? (
         <div className="flex justify-center items-center min-h-screen">
           <progress className="progress w-56"></progress>
@@ -104,7 +104,7 @@ const SearchResults = (props) => {
             })}
           </div>
 
-          <div id="product-cards-container" className="flex flex-wrap">
+          <div id="product-cards-container" className="flex flex-wrap justify-evenly mb-10 mt-10 h-full w-full">
             {currentProducts.map((product) => {
               return (
                 <SingleProductCard

@@ -127,7 +127,7 @@ const CreateProduct = () => {
               <div className="card-body">
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">Name</span>
+                    <span className="label-text">* Name</span>
                   </label>
                   <input
                     type="text"
@@ -139,7 +139,7 @@ const CreateProduct = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">Description</span>
+                    <span className="label-text">* Description</span>
                   </label>
                   <input
                     type="text"
@@ -151,7 +151,7 @@ const CreateProduct = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">Price</span>
+                    <span className="label-text">* Price</span>
                   </label>
                   <input
                     type="number"
@@ -163,7 +163,7 @@ const CreateProduct = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">Dimensions</span>
+                    <span className="label-text">* Dimensions</span>
                   </label>
                   <input
                     type="text"
@@ -175,7 +175,7 @@ const CreateProduct = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">Quantity</span>
+                    <span className="label-text">* Quantity</span>
                   </label>
                   <input
                     type="number"
@@ -187,7 +187,7 @@ const CreateProduct = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">Tags</span>
+                    <span className="label-text">* Tags</span>
                   </label>
                   <Space
                     className="input input-bordered flex justify-center"
@@ -210,7 +210,7 @@ const CreateProduct = () => {
                 </div>
                 <div className="form-control ">
                   <label className="label">
-                    <span>Product Image</span>
+                    <span>* Product Image</span>
                   </label>
                     <input
                       type="file"

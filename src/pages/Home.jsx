@@ -93,10 +93,10 @@ const Home = (props) => {
               className="flex flex-row flex-wrap justify-evenly"
             >
               <button className="category-button border-2 border-solid border-black" value={3}>
-                Home Goods
+                Decoration
               </button>
               <button className="category-button" value={4}>
-                Decoration
+                Home Goods
               </button>
               <button className="category-button" value={11}>
                 Sports
@@ -119,7 +119,7 @@ const Home = (props) => {
 
           </div>
 
-          <div id="product-cards-container" className="flex flex-wrap">
+          <div id="product-cards-container" className="flex flex-wrap justify-evenly mb-10 mt-10 h-full w-full">
             {currentProducts.map((product) => {
               return (
                 <SingleProductCard
