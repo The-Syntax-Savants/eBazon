@@ -11,7 +11,6 @@ const Navbar = (props) => {
   const [username, setUsername] = useState("");
   const [search, setSearch] = useState();
   const [visible, setVisible] = useState("hidden");
-
   const cartProductsCount = props.cartProductsCount;
   const subTotal = props.subTotal;
   const isLoggedIn = props.isLoggedIn;
