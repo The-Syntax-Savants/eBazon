@@ -150,7 +150,8 @@ const EditProduct = () => {
                     </label>
                     <input
                       type="number"
-                      value={price}
+                      placeholder={price / 100}
+                      // value={price / 100}
                       className="input input-bordered"
                       onChange={(e) => {
                         setPrice(e.target.value);

@@ -78,7 +78,7 @@ const SingleProductCard = (props) => {
             
               <div className="card-actions justify-end flex justify-center justify-evenly">
 
-                <div className="flex mt-1 -ml-[1vw] max-h-[6vh] gap-2 min-h-[6vh] min-w-[10vw] max-w-[10vw] overflow-auto">
+                <div className="flex mt-1 -ml-[1vw] max-h-[6vh] gap-2 min-h-[6vh] min-w-[9vw] max-w-[9vw] overflow-auto">
                 {product.tags.length > 0 &&
                   product.tags.map((tag, idx) => {
                     return (
