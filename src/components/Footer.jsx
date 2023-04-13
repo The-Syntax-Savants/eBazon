@@ -2,9 +2,9 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="footer flex flex-col items-center justify-center mt-20 bg-neutral text-neutral-content">
-      <div className="text-center flex flex-col items-center justify-center gap-2">
-        <span className="footer-title">Social</span>
+    <footer className="footer flex flex-col items-center justify-center bg-neutral text-neutral-content">
+      <div className="text-center flex flex-col items-center justify-center gap-2 ">
+        <span className="footer-title mt-2">Social</span>
         <div className="flex justify-evenly">
           <a href="https://twitter.com/ebazonofficial" target="_blank">
             <svg
@@ -24,9 +24,9 @@ const Footer = () => {
             <img src="src/assets/ig.svg" />
           </a> */}
         </div>
-        <div className="text-center">
+        <div className="text-center mb-2">
           <p>
-            eBazon Incorporated
+            eBazon - your one stop shop.
             <br />
             Copyright © 2023 - All right reserved by eBazon Inc.
           </p>

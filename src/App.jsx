@@ -143,7 +143,13 @@ const App = () => {
           <Route path="/confirmation/:cartNumber" element={<Confirmation />} />
         </Routes>
       </div>
+      <div id="gradient-container" className="w-full h-1 relative">
+        <Gradient reverse />
+      </div>
       <Footer />
+      <div id="gradient-container" className="w-full h-1 relative">
+        <Gradient />
+      </div>
     </div>
   );
 };
