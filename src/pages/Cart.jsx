@@ -37,17 +37,17 @@ const Cart = (props) => {
           <progress className="progress w-56"></progress>
         </div>
       ) : (
-        <div className="flex items-center justify-between">
-          <div
-            id="cart-container"
-            className="m-5 ml-[7vw] max-h-[80vh] w-fit overflow-y-scroll"
-          >
-            {cartProducts.length === 0 ? (
-              <h1 className="text-6xl text-center ml-[32vw]">
-                No items in cart
-              </h1>
-            ) : (
-              <>
+        <div className="flex items-center justify-center">
+          {cartProducts.length === 0 ? (
+            <div className="m-5 mt-20 p-5 border-2 border-gray-300 rounded-md text-center">
+              <h1 className="text-4xl">Cart Empty</h1>
+            </div>
+          ) : (
+            <div className="flex items-center justify-between w-full">
+              <div
+                id="cart-container"
+                className="m-5 ml-[7vw] w-full overflow-y-scroll"
+              >
                 <div
                   id="products-container"
                   className="flex flex-col space-y-4 mt-10"
@@ -63,24 +63,23 @@ const Cart = (props) => {
                     );
                   })}
                 </div>
-              </>
-            )}
-          </div>
-
-          {cartProducts.length !== 0 && (
-            <div
-              id="checkout-details"
-              className="mr-[15vw] flex flex-col items-center"
-            >
-              <div
-                id="cart-total"
-                className="mt-10 mb-5 badge badge-accent text-xl"
-              >
-                <h1>Total: ${subTotal.toFixed(2)}</h1>
               </div>
-              <Link to="/checkout">
-                <button className="btn btn-success">CHECKOUT</button>
-              </Link>
+
+              <div
+                id="checkout-details"
+                className="mr-[15vw] flex flex-col items-center"
+              >
+                <div
+                  id="cart-total"
+                  className="mt-10 mb-5 py-2 px-4 bg-accent rounded text-xl text-white font-bold"
+                >
+                  <h1>Total: ${subTotal.toFixed(2)}</h1>
+                </div>
+
+                <Link to="/checkout">
+                  <button className="btn btn-success">CHECKOUT</button>
+                </Link>
+              </div>
             </div>
           )}
         </div>

@@ -19,7 +19,6 @@ const Home = (props) => {
   //For pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(16);
-
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = products.slice(
@@ -39,7 +38,7 @@ const Home = (props) => {
         const fetchedProducts = await getAllProductsDB();
         setProducts(fetchedProducts.products);
         setIsLoading(false);
-      }, 1000);
+      }, 500);
     };
 
     fetchAllProducts();

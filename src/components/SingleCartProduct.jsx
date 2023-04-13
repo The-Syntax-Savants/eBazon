@@ -11,7 +11,6 @@ const SingleCartProduct = (props) => {
   const product = cartProduct.product;
   const getCartProducts = props.getCartProducts;
   const grabCartProducts = props.grabCartProducts;
-
   const [quantity, setQuantity] = useState(cartProduct.quantity);
 
   async function handleRemoveFromCart() {

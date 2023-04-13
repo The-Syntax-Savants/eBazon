@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   PaymentElement,
   AddressElement,
-  LinkAuthenticationElement,
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
@@ -78,8 +77,6 @@ export default function CheckoutForm() {
 
     setIsLoading(true);
 
-    console.log(confirmationURL, "&&&");
-
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
@@ -109,38 +106,47 @@ export default function CheckoutForm() {
 
   return (
     <div className="h-screen w-[97vw] flex flex-col items-center">
-    <form id="payment-form" className=" mt-[10vh] h-fit w-[40vw]" onSubmit={handleSubmit}>
-      <PaymentElement id="payment-element" options={paymentElementOptions} />
-      <h3>Shipping</h3>
-      <AddressElement
-        options={{ mode: "shipping", allowedCountries: ["US"] }}
-      />
-      <button disabled={isLoading || !stripe || !elements} id="submit" className="btn btn-primary ml-[16vw] mt-5">
-        <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner" /> : "Pay now"}
-        </span>
-      </button>
-      {/* Show any error or success messages */}
-      {message && (
-        <div className="alert alert-error shadow-lg mt-5">
-          <div>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="stroke-current flex-shrink-0 h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <span>{message}</span>
+      <form
+        id="payment-form"
+        className=" mt-[10vh] h-fit w-[40vw]"
+        onSubmit={handleSubmit}
+      >
+        <PaymentElement id="payment-element" options={paymentElementOptions} />
+        <h3>Shipping</h3>
+        <AddressElement
+          options={{ mode: "shipping", allowedCountries: ["US"] }}
+        />
+        <button
+          disabled={isLoading || !stripe || !elements}
+          id="submit"
+          className="btn btn-primary ml-[16vw] mt-5"
+        >
+          <span id="button-text">
+            {isLoading ? <div className="spinner" id="spinner" /> : "Pay now"}
+          </span>
+        </button>
+        {/* Show any error or success messages */}
+        {message && (
+          <div className="alert alert-error shadow-lg mt-5">
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="stroke-current flex-shrink-0 h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>{message}</span>
+            </div>
           </div>
-        </div>)}
-    </form>
+        )}
+      </form>
     </div>
   );
 }

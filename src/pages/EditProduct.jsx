@@ -50,7 +50,6 @@ const EditProduct = () => {
   });
 
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
     setValues(value);
   };
 
