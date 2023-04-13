@@ -265,7 +265,7 @@ async function createInitialTags() {
       "Electronics",
       "Clothing",
       "Gaming",
-      "Home Improvement",
+      "Home DIY",
       "Handmade",
       "Collectibles",
       "Sports",
