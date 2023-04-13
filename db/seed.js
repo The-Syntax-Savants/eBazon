@@ -1,5 +1,5 @@
 import { client } from "./index.js";
-import {faker} from "@faker-js/faker"
+import { faker } from "@faker-js/faker";
 import { createUser, getAllUsers, getUserById, updateUser } from "./users.js";
 import {
   createProduct,
@@ -198,8 +198,6 @@ async function createInitialUsers() {
       is_admin: false,
     });
 
-    
-
     console.log("finished creating initial users!");
   } catch (error) {
     throw error;
@@ -227,12 +225,14 @@ async function createInitialProducts() {
   try {
     console.log("Creating Initial Products");
     await createProduct({
-      name: "MLP Action Figure",
+      name: "Microsoft",
       seller_name: "DrizzyJ",
       price: 1500,
-      description: "Priceless Inheritance",
+      description: "Small company I created",
       dimensions: "100x100x100",
       quantity: 1,
+      image_url:
+        "https://1000logos.net/wp-content/uploads/2017/04/Microsoft-Logo.png",
     });
 
     await createProduct({
@@ -274,7 +274,6 @@ async function createInitialProducts() {
       quantity: 1,
     });
 
-
     console.log("Finished creating initial products");
   } catch (error) {
     console.log("Failed to create initial products!");
@@ -309,37 +308,48 @@ async function createInitialTags() {
       await createTag(tags[i]);
     }
 
-    const data = await getAllTags()
-    console.log(data, "HERE AGAUIN")
+    const data = await getAllTags();
+    console.log(data, "HERE AGAUIN");
 
-    for(let i = 1; i < 100; i++){
-      const tag = [data[faker.datatype.number({min:1,max:7})], data[faker.datatype.number({min: 8, max:15})]]
+    for (let i = 1; i < 100; i++) {
+      const tag = [
+        data[faker.datatype.number({ min: 1, max: 7 })],
+        data[faker.datatype.number({ min: 8, max: 15 })],
+      ];
       await createProduct({
         name: faker.commerce.productName(),
-        seller_name: faker.helpers.arrayElement(["DrizzyJ", "crooney", "Phillip", "unforgottable", "topstown", "Cashing", "randomTest"]),
+        seller_name: faker.helpers.arrayElement([
+          "DrizzyJ",
+          "crooney",
+          "Phillip",
+          "unforgottable",
+          "topstown",
+          "Cashing",
+          "randomTest",
+        ]),
         description: faker.lorem.sentence(),
         price: parseInt(parseFloat(faker.commerce.price()) * 100),
         quantity: faker.datatype.number(),
         dimensions: `${faker.datatype.number()} x ${faker.datatype.number()}`,
         image_url: faker.image.imageUrl(null, null, "", true),
-        tags: tag
-      })
-      const first_name = faker.name.firstName()
-      const username = faker.internet.userName(first_name)
+        tags: tag,
+      });
+      const first_name = faker.name.firstName();
+      const username = faker.internet.userName(first_name);
       await createUser({
         first_name: first_name,
         last_name: faker.name.lastName(),
         username: username,
-        password: 'password',
+        password: "password",
         email: faker.internet.email(first_name),
-        is_admin: false
-      })
+        is_admin: false,
+      });
 
       await createCartProduct({
         username: username,
         product_id: i,
-        quantity: faker.datatype.number({max: 10})
-      })
+        quantity: faker.datatype.number({ max: 10 }),
+      });
     }
 
     console.log("Finished creating tags");
@@ -383,8 +393,8 @@ async function testDB() {
       first_name: "Emilio",
       email: "d2fan@info.com",
     };
-    const MLP = await updateUser(object1);
-    console.log("Result:", MLP);
+    const updateUserTest = await updateUser(object1);
+    console.log("Result:", updateUserTest);
 
     console.log("Calling getAllProducts");
     const products = await getAllProducts();

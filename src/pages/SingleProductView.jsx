@@ -89,6 +89,22 @@ const SingleProductView = (props) => {
                 <p className="text-gray-600">
                   Dimensions: {product.product.dimensions}
                 </p>
+                
+                <div className="flex flex-row flex-wrap mb-5">
+                  {product.product.tags.length > 0 &&
+                    product.product.tags.map((tag, idx) => {
+                      return (
+                        <p
+                          key={`paragraph in SingleProductCard: ${idx}`}
+                          className="badge badge-outline min-h-fit max-w-fit mr-2 mt-2"
+                        >
+                          {tag.name}
+                        </p>
+                      );
+                    })
+                  }
+                </div>
+
                 {user.username && (
                   <button
                     className="mt-4 px-4 py-2 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600"
@@ -99,7 +115,7 @@ const SingleProductView = (props) => {
                 )}
                 {((user && user.username === product.product.seller_name) ||
                   user.is_admin) && (
-                  <div>
+                  <div className="flex flex-row justify-between">
                     <Link to={`/edit-product/${product.product.id}`}>
                       <button className="mt-4 px-4 py-2 bg-green-500 text-white font-semibold rounded-md shadow-md hover:bg-green-600">
                         Edit Product
