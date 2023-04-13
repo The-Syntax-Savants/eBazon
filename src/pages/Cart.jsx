@@ -15,7 +15,7 @@ const Cart = (props) => {
     setTimeout(async () => {
       try {
         const cartProductsDB = await getActiveCartProductsDB();
-        console.log(cartProductsDB, "CART PRODUCTS DB");
+
         if (Array.isArray(cartProductsDB)) {
           setCartProducts(cartProductsDB);
         }
@@ -74,10 +74,11 @@ const Cart = (props) => {
             >
               <div
                 id="cart-total"
-                className="mt-10 mb-5 badge badge-accent text-xl"
+                className="mt-10 mb-5 py-2 px-4 bg-accent rounded text-xl text-white font-bold"
               >
                 <h1>Total: ${subTotal.toFixed(2)}</h1>
               </div>
+
               <Link to="/checkout">
                 <button className="btn btn-success">CHECKOUT</button>
               </Link>
