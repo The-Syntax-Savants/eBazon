@@ -60,7 +60,7 @@ const SingleProductCard = (props) => {
             </div>
           </h2>
           <h5>Seller: {product.seller_name}</h5>
-          <p>{product.description}</p>
+          <p className="line-clamp-2">{product.description}</p>
 
           <div className="flex flex-row flex-wrap max-h-20 overflow-auto">
             {product.tags.length > 0 &&
