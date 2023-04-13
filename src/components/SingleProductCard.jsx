@@ -75,7 +75,7 @@ const SingleProductCard = (props) => {
 
             
 
-            {user.username && isLoggedIn && (
+            
               <div className="card-actions justify-end flex justify-center justify-evenly">
 
                 <div className="flex mt-1 -ml-[1vw] max-h-[6vh] gap-2 min-h-[6vh] min-w-[9vw] max-w-[9vw] overflow-auto">
@@ -93,12 +93,13 @@ const SingleProductCard = (props) => {
                 </div>
 
                 <div className="">
+                {user.username && isLoggedIn && (
                   <button onClick={handleAddToCart} className="ml-[1.8vw] btn btn-success">
                     Add to Cart
                   </button>
+                )}
                 </div>
               </div>
-            )}
           </div>
         </div>
       </div>
