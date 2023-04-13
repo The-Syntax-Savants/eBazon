@@ -29,6 +29,7 @@ const Home = (props) => {
     indexOfFirstProduct,
     indexOfLastProduct
   );
+
   const totalPages = [];
 
   for (let i = 0; i < Math.ceil(products.length / productsPerPage); i++) {
@@ -40,7 +41,7 @@ const Home = (props) => {
       setIsLoading(true);
       setTimeout(async () => {
         const fetchedProducts = await getAllProductsDB();
-        setProducts(fetchedProducts.products);
+        setProducts(fetchedProducts.products.slice(0).reverse());
         setIsLoading(false);
       }, 500);
     };
@@ -85,7 +86,7 @@ const Home = (props) => {
                   const tagProducts = await getProductsByTagIdDB(
                     evt.target.value
                   );
-                  setProducts(tagProducts);
+                  setProducts(tagProducts.slice(0).reverse());
                   setTagFilterActive(true)
                 }
               }}

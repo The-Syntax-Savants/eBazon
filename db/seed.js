@@ -224,16 +224,6 @@ async function createInitialCartProducts() {
 async function createInitialProducts() {
   try {
     console.log("Creating Initial Products");
-    await createProduct({
-      name: "Microsoft",
-      seller_name: "DrizzyJ",
-      price: 1500,
-      description: "Small company I created",
-      dimensions: "100x100x100",
-      quantity: 1,
-      image_url:
-        "https://1000logos.net/wp-content/uploads/2017/04/Microsoft-Logo.png",
-    });
 
     await createProduct({
       name: "Waffle Maker",
