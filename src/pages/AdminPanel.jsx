@@ -25,10 +25,10 @@ const AdminPanel = (props) => {
         if (data.is_admin) {
           setAdmin(data);
         } else {
-          setAlert(`Error: You must be an Admin to access this page`);
+          setAlert("Error: You must be an Admin to access this page");
         }
       } else {
-        setAlert(`Error: You must be an Admin to access this page`);
+        setAlert("Error: You must be an Admin to access this page");
       }
     };
     await fetchAdmin();
@@ -62,7 +62,7 @@ const AdminPanel = (props) => {
     <div>
       {isLoading ? (
         <div className="flex justify-center items-center min-h-screen">
-          <progress className="progress w-56"></progress>
+          <progress className="progress w-56" />
         </div>
       ) : (
         <div>
@@ -85,7 +85,7 @@ const AdminPanel = (props) => {
                     <table className="table w-full table-compact">
                       <thead>
                         <tr>
-                          <th></th>
+                          <th />
                           <th>Username</th>
                           <th>Email</th>
                           <th>Active?</th>
@@ -103,7 +103,7 @@ const AdminPanel = (props) => {
                       </thead>
                       <tbody>
                         {allUsers.map((user, idx) => {
-                          delete user.password;
+                          user.password = undefined;
                           return (
                             <tr key={user.id} className="hover">
                               <th>{idx + 1}</th>
@@ -181,7 +181,7 @@ const AdminPanel = (props) => {
                                   }
                                 }}
                               >
-                                <button>delete</button>
+                                <button type="button">delete</button>
                               </td>
                             </tr>
                           );
@@ -202,7 +202,7 @@ const AdminPanel = (props) => {
               <div className="ml-[53vw]">
                 <button
                   className="btn btn-outline btn-primary"
-                  type="Submit"
+                  type="submit"
                   onClick={async (e) => {
                     e.preventDefault();
                     const data = await addTagInDB(newTag);

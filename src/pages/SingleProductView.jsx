@@ -63,7 +63,7 @@ const SingleProductView = (props) => {
           {/* Image container */}
           <div className="relative w-full h-80 md:h-96">
             <img
-              src={product.product && product.product.image_url}
+              src={product.product?.image_url}
               alt="Product"
               className="w-full h-full object-cover rounded-md shadow-md"
             />
@@ -86,7 +86,7 @@ const SingleProductView = (props) => {
                 <p className="text-gray-600">
                   Dimensions: {product.product.dimensions}
                 </p>
-                
+
                 <div className="flex flex-row flex-wrap mb-5">
                   {product.product.tags.length > 0 &&
                     product.product.tags.map((tag, idx) => {
@@ -98,8 +98,7 @@ const SingleProductView = (props) => {
                           {tag.name}
                         </p>
                       );
-                    })
-                  }
+                    })}
                 </div>
 
                 {user.username && (
@@ -135,7 +134,7 @@ const SingleProductView = (props) => {
                             <div className="p-6">
                               <h4 className="text-lg font-bold mb-4">
                                 Are you sure you would like to delete Product:{" "}
-                                {product.product && product.product.name}
+                                {product.product?.name}
                               </h4>
                               <div className="flex justify-end">
                                 <button

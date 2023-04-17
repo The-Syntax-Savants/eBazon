@@ -27,7 +27,7 @@ const SingleCartProduct = (props) => {
 
   async function handleUpdateCart(event) {
     try {
-      let tempQuantity = event.target.value;
+      const tempQuantity = event.target.value;
       setQuantity(tempQuantity);
       await updateCartProductDB(cartProduct.id, tempQuantity);
       grabCartProducts();
