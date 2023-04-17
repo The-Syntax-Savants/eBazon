@@ -119,7 +119,7 @@ productsRouter.patch("/:id/edit", requireUser, async (req, res, next) => {
     const { id } = req.params;
     const info = req.body;
     if (info.seller_name) {
-      delete info.seller_name;
+      info.seller_name = undefined;
     }
     const test = await getProductByID(id);
     if (test) {

@@ -14,7 +14,7 @@ const SingleProductCard = (props) => {
     try {
       await createCartProductDB(product.id);
       grabCartProducts();
-      console.log(product.name + " added to cart!");
+      console.log(`${product.name} added to cart!`);
       setAlert("success");
     } catch (error) {
       console.log(error);
@@ -53,32 +53,28 @@ const SingleProductCard = (props) => {
             />
           </figure>
 
-
           <div className="card-body">
-
-
-
-
             <h2 className="card-title flex justify-between w-full min-h-[3vh] max-h-[3vh]">
-              <Link to={`/product-view/${product.id}`} className="line-clamp-1">{product.name}</Link>
+              <Link to={`/product-view/${product.id}`} className="line-clamp-1">
+                {product.name}
+              </Link>
               <div className="badge badge-secondary ml-2">
                 $
-                {String(product.price).slice(0, String(product.price).length - 2)}
+                {String(product.price).slice(
+                  0,
+                  String(product.price).length - 2
+                )}
                 .{String(product.price).slice(-2)}
               </div>
             </h2>
 
-
-
             <h5>Seller: {product.seller_name}</h5>
-            <p className="line-clamp-2 min-h-[6vh] max-h-[6vh]">{product.description}</p>
+            <p className="line-clamp-2 min-h-[6vh] max-h-[6vh]">
+              {product.description}
+            </p>
 
-            
-
-            
-              <div className="card-actions justify-end flex justify-center justify-evenly">
-
-                <div className="flex mt-1 -ml-[1vw] max-h-[6vh] gap-2 min-h-[6vh] min-w-[10vw] max-w-[10vw] overflow-auto">
+            <div className="card-actions justify-end flex justify-center justify-evenly">
+              <div className="flex mt-1 -ml-[1vw] max-h-[6vh] gap-2 min-h-[6vh] min-w-[10vw] max-w-[10vw] overflow-auto">
                 {product.tags.length > 0 &&
                   product.tags.map((tag, idx) => {
                     return (
@@ -90,16 +86,19 @@ const SingleProductCard = (props) => {
                       </p>
                     );
                   })}
-                </div>
+              </div>
 
-                <div className="">
+              <div className="">
                 {user.username && isLoggedIn && (
-                  <button onClick={handleAddToCart} className="ml-[1.8vw] btn btn-success">
+                  <button
+                    onClick={handleAddToCart}
+                    className="ml-[1.8vw] btn btn-success"
+                  >
                     Add to Cart
                   </button>
                 )}
-                </div>
               </div>
+            </div>
           </div>
         </div>
       </div>

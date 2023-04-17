@@ -17,8 +17,7 @@ const Home = (props) => {
   const isLoggedIn = props.isLoggedIn;
 
   //For see all products button
-  const [tagFilterActive, setTagFilterActive] = useState(false)
-
+  const [tagFilterActive, setTagFilterActive] = useState(false);
 
   //For pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -51,7 +50,7 @@ const Home = (props) => {
     <div>
       {isLoading ? (
         <div className="flex justify-center items-center min-h-screen">
-          <progress className="progress w-56"></progress>
+          <progress className="progress w-56" />
         </div>
       ) : (
         <div id="home-page">
@@ -86,12 +85,15 @@ const Home = (props) => {
                     evt.target.value
                   );
                   setProducts(tagProducts);
-                  setTagFilterActive(true)
+                  setTagFilterActive(true);
                 }
               }}
               className="flex flex-row flex-wrap justify-evenly"
             >
-              <button className="category-button border-2 border-solid border-black" value={3}>
+              <button
+                className="category-button border-2 border-solid border-black"
+                value={3}
+              >
                 Decoration
               </button>
               <button className="category-button" value={4}>
@@ -105,20 +107,25 @@ const Home = (props) => {
               </button>
             </div>
 
-            {
-              (tagFilterActive && 
-                <button className="btn" onClick={ async () => {
-                  const fetchedAllProducts = await getAllProductsDB()
-                  setProducts(fetchedAllProducts.products)
-                  setCurrentPage(1)
-                  setTagFilterActive(false)
-                }}>See All Products</button>
-              )
-            }
-
+            {tagFilterActive && (
+              <button
+                className="btn"
+                onClick={async () => {
+                  const fetchedAllProducts = await getAllProductsDB();
+                  setProducts(fetchedAllProducts.products);
+                  setCurrentPage(1);
+                  setTagFilterActive(false);
+                }}
+              >
+                See All Products
+              </button>
+            )}
           </div>
 
-          <div id="product-cards-container" className="flex flex-wrap justify-evenly mb-10 mt-10 h-full w-full">
+          <div
+            id="product-cards-container"
+            className="flex flex-wrap justify-evenly mb-10 mt-10 h-full w-full"
+          >
             {currentProducts.map((product) => {
               return (
                 <SingleProductCard

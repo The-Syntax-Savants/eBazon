@@ -125,7 +125,7 @@ export async function getProductsByTagId(tagId) {
 export async function updateProduct(productId, fields = {}) {
   // read off the tags & remove that field
   const { tags } = fields; // might be undefined
-  delete fields.tags;
+  fields.tags = undefined;
 
   // build the set string
   const setString = Object.keys(fields)
@@ -133,7 +133,7 @@ export async function updateProduct(productId, fields = {}) {
     .join(", ");
 
   try {
-    let data = {};
+    const data = {};
     // update any fields that need to be updated
 
     if (setString.length > 0) {

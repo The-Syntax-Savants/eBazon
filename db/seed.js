@@ -93,13 +93,13 @@ async function createTables() {
             price INTEGER
         ); `);
 
-    console.log(`creating TAGS table...`);
+    console.log("creating TAGS table...");
     await client.query(`CREATE TABLE tags(
             id SERIAL PRIMARY KEY,
             name VARCHAR(50) UNIQUE NOT NULL
         );`);
 
-    console.log(`creating PRODUCT_TAGS table...`);
+    console.log("creating PRODUCT_TAGS table...");
     await client.query(`CREATE TABLE product_tags(
             id SERIAL PRIMARY KEY,
             product_id INTEGER REFERENCES products(id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -107,7 +107,7 @@ async function createTables() {
             UNIQUE(product_id, tag_id)
         );`);
 
-    console.log(`creating USER_REVIEWS table...`);
+    console.log("creating USER_REVIEWS table...");
     await client.query(`CREATE TABLE user_reviews(
             id SERIAL PRIMARY KEY,
             product_id INTEGER REFERENCES products(id),
@@ -116,7 +116,7 @@ async function createTables() {
             reviewer_name VARCHAR(50) REFERENCES users(username) 
         );`);
 
-    console.log(`creating PRODUCT_REVIEWS table...`);
+    console.log("creating PRODUCT_REVIEWS table...");
     await client.query(`CREATE TABLE product_reviews(
             id SERIAL PRIMARY KEY,
             product_id INTEGER REFERENCES products(id),
@@ -247,7 +247,7 @@ async function createInitialTags() {
   try {
     console.log("Starting to create tags AND More Users with carts......");
 
-    let tags = [
+    const tags = [
       "Jewelry",
       "Books",
       "Decoration",
