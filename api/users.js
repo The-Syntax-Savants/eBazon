@@ -19,27 +19,26 @@ usersRouter.use((req, res, next) => {
   next();
 });
 
-// GET /api/users/          
+// GET /api/users/
 //If we do a search bar to look for users in the future, we might have to remove requireAdmin from this route. For now it stays
-usersRouter.get("/", requireAdmin,  async (req, res, next) => {
-  try{
+usersRouter.get("/", requireAdmin, async (req, res, next) => {
+  try {
     const users = await getAllUsers();
-    console.log(users)
-    
+    console.log(users);
+
     if (users) {
       res.send({
         users,
-      }); 
+      });
     } else {
       next({
         name: "ErrorGettingAllUsers",
-        message: "I really don't know what could be going wrong here. api -> usersRouter.get(\"/\") "
-      })
+        message:
+          'I really don\'t know what could be going wrong here. api -> usersRouter.get("/") ',
+      });
     }
-  
-    
-  }catch ({name, message}) {
-    next({name, message})
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
 
@@ -51,7 +50,7 @@ usersRouter.get("/me", requireUser, async (req, res, next) => {
         message: "Need to log in",
       });
     } else {
-      delete req.user.password;
+      req.user.password = undefined;
       res.send(req.user);
     }
   } catch ({ name, message }) {
@@ -61,21 +60,21 @@ usersRouter.get("/me", requireUser, async (req, res, next) => {
 
 //Used so that an admin can see another users profile data
 usersRouter.get("/:userId", requireAdmin, async (req, res, next) => {
-  try{
+  try {
     const { userId: id } = req.params;
-    const user = await getUserById(id)
+    const user = await getUserById(id);
     if (user) {
-      res.send(user)
+      res.send(user);
     } else {
       next({
         name: "ErrorFindingUser",
-        message: "A user with that id does not exist"
-      })
+        message: "A user with that id does not exist",
+      });
     }
-  }catch ({name, message}) {
-    next({name, message})
-  } 
-})
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
 
 // POST /api/users/register
 usersRouter.post("/register", async (req, res, next) => {
@@ -118,7 +117,7 @@ usersRouter.post("/register", async (req, res, next) => {
       );
 
       if (user.password) {
-        delete user.password;
+        user.password = undefined;
       }
 
       res.send({
@@ -170,15 +169,15 @@ usersRouter.patch(
     try {
       const { username } = req.params;
       const SALT_COUNT = 10;
-      let hashedPassword = ""
+      let hashedPassword = "";
 
       const info = req.body;
-      if(info.password){
+      if (info.password) {
         hashedPassword = await bcrypt.hash(info.password, SALT_COUNT);
         info.password = hashedPassword;
       }
       if (info.is_admin) {
-        delete info.is_admin;
+        info.is_admin = undefined;
       }
       info.username = username;
       const update = await updateUser(info);

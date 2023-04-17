@@ -16,9 +16,9 @@ const SearchResults = (props) => {
   const grabCartProducts = props.grabCartProducts;
   const isLoading = props.isLoading;
   const setIsLoading = props.setIsLoading;
-  const isLoggedIn = props.isLoggedIn
+  const isLoggedIn = props.isLoggedIn;
 
-  let { searchInput } = useParams();
+  const { searchInput } = useParams();
 
   //for Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -84,7 +84,7 @@ const SearchResults = (props) => {
     <div className="min-h-screen">
       {isLoading ? (
         <div className="flex justify-center items-center min-h-screen">
-          <progress className="progress w-56"></progress>
+          <progress className="progress w-56" />
         </div>
       ) : (
         <>
@@ -105,7 +105,10 @@ const SearchResults = (props) => {
             })}
           </div>
 
-          <div id="product-cards-container" className="flex flex-wrap justify-evenly mb-10 mt-10 h-full w-full">
+          <div
+            id="product-cards-container"
+            className="flex flex-wrap justify-evenly mb-10 mt-10 h-full w-full"
+          >
             {currentProducts.map((product) => {
               return (
                 <SingleProductCard

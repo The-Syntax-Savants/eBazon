@@ -53,7 +53,7 @@ export const loginUserDB = async (username, password) => {
 
 export const editUserDB = async (user) => {
   if (user.password === "" || user.password.length < 8) {
-    delete user.password;
+    user.password = undefined;
   }
   try {
     const response = await fetch(

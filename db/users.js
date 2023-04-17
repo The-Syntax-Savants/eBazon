@@ -56,7 +56,7 @@ export async function getUserById(userId) {
       [userId]
     );
     if (user) {
-      delete user.password;
+      user.password = undefined;
     }
     return user;
   } catch (error) {
@@ -116,7 +116,7 @@ export async function updateUser({ id, ...fields }) {
       return await getUserById(id);
     }
   } catch (error) {
-    console.log("Error in UpdateUser!")
+    console.log("Error in UpdateUser!");
     throw error;
   }
 }

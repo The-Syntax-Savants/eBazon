@@ -38,7 +38,7 @@ cartsRouter.post("/place-order", requireUser, async (req, res, next) => {
 
     const { cartNumber } = req.body;
 
-    if (cartNumber == cart.id) {
+    if (cartNumber === cart.id) {
       if (
         // cart.city &&
         // cart.state &&

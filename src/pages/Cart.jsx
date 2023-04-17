@@ -34,7 +34,7 @@ const Cart = (props) => {
     <div className="h-screen overflow-auto">
       {isLoading ? (
         <div className="flex justify-center items-center min-h-screen">
-          <progress className="progress w-56"></progress>
+          <progress className="progress w-56" />
         </div>
       ) : (
         <div className="flex items-center justify-center">
@@ -55,7 +55,7 @@ const Cart = (props) => {
                   {cartProducts.map((cartProduct) => {
                     return (
                       <SingleCartProduct
-                        key={"product id: " + cartProduct.product_id}
+                        key={`product id: ${cartProduct.product_id}`}
                         cartProduct={cartProduct}
                         getCartProducts={getCartProducts}
                         grabCartProducts={grabCartProducts}

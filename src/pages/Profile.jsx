@@ -20,13 +20,8 @@ const Profile = () => {
   const [id, setId] = useState(0);
   const [alert, setAlert] = useState("");
 
-  // const handleFileChange = async (event) => {
-  //   const file = event.target.files[0]
-  //   setProfilePicture(file)
-  // }
-
   const grabUserInfo = async () => {
-    let user = await getLoggedInUserFromDB();
+    const user = await getLoggedInUserFromDB();
     if (user) {
       setId(user.id);
       setFirstName(user.first_name || "");
@@ -49,7 +44,7 @@ const Profile = () => {
 
   const submitChanges = async () => {
     if (password && password.length < 8) {
-      setAlert(`Error: Your password must be at least 8 characters!`);
+      setAlert("Error: Your password must be at least 8 characters!");
     } else {
       const data = await editUserDB({
         id,
@@ -70,7 +65,7 @@ const Profile = () => {
       if (data.message) {
         setAlert(`Error: ${data.message}`);
       } else {
-        setAlert(`You have successfully updated your Profile!`);
+        setAlert("You have successfully updated your Profile!");
       }
     }
   };
