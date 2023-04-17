@@ -72,7 +72,6 @@ const SingleProductCard = (props) => {
             <p className="line-clamp-2 min-h-[6vh] max-h-[6vh]">
               {product.description}
             </p>
-
             <div className="card-actions justify-end flex justify-center justify-evenly">
               <div className="flex mt-1 -ml-[1vw] max-h-[6vh] gap-2 min-h-[6vh] min-w-[10vw] max-w-[10vw] overflow-auto">
                 {product.tags.length > 0 &&
