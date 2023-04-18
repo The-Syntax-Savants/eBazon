@@ -24,8 +24,12 @@ const Login = (props) => {
   };
 
   return (
-    <div id="login-page" className="flex flex-col items-center justify-center h-fit w-[97vw] my-[5vh]">
-      <form className=""
+    <div
+      id="login-page"
+      className="flex flex-col items-center justify-center h-fit w-[97vw] my-[5vh]"
+    >
+      <form
+        className=""
         onSubmit={(e) => {
           e.preventDefault();
           loginUser();
@@ -34,12 +38,9 @@ const Login = (props) => {
         <div className="hero h-fit w-full bg-base-200">
           <div className="hero-content flex flex-col w-screen">
             <div className="text-center lg:text-left">
-              <h1 className="text-5xl font-bold">Login now!</h1>
-              <Link className="py-6 link link-hover" to="/register">
-                Don't have an account? Sign up here.
-              </Link>
+              <h1 className="text-5xl font-bold mb-[3vh]">Login now!</h1>
             </div>
-            <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 mb-[10vh]">
+            <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
               <div className="card-body">
                 <div className="form-control">
                   <label className="label">
@@ -74,6 +75,9 @@ const Login = (props) => {
                 </div>
               </div>
             </div>
+            <Link className="py-6 link link-hover" to="/register">
+              Don't have an account? Sign up here.
+            </Link>
           </div>
         </div>
       </form>
