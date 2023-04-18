@@ -13,6 +13,7 @@ import { createCartProduct, getCartProductsByCartId } from "./cartsProducts.js";
 import { createCart, getActiveCartByUsername } from "./carts.js";
 import { createTag, getAllTags, deleteTag, editTag } from "./tags.js";
 import { addTagsToProduct } from "./productTags.js";
+import { createMessage } from "./messages.js";
 
 async function dropTables() {
   try {
@@ -77,6 +78,7 @@ async function createTables() {
         id SERIAL PRIMARY KEY,
         sender_name VARCHAR(50) NOT NULL REFERENCES users(username) ON UPDATE CASCADE ON DELETE CASCADE,
         receiver_name VARCHAR(50) NOT NULL REFERENCES users(username) ON UPDATE CASCADE ON DELETE CASCADE,
+        product_id INTEGER NOT NULL REFERENCES products(id),
         message TEXT NOT NULL,
         timestamp TIMESTAMP DEFAULT NOW(),
         is_offer BOOLEAN DEFAULT false,
@@ -433,6 +435,15 @@ async function testDB() {
     console.log("testing getCartProductByCartId");
     const data = await getCartProductsByCartId(1);
     console.log("Result:", data);
+
+    console.log("testing CreateMessage")
+    const message = await createMessage({
+      senderName: "crooney",
+      receiverName: "DrizzyJ",
+      productId: 60,
+      messageText: "this is a test message",
+    })
+    console.log("Result", message)
 
     // console.log("testing deleteProductById")
     // await deleteProductByID(create.id)
