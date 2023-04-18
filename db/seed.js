@@ -24,6 +24,7 @@ async function dropTables() {
             DROP TABLE IF EXISTS tags;
             DROP TABLE IF EXISTS cart_products;
             DROP TABLE IF EXISTS carts;
+            DROP TABLE IF EXISTS messages;
             DROP TABLE IF EXISTS products;
             DROP TABLE IF EXISTS users;
         `);
@@ -69,6 +70,20 @@ async function createTables() {
             quantity INTEGER NOT NULL,
             created_at TIMESTAMP DEFAULT NOW()
         ); `);
+
+    console.log("creating MESSAGES table...")
+    await client.query(`
+      CREATE TABLE messages(
+        id SERIAL PRIMARY KEY,
+        sender_name VARCHAR(50) NOT NULL REFERENCES users(username) ON UPDATE CASCADE ON DELETE CASCADE,
+        receiver_name VARCHAR(50) NOT NULL REFERENCES users(username) ON UPDATE CASCADE ON DELETE CASCADE,
+        message TEXT NOT NULL,
+        timestamp TIMESTAMP DEFAULT NOW(),
+        is_offer BOOLEAN DEFAULT false,
+        offer_price INTEGER,
+        offer_status VARCHAR(20) DEFAULT 'pending'
+      );
+    `)
 
     console.log("creating CARTS table...");
     await client.query(`CREATE TABLE carts(
