@@ -84,7 +84,7 @@ async function createTables() {
         read_at TIMESTAMP,
         is_offer BOOLEAN DEFAULT false,
         offer_price INTEGER,
-        offer_status VARCHAR(20) DEFAULT 'pending'
+        offer_status VARCHAR(20)
       );
     `)
 
@@ -471,10 +471,7 @@ async function testDB() {
     // const readTest = await setMessageToRead(3)
     // console.log("Result:", readTest)
     
-    console.log("testing getAllUnreadMessagesByUsername")
-    const unread = await getAllUnreadMessagesByUsername("DrizzyJ")
-    console.log("Result:", unread)
-
+    
     console.log("testing createOffer")
     const offer = await createOffer({
       senderName: "crooney",
@@ -482,9 +479,12 @@ async function testDB() {
       productId: 60,
       messageText: "I would like to offer your $100 for this item",
       offerPrice: (100 * 100),
-  })
-  console.log("Result:", offer)
-
+    })
+    console.log("Result:", offer)
+    
+    console.log("testing getAllUnreadMessagesByUsername")
+    const unread = await getAllUnreadMessagesByUsername("DrizzyJ")
+    console.log("Result:", unread)
 
     // console.log("testing deleteProductById")
     // await deleteProductByID(create.id)
