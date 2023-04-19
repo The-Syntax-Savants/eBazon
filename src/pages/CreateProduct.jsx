@@ -9,7 +9,7 @@ const CreateProduct = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [image_url, setImage_url] = useState(null);
+  const [image_url, setImage_url] = useState("");
   const [tags, setTags] = useState([]);
   const [allTags, setAllTags] = useState([]);
   const [dimensions, setDimensions] = useState("");
@@ -35,7 +35,6 @@ const CreateProduct = () => {
   const tagGrabber = async () => {
     const data = await getAllTagsDB(localStorage.getItem("token"));
     setAllTags(data);
-    console.log(data);
   };
 
   useEffect(() => {
@@ -95,6 +94,34 @@ const CreateProduct = () => {
     }
   };
 
+  const submitForm = async (e) => {
+    const file = e.target.elements.imageInput.files[0];
+    if (file.size > MAX_FILE_SIZE) {
+      setAlert(
+        "Error: File size exceeds the 5 MB limit. Please choose a smaller file."
+      );
+      return;
+    }
+    const uploadedImageUrl = await uploadImage(
+      e.target.elements.imageInput.files[0]
+    );
+    setImage_url(uploadedImageUrl);
+    await updateTagsFunc();
+  };
+
+  const checkRequiredFields = async () => {
+    const fieldsFilled =
+      name.length > 0 &&
+      description.length > 0 &&
+      price.length > 0 &&
+      dimensions.length > 0 &&
+      quantity.length > 0 &&
+      values.length > 0 &&
+      image_url.name.length > 0;
+
+    return fieldsFilled;
+  };
+
   return (
     <div className="flex flex-col items-center justify-center h-fit w-[97vw] my-[5vh]">
       <form
@@ -102,19 +129,13 @@ const CreateProduct = () => {
         onSubmit={async (e) => {
           e.preventDefault();
 
-          const file = e.target.elements.imageInput.files[0];
+          const fieldsFilled = await checkRequiredFields();
 
-          if (file.size > MAX_FILE_SIZE) {
-            setAlert(
-              "Error: File size exceeds the 5 MB limit. Please choose a smaller file."
-            );
-            return;
+          if (fieldsFilled) {
+            submitForm(e);
+          } else {
+            setAlert("Error: Please fill out all fields!");
           }
-          const uploadedImageUrl = await uploadImage(
-            e.target.elements.imageInput.files[0]
-          );
-          setImage_url(uploadedImageUrl);
-          await updateTagsFunc();
         }}
       >
         <div className="hero h-fit w-full bg-base-200">
@@ -126,7 +147,7 @@ const CreateProduct = () => {
               <div className="card-body">
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">* Name</span>
+                    <span className="label-text">Name</span>
                   </label>
                   <input
                     type="text"
@@ -138,7 +159,7 @@ const CreateProduct = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">* Description</span>
+                    <span className="label-text">Description</span>
                   </label>
                   <input
                     type="text"
@@ -150,7 +171,7 @@ const CreateProduct = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">* Price</span>
+                    <span className="label-text">Price</span>
                   </label>
                   <input
                     type="number"
@@ -162,7 +183,7 @@ const CreateProduct = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">* Dimensions</span>
+                    <span className="label-text">Dimensions</span>
                   </label>
                   <input
                     type="text"
@@ -174,7 +195,7 @@ const CreateProduct = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">* Quantity</span>
+                    <span className="label-text">Quantity</span>
                   </label>
                   <input
                     type="number"
@@ -186,7 +207,7 @@ const CreateProduct = () => {
                 </div>
                 <div className="form-control">
                   <label className="label">
-                    <span className="label-text">* Tags</span>
+                    <span className="label-text">Tags</span>
                   </label>
                   <Space
                     className="input input-bordered flex justify-center"
@@ -215,7 +236,9 @@ const CreateProduct = () => {
                     type="file"
                     name="imageInput"
                     className="file-input file-input-bordered file-input-info w-full"
-                    onChange={(e) => setImage_url(e.target.files[0])}
+                    onChange={(e) => {
+                      setImage_url(e.target.files[0]);
+                    }}
                   />
                 </div>
                 <div className="form-control mt-6">
