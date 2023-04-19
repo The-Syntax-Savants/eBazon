@@ -64,3 +64,19 @@ export async function setMessageToRead(id){
         throw error
     }
 }
+
+export async function getAllUnreadMessagesByUsername(receiverName){
+    try {
+        const {rows} = await client.query(`
+            SELECT m.id, m.sender_name, m.receiver_name, m.product_id, m.message, m.sent_at, u.username
+            FROM messages m
+            INNER JOIN users u ON m.sender_name = u.username
+            WHERE m.receiver_name = $1 AND m.read_at IS NULL
+            ORDER BY m.sent_at ASC;
+        `, [receiverName])
+        return rows
+    } catch (error) {
+        console.log("Error in getAllUnreadMessagesByUsername in DB")
+        throw error
+    }
+}

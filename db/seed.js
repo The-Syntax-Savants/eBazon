@@ -13,7 +13,7 @@ import { createCartProduct, getCartProductsByCartId } from "./cartsProducts.js";
 import { createCart, getActiveCartByUsername } from "./carts.js";
 import { createTag, getAllTags, deleteTag, editTag } from "./tags.js";
 import { addTagsToProduct } from "./productTags.js";
-import { createMessage, getConversationBetweenUsersForProduct, setMessageToRead } from "./messages.js";
+import { createMessage, getAllUnreadMessagesByUsername, getConversationBetweenUsersForProduct, setMessageToRead } from "./messages.js";
 
 async function dropTables() {
   try {
@@ -466,9 +466,15 @@ async function testDB() {
     })
     console.log("Result", conversation)
 
-    console.log("testing setMessageToRead")
-    const readTest = await setMessageToRead(3)
-    console.log("Result:", readTest)
+    
+    // console.log("testing setMessageToRead")
+    // const readTest = await setMessageToRead(3)
+    // console.log("Result:", readTest)
+    
+    console.log("testing getAllUnreadMessagesByUsername")
+    const unread = await getAllUnreadMessagesByUsername("DrizzyJ")
+    console.log("Result:", unread)
+
 
     // console.log("testing deleteProductById")
     // await deleteProductByID(create.id)
