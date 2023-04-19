@@ -13,6 +13,7 @@ import { createCartProduct, getCartProductsByCartId } from "./cartsProducts.js";
 import { createCart, getActiveCartByUsername } from "./carts.js";
 import { createTag, getAllTags, deleteTag, editTag } from "./tags.js";
 import { addTagsToProduct } from "./productTags.js";
+import { createMessage, createOffer, getAllUnreadMessagesByUsername, getConversationBetweenUsersForProduct, setMessageToRead } from "./messages.js";
 
 async function dropTables() {
   try {
@@ -24,6 +25,7 @@ async function dropTables() {
             DROP TABLE IF EXISTS tags;
             DROP TABLE IF EXISTS cart_products;
             DROP TABLE IF EXISTS carts;
+            DROP TABLE IF EXISTS messages;
             DROP TABLE IF EXISTS products;
             DROP TABLE IF EXISTS users;
         `);
@@ -69,6 +71,22 @@ async function createTables() {
             quantity INTEGER NOT NULL,
             created_at TIMESTAMP DEFAULT NOW()
         ); `);
+
+    console.log("creating MESSAGES table...")
+    await client.query(`
+      CREATE TABLE messages(
+        id SERIAL PRIMARY KEY,
+        sender_name VARCHAR(50) NOT NULL REFERENCES users(username) ON UPDATE CASCADE ON DELETE CASCADE,
+        receiver_name VARCHAR(50) NOT NULL REFERENCES users(username) ON UPDATE CASCADE ON DELETE CASCADE,
+        product_id INTEGER NOT NULL REFERENCES products(id),
+        message TEXT NOT NULL,
+        sent_at TIMESTAMP DEFAULT NOW(),
+        read_at TIMESTAMP,
+        is_offer BOOLEAN DEFAULT false,
+        offer_price INTEGER,
+        offer_status VARCHAR(20)
+      );
+    `)
 
     console.log("creating CARTS table...");
     await client.query(`CREATE TABLE carts(
@@ -418,6 +436,55 @@ async function testDB() {
     console.log("testing getCartProductByCartId");
     const data = await getCartProductsByCartId(1);
     console.log("Result:", data);
+
+    console.log("testing CreateMessage")
+    const message1 = await createMessage({
+      senderName: "crooney",
+      receiverName: "DrizzyJ",
+      productId: 60,
+      messageText: "this is a test message",
+    })
+    await createMessage({
+      senderName: "DrizzyJ",
+      receiverName: "crooney",
+      productId: 60,
+      messageText: "glad it worked",
+    })
+    await createMessage({
+      senderName: "crooney",
+      receiverName: "DrizzyJ",
+      productId: 60,
+      messageText: "me too man, this is amazing",
+    })
+    console.log("Result", message1)
+
+    console.log("testing getConversationFromUsersByProduct")
+    const conversation = await getConversationBetweenUsersForProduct({
+      user1Name: "crooney",
+      user2Name: "DrizzyJ",
+      productId: 60,
+    })
+    console.log("Result", conversation)
+
+    
+    // console.log("testing setMessageToRead")
+    // const readTest = await setMessageToRead(3)
+    // console.log("Result:", readTest)
+    
+    
+    console.log("testing createOffer")
+    const offer = await createOffer({
+      senderName: "crooney",
+      receiverName: "DrizzyJ", 
+      productId: 60,
+      messageText: "I would like to offer your $100 for this item",
+      offerPrice: (100 * 100),
+    })
+    console.log("Result:", offer)
+    
+    console.log("testing getAllUnreadMessagesByUsername")
+    const unread = await getAllUnreadMessagesByUsername("DrizzyJ")
+    console.log("Result:", unread)
 
     // console.log("testing deleteProductById")
     // await deleteProductByID(create.id)
