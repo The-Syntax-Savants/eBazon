@@ -13,7 +13,7 @@ import { createCartProduct, getCartProductsByCartId } from "./cartsProducts.js";
 import { createCart, getActiveCartByUsername } from "./carts.js";
 import { createTag, getAllTags, deleteTag, editTag } from "./tags.js";
 import { addTagsToProduct } from "./productTags.js";
-import { createMessage } from "./messages.js";
+import { createMessage, getConversationBetweenUsersForProduct, setMessageToRead } from "./messages.js";
 
 async function dropTables() {
   try {
@@ -80,7 +80,8 @@ async function createTables() {
         receiver_name VARCHAR(50) NOT NULL REFERENCES users(username) ON UPDATE CASCADE ON DELETE CASCADE,
         product_id INTEGER NOT NULL REFERENCES products(id),
         message TEXT NOT NULL,
-        timestamp TIMESTAMP DEFAULT NOW(),
+        sent_at TIMESTAMP DEFAULT NOW(),
+        read_at TIMESTAMP,
         is_offer BOOLEAN DEFAULT false,
         offer_price INTEGER,
         offer_status VARCHAR(20) DEFAULT 'pending'
@@ -437,13 +438,37 @@ async function testDB() {
     console.log("Result:", data);
 
     console.log("testing CreateMessage")
-    const message = await createMessage({
+    const message1 = await createMessage({
       senderName: "crooney",
       receiverName: "DrizzyJ",
       productId: 60,
       messageText: "this is a test message",
     })
-    console.log("Result", message)
+    await createMessage({
+      senderName: "DrizzyJ",
+      receiverName: "crooney",
+      productId: 60,
+      messageText: "glad it worked",
+    })
+    await createMessage({
+      senderName: "crooney",
+      receiverName: "DrizzyJ",
+      productId: 60,
+      messageText: "me too man, this is amazing",
+    })
+    console.log("Result", message1)
+
+    console.log("testing getConversationFromUsersByProduct")
+    const conversation = await getConversationBetweenUsersForProduct({
+      user1Name: "crooney",
+      user2Name: "DrizzyJ",
+      productId: 60,
+    })
+    console.log("Result", conversation)
+
+    console.log("testing setMessageToRead")
+    const readTest = await setMessageToRead(3)
+    console.log("Result:", readTest)
 
     // console.log("testing deleteProductById")
     // await deleteProductByID(create.id)
