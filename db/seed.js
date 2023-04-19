@@ -13,7 +13,7 @@ import { createCartProduct, getCartProductsByCartId } from "./cartsProducts.js";
 import { createCart, getActiveCartByUsername } from "./carts.js";
 import { createTag, getAllTags, deleteTag, editTag } from "./tags.js";
 import { addTagsToProduct } from "./productTags.js";
-import { createMessage, getAllUnreadMessagesByUsername, getConversationBetweenUsersForProduct, setMessageToRead } from "./messages.js";
+import { createMessage, createOffer, getAllUnreadMessagesByUsername, getConversationBetweenUsersForProduct, setMessageToRead } from "./messages.js";
 
 async function dropTables() {
   try {
@@ -474,6 +474,16 @@ async function testDB() {
     console.log("testing getAllUnreadMessagesByUsername")
     const unread = await getAllUnreadMessagesByUsername("DrizzyJ")
     console.log("Result:", unread)
+
+    console.log("testing createOffer")
+    const offer = await createOffer({
+      senderName: "crooney",
+      receiverName: "DrizzyJ", 
+      productId: 60,
+      messageText: "I would like to offer your $100 for this item",
+      offerPrice: (100 * 100),
+  })
+  console.log("Result:", offer)
 
 
     // console.log("testing deleteProductById")
