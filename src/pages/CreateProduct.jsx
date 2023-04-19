@@ -119,15 +119,6 @@ const CreateProduct = () => {
       values.length > 0 &&
       image_url.name.length > 0;
 
-    console.log(fieldsFilled, "fieldsFilled");
-    console.log(name.length > 0, "name");
-    console.log(description.length > 0, "description");
-    console.log(price.length > 0, "price");
-    console.log(dimensions.length > 0, "dimensions");
-    console.log(quantity.length > 0, "quantity");
-    console.log(values.length > 0, "values.length");
-    console.log(image_url.name.length > 0, "image_url");
-
     return fieldsFilled;
   };
 
@@ -247,7 +238,6 @@ const CreateProduct = () => {
                     className="file-input file-input-bordered file-input-info w-full"
                     onChange={(e) => {
                       setImage_url(e.target.files[0]);
-                      console.log(e.target.files[0], "%%%");
                     }}
                   />
                 </div>
