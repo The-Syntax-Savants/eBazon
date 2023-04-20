@@ -4,6 +4,7 @@ import {
   createMessage,
   createOffer,
   getAllUnreadMessagesByUsername,
+  getConversationBetweenUsersForProduct,
 } from "../db/messages.js";
 
 export const messagesRouter = express.Router();
@@ -78,3 +79,32 @@ messagesRouter.get("/:username", requireUser, async (req, res, next) => {
     next({ name, message });
   }
 });
+
+
+//Get conversation between 2 users on a product
+messagesRouter.get("/conversation/:productId", requireUser, async(req,res,next) => {
+    try {
+        const {productId} = req.params
+        const info = req.body
+        info.productId = Number(productId)
+        if(req.user.username === info.user1Name || req.user.username === info.user2Name || req.user.is_admin){ 
+            const conversation = await getConversationBetweenUsersForProduct(info)
+            if(conversation.length){
+                res.send(conversation)
+            }else{
+                next({
+                    name: "UsersNoConversationHistoryError",
+                    message: "These users do not have a conversation history"
+                })
+            }
+        } else{
+            next({
+                name: "UserMustBeLoggedIn",
+                message: "You are either not logged in, or trying to get somebody's messages who is not you."
+            })
+        }
+        
+    } catch ({name, message}) {
+        next({name, message})
+    }
+})
