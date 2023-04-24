@@ -93,7 +93,7 @@ export async function createOffer({
   offerPrice,
 }) {
   try {
-    const { rows } = await client.query(
+    const { rows: [offer] } = await client.query(
       `
       INSERT INTO messages (sender_name, receiver_name, product_id, message, is_offer, offer_price, offer_status, sent_at)
       VALUES ($1, $2, $3, $4, true, $5, 'pending', CURRENT_TIMESTAMP)
@@ -102,7 +102,7 @@ export async function createOffer({
       [senderName, receiverName, productId, messageText, offerPrice]
     );
 
-    return rows;
+    return offer;
   } catch (error) {
     console.log("Error in createOffer in DB");
     throw error;

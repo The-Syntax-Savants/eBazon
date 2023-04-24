@@ -6,6 +6,7 @@ import productsRouter from "./products.js";
 import cartsRouter from "./carts.js";
 import tagsRouter from "./tags.js";
 import stripeRouter from "./stripe.js";
+import messagesRouter from "./messages.js";
 import dotenv from "dotenv";
 dotenv.config();
 const { JWT_SECRET } = process.env;
@@ -90,3 +91,5 @@ apiRouter.use("/carts", cartsRouter);
 apiRouter.use("/tags", tagsRouter);
 
 apiRouter.use("/stripe", stripeRouter);
+
+apiRouter.use("/messages", messagesRouter);
