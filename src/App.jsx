@@ -13,6 +13,7 @@ import {
   SearchResults,
   Checkout,
   Confirmation,
+  SellerPage,
 } from "./pages";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -143,6 +144,10 @@ const App = () => {
             }
           />
           <Route path="/confirmation/:cartNumber" element={<Confirmation />} />
+          <Route
+            path="/seller/:seller_name"
+            element={<SellerPage isLoggedIn={isLoggedIn} />}
+          />
         </Routes>
       </div>
       <div id="gradient-container" className="w-full h-1 relative">

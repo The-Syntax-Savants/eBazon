@@ -5,6 +5,7 @@ import { getLoggedInUserFromDB } from "../api-adapters/users";
 
 const SingleProductCard = (props) => {
   const product = props.product;
+  console.log("Product:", product);
   const setAlert = props.setAlert;
   const grabCartProducts = props.grabCartProducts;
   const [user, setUser] = useState({});
@@ -68,7 +69,15 @@ const SingleProductCard = (props) => {
               </div>
             </h2>
 
-            <h5>Seller: {product.seller_name}</h5>
+            <h5>
+              Seller:{" "}
+              <Link
+                to={`/seller/${product.seller_name}`}
+                className="text-blue-600 hover:text-blue-800"
+              >
+                {product.seller_name}
+              </Link>
+            </h5>
             <p className="line-clamp-2 min-h-[6vh] max-h-[6vh]">
               {product.description}
             </p>

@@ -1,28 +1,25 @@
-import React from "react";
+import { useState, useEffect, React } from "react";
+import { getProductsBySellerNameDB } from "../api-adapters/products";
+import { useParams } from "react-router-dom";
+import { SingleProductCard } from "../components";
+import { Button } from "antd";
 
-const SellerPage = () => {
-  const products = [
-    {
-      id: 1,
-      name: "Product 1",
-      price: "$10",
-      imageUrl: "https://via.placeholder.com/150",
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      price: "$15",
-      imageUrl: "https://via.placeholder.com/150",
-    },
-    // Add more products here
-  ];
+const SellerPage = (props) => {
+  const { seller_name } = useParams();
+  const [products, setProducts] = useState([]);
+  const isLoggedIn = props.isLoggedIn;
 
-  const seller = {
-    name: "John Doe",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ultricies nisi dolor, at fermentum lacus dapibus ac.",
-    imageUrl: "https://via.placeholder.com/100",
+  const fetchSellerProducts = async () => {
+    const fetchedProducts = await getProductsBySellerNameDB(seller_name);
+    console.log(fetchedProducts, "fetchedProducts");
+    setProducts(fetchedProducts);
   };
+
+  useEffect(() => {
+    fetchSellerProducts();
+  }, []);
+
+  console.log(products);
 
   const reviews = [
     {
@@ -40,39 +37,29 @@ const SellerPage = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Seller Page</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2">
-          <h2 className="text-2xl font-bold mb-4">Products for Sale</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="card bordered shadow-md p-4 h-full"
-              >
-                <img src={product.imageUrl} alt={product.name} />
-                <div className="card-body">
-                  <h2 className="card-title text-xl font-bold">
-                    {product.name}
-                  </h2>
-                  <p>{product.price}</p>
+      <div className="card bordered shadow-md p-4">
+        <span className="flex items-center justify-center">
+          <h1 className="text-3xl font-bold mb-0">
+            {seller_name}'s Store Page
+          </h1>
+          <button className="btn drop-shadow-lg btn-success ml-3 transform scale-75">
+            Message
+          </button>
+        </span>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+        <div className="md:col-span-3">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-1 justify-items-center">
+            {products.products &&
+              products.products.map((product) => (
+                <div className="transform scale-75">
+                  <SingleProductCard
+                    product={product}
+                    key={`This is the key: ${product.id}`}
+                    isLoggedIn={isLoggedIn} // Pass the 'isLoggedIn' prop if necessary
+                  />
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Seller Details</h2>
-          <div className="card bordered shadow-md p-4">
-            <img
-              className="mx-auto mb-4"
-              src={seller.imageUrl}
-              alt={seller.name}
-            />
-            <div className="card-body">
-              <h2 className="card-title text-xl font-bold">{seller.name}</h2>
-              <p>{seller.description}</p>
-            </div>
+              ))}
           </div>
         </div>
       </div>
