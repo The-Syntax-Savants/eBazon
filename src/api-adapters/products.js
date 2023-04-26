@@ -50,6 +50,24 @@ export const getProductsByTagIdDB = async (tagId) => {
   }
 };
 
+export const getProductsBySellerNameDB = async (seller_name) => {
+  try {
+    const response = await fetch(`${BASE_URL}/products/seller/${seller_name}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.log(
+      "Error in api-adapters -> products -> getProductsBySellerNameDB"
+    );
+    throw error;
+  }
+};
+
 export const createProductInDB = async (product) => {
   try {
     const response = await fetch(`${BASE_URL}/products/createProduct`, {

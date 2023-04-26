@@ -6,6 +6,7 @@ import {
   getAllProducts,
   getProductByID,
   getProductsByTagId,
+  getProductsBySeller,
   deleteProductByID,
   updateProduct,
 } from "../db/products.js";
@@ -67,6 +68,22 @@ productsRouter.get("/:tagId/tags", async (req, res, next) => {
     }
   } catch ({ name, message }) {
     next({ name, message });
+  }
+});
+
+// GET products for a seller
+productsRouter.get("/seller/:seller_name", async (req, res, next) => {
+  try {
+    const { seller_name } = req.params;
+    const products = await getProductsBySeller(seller_name);
+    res.send({
+      products,
+    });
+  } catch ({ name, message }) {
+    next({
+      name: "Error fetching products by seller",
+      message: "Could not fetch products by seller.",
+    });
   }
 });
 
