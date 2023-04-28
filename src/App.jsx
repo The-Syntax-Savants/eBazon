@@ -14,6 +14,7 @@ import {
   Checkout,
   Confirmation,
   SellerPage,
+  MessageDashboard,
 } from "./pages";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -147,6 +148,10 @@ const App = () => {
           <Route
             path="/seller/:seller_name"
             element={<SellerPage isLoggedIn={isLoggedIn} />}
+          />
+          <Route 
+          path="/messages/:username"
+          element={<MessageDashboard isLoggedIn={isLoggedIn} />}
           />
         </Routes>
       </div>

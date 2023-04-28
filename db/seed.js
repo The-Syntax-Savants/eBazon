@@ -13,7 +13,7 @@ import { createCartProduct, getCartProductsByCartId } from "./cartsProducts.js";
 import { createCart, getActiveCartByUsername } from "./carts.js";
 import { createTag, getAllTags, deleteTag, editTag } from "./tags.js";
 import { addTagsToProduct } from "./productTags.js";
-import { createMessage, createOffer, getAllUnreadMessagesByUsername, getConversationBetweenUsersForProduct, setMessageToRead } from "./messages.js";
+import { createMessage, getAllUnreadMessagesByUsername, getConversationBetweenUsersForProduct, setMessageToRead } from "./messages.js";
 
 async function dropTables() {
   try {
@@ -81,12 +81,13 @@ async function createTables() {
         product_id INTEGER NOT NULL REFERENCES products(id),
         message TEXT NOT NULL,
         sent_at TIMESTAMP DEFAULT NOW(),
-        read_at TIMESTAMP,
-        is_offer BOOLEAN DEFAULT false,
-        offer_price INTEGER,
-        offer_status VARCHAR(20)
+        read_at TIMESTAMP
       );
     `)
+    // capability to handle offers from message standpoint for seed. method to createOffer is in db/messages
+    // is_offer BOOLEAN DEFAULT false,
+    // offer_price INTEGER,
+    // offer_status VARCHAR(20)
 
     console.log("creating CARTS table...");
     await client.query(`CREATE TABLE carts(
@@ -441,8 +442,32 @@ async function testDB() {
     const message1 = await createMessage({
       senderName: "crooney",
       receiverName: "DrizzyJ",
-      productId: 60,
+      productId: 45,
       messageText: "this is a test message",
+    })
+    await createMessage({
+      senderName: "crooney",
+      receiverName: "DrizzyJ",
+      productId: 45,
+      messageText: "new test",
+    })
+    await createMessage({
+      senderName: "topstown",
+      receiverName: "DrizzyJ",
+      productId: 45,
+      messageText: "this should make a new conversation",
+    })
+    await createMessage({
+      senderName: "topstown",
+      receiverName: "DrizzyJ",
+      productId: 45,
+      messageText: "this should not create a new conversation",
+    })
+    await createMessage({
+      senderName: "topstown",
+      receiverName: "DrizzyJ",
+      productId: 47,
+      messageText: "this should make another create a new conversation",
     })
     await createMessage({
       senderName: "DrizzyJ",
@@ -472,15 +497,15 @@ async function testDB() {
     // console.log("Result:", readTest)
     
     
-    console.log("testing createOffer")
-    const offer = await createOffer({
-      senderName: "crooney",
-      receiverName: "DrizzyJ", 
-      productId: 60,
-      messageText: "I would like to offer your $100 for this item",
-      offerPrice: (100 * 100),
-    })
-    console.log("Result:", offer)
+    // console.log("testing createOffer")
+    // const offer = await createOffer({
+    //   senderName: "crooney",
+    //   receiverName: "DrizzyJ", 
+    //   productId: 50,
+    //   messageText: "I would like to offer your $100 for this item",
+    //   offerPrice: (100 * 100),
+    // })
+    // console.log("Result:", offer)
     
     console.log("testing getAllUnreadMessagesByUsername")
     const unread = await getAllUnreadMessagesByUsername("DrizzyJ")
