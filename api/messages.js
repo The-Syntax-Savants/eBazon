@@ -2,7 +2,6 @@ import express from "express";
 import { requireUser } from "./utils.js";
 import {
   createMessage,
-  createOffer,
   getAllUnreadMessagesByUsername,
   getConversationBetweenUsersForProduct,
 } from "../db/messages.js";
@@ -32,17 +31,21 @@ messagesRouter.post("/:productId", requireUser, async (req, res, next) => {
           message: "There was an error creating a message",
         });
       }
-    } else if (info.offerPrice && req.user.username === info.senderName) {
-      const newOffer = await createOffer(info);
-      if (newOffer.offer_price) {
-        res.send(newOffer);
-      } else {
-        next({
-          name: "createOfferError",
-          message: "There was an error creating an offer",
-        });
-      }
-    }else{
+    } 
+    // HANDLE OFFERS
+    // else if (info.offerPrice && req.user.username === info.senderName) {
+    //   const newOffer = await createOffer(info);
+    //   if (newOffer.offer_price) {
+    //     res.send(newOffer);
+    //   } else {
+    //     next({
+    //       name: "createOfferError",
+    //       message: "There was an error creating an offer",
+    //     });
+    //   }
+    // }
+
+    else{
         next({
             name: "userMustBeLoggedInError",
             message: "You are either not logged in, or trying to send a message as a user that is not you"
