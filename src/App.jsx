@@ -19,18 +19,16 @@ import {
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { Navbar, Footer, Gradient } from "./components";
-import { createPaymentIntent } from "./api-adapters/stripe";
 import { getActiveCartProductsDB } from "./api-adapters/carts";
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [clientSecret, setClientSecret] = useState("");
   const [cartProductsCount, setCartProductsCount] = useState([]);
   const [subTotal, setSubTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const stripePromise = loadStripe(
-    "pk_test_51MvOTQLhGAqNc30vaCPHwOYngRS0iERaK2A9QymnF3g6Y0VUDpNBiB5Wveb9Vt62YZ3NyXMWwjonuaKiOBHl4mZQ00gY6bvm8D"
-  );
+  // const [stripePromise, setStripePromise] = useState(null);
+  // const StripeKey = import.meta.env.VITE_STRIPE_KEY;
+
   const grabCartProducts = async () => {
     const data = await getActiveCartProductsDB();
     let tempSubTotal = 0;
@@ -42,25 +40,24 @@ const App = () => {
   };
 
   useEffect(() => {
+    // const initializeStripe = async () => {
+    //   const stripe = await loadStripe(StripeKey);
+    //   setStripePromise(stripe);
+    // };
     const localStorageToken = localStorage.getItem("token");
     const localStorageUsername = localStorage.getItem("username");
-
     if (localStorageToken && localStorageUsername) {
       setIsLoggedIn(true);
     }
-
-    createPaymentIntent().then((data) => {
-      setClientSecret(data.clientSecret);
-    });
+    // initializeStripe();
   }, []);
 
-  const appearance = {
-    theme: "stripe",
-  };
-  const options = {
-    clientSecret,
-    appearance,
-  };
+  // const appearance = {
+  //   theme: "stripe",
+  // };
+  // const options = {
+  //   appearance,
+  // };
 
   return (
     <div id="main">
@@ -134,16 +131,7 @@ const App = () => {
               />
             }
           />
-          <Route
-            path="/checkout"
-            element={
-              clientSecret && (
-                <Elements options={options} stripe={stripePromise}>
-                  <Checkout />
-                </Elements>
-              )
-            }
-          />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/confirmation/:cartNumber" element={<Confirmation />} />
           <Route
             path="/seller/:seller_name"
