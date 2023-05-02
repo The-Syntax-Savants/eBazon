@@ -114,10 +114,25 @@ export async function getProductsByTagId(tagId) {
   }
 }
 
-// export async function getProductsBySeller(username) {
-//   try {
-//   } catch {}
-// }
+export async function getProductsBySeller(seller_name) {
+  try {
+    const { rows: productIds } = await client.query(
+      `
+        SELECT id FROM products
+        WHERE seller_name=$1;
+      `,
+      [seller_name]
+    );
+
+    const products = await Promise.all(
+      productIds.map((product) => getProductByID(product.id))
+    );
+    return products;
+  } catch {
+    console.error("Error in DB -> products -> getProductsBySeller");
+    throw error;
+  }
+}
 
 //search-product-by-tag branch <<<<----
 

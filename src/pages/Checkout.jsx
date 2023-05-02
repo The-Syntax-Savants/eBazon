@@ -4,17 +4,20 @@ import {
   AddressElement,
   useStripe,
   useElements,
+  Elements,
 } from "@stripe/react-stripe-js";
 import { placeOrderDB, getMyCartNumberDB } from "../api-adapters/carts";
+import { createPaymentIntent } from "../api-adapters/stripe";
+import { loadStripe } from "@stripe/stripe-js";
+import { Panorama } from "aws-sdk";
 
-export default function CheckoutForm() {
+const CheckoutFormContent = (props) => {
   const stripe = useStripe();
   const elements = useElements();
-
-  const [email, setEmail] = useState("");
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [confirmationURL, setConfirmationURL] = useState("");
+  const clientSecret = props.clientSecret;
 
   const getConfirmationURL = async () => {
     try {
@@ -81,6 +84,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
+        clientSecret: clientSecret,
         return_url: confirmationURL,
       },
     });
@@ -102,6 +106,7 @@ export default function CheckoutForm() {
 
   const paymentElementOptions = {
     layout: "tabs",
+    clientSecret: clientSecret,
   };
 
   return (
@@ -116,6 +121,7 @@ export default function CheckoutForm() {
         <AddressElement
           options={{ mode: "shipping", allowedCountries: ["US"] }}
         />
+
         <button
           disabled={isLoading || !stripe || !elements}
           id="submit"
@@ -147,6 +153,37 @@ export default function CheckoutForm() {
           </div>
         )}
       </form>
+    </div>
+  );
+};
+
+export default function Checkout() {
+  const [stripePromise, setStripePromise] = useState(null);
+  const [clientSecret, setClientSecret] = useState("");
+  const StripeKey = import.meta.env.VITE_STRIPE_KEY;
+
+  useEffect(() => {
+    const initializeStripe = async () => {
+      const stripe = await loadStripe(StripeKey);
+      setStripePromise(stripe);
+    };
+    initializeStripe();
+    createPaymentIntent().then((data) => {
+      setClientSecret(data.clientSecret);
+    });
+  }, []);
+
+  const options = {
+    clientSecret: clientSecret,
+  };
+
+  return (
+    <div>
+      {clientSecret && (
+        <Elements options={options} stripe={stripePromise}>
+          <CheckoutFormContent />
+        </Elements>
+      )}
     </div>
   );
 }

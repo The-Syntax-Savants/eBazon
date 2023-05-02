@@ -119,11 +119,6 @@ cartsRouter.get("/my-cart", async (req, res, next) => {
       })
     );
     res.send(cartProductsWithProducts);
-
-    // cartProducts.map(async (cartProduct) => {
-    //   cartProduct.product = await getProductByID(cartProduct.productId);
-    // });
-    // res.send(cartProducts);
   } catch ({ name, message }) {
     next({ name, message });
   }
@@ -149,41 +144,6 @@ cartsRouter.get(
     }
   }
 );
-
-// cartsRouter.post("/add-to-cart", requireUser, async (req, res, next) => {
-//   try {
-//     //receive productId from req.body
-//     const { productId } = req.body;
-//     // get active cart for user
-//     const cart = await getActiveCartByUsername(req.user.username);
-//     const cartProducts = await getCartProductsByCartId(cart.id);
-
-//     let productFound = false;
-//     cartProducts.array.forEach(async (element) => {
-//       if (element.productId === productId) {
-//         // update quantity if cartProduct already exists
-//         productFound = true;
-//         const updatedCartProduct = await updateCartProduct({
-//           id: element.id,
-//           quantity: element.quantity + 1,
-//         });
-//         res.send(updatedCartProduct);
-//       }
-//     });
-
-//     //create cartProduct if it isn't in your cart already
-//     if (!productFound) {
-//       const newCartProduct = await createCartProduct({
-//         id: cart.id,
-//         productId,
-//         quantity: 1,
-//       });
-//       res.send(newCartProduct);
-//     }
-//   } catch ({ name, message }) {
-//     next({ name, message });
-//   }
-// });
 
 cartsRouter.post("/add-to-cart", requireUser, async (req, res, next) => {
   try {
@@ -244,15 +204,6 @@ cartsRouter.patch("/update-quantity", requireUser, async (req, res, next) => {
   }
 });
 
-// DELETE BOTH OF THESE!!!!
-// #
-// #
-// #
-// #
-// #
-// #
-// #
-// #
 cartsRouter.get("/allCartProducts", async (req, res) => {
   const cartProducts = await getAllCartProducts();
 

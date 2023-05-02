@@ -4,7 +4,10 @@ export const createPaymentIntent = async (items) => {
   try {
     return fetch(`${BASE_URL}/stripe/create-payment-intent`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
       body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),
     }).then((res) => {
       return res.json();

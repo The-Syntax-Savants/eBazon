@@ -38,19 +38,20 @@ const Register = (props) => {
     }
   };
   return (
-    <div className="flex flex-col items-center justify-center h-fit w-[97vw] my-[5vh]">
-      <form className=""
+    <div className="flex flex-col items-center justify-center h-fit w-[100vw]">
+      <form
+        className=""
         onSubmit={(e) => {
           e.preventDefault();
           createUser();
         }}
       >
-        <div className="hero h-fit w-full bg-base-200">
-          <div className="hero-content flex flex-col w-screen">
+        <div className="hero flex-1 h-fit w-[100vw] bg-base-200">
+          <div className="hero-content flex flex-col w-screen my-[5vh]">
             <div className="text-center lg:text-left">
               <h1 className="text-5xl font-bold">Register!</h1>
             </div>
-            <div className="card mb-[16vh] flex-shrink-0 w-full max-w-sm h-[60vh] shadow-2xl bg-base-100 overflow-y-auto">
+            <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 ">
               <div className="card-body">
                 <div className="form-control">
                   <label className="label">
