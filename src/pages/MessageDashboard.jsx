@@ -13,8 +13,9 @@ const MessageDashboard = () => {
 
   const getMessages = async () => {
     const data = await getAllUnreadMessagesForUserDB(username);
-    setMessages(data);
-    console.log(data);
+    if(data !== undefined){
+      setMessages(data);
+    }
   };
 
   useEffect(() => {
@@ -22,7 +23,8 @@ const MessageDashboard = () => {
   }, []);
 
   return (
-    <div className="overflow-x-auto w-full">
+    <div className="overflow-x-auto w-full h-full">
+      {messages.length ?
       <table className="table w-full">
         {/* head */}
         <thead>
@@ -39,7 +41,7 @@ const MessageDashboard = () => {
           </tr>
         </thead>
         <tbody>
-          {messages.map((message, idx) => {
+          {messages.map((message) => {
             console.log(message)
             if (!productNameArr.includes(message.product_name)) {
               senderNameArr.push(message.sender_name)
@@ -112,7 +114,7 @@ const MessageDashboard = () => {
             <th></th>
           </tr>
         </tfoot>
-      </table>
+      </table> : <h3>User: {username} does not exist. Please double check spelling and capitalization.</h3>}
     </div>
   );
 };
