@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-import { getAllUnreadMessagesForUserDB } from "../api-adapters/messages";
+import { getAllUnreadMessagesForUserDB, markConversationAsReadDB } from "../api-adapters/messages";
 import { getProductByIdDB } from "../api-adapters/products";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 
 const MessageDashboard = () => {
   const { username } = useParams();
   const [messages, setMessages] = useState([]);
+  const navigate = useNavigate()
 
   const productNameArr = [];
   const senderNameArr = [];
@@ -68,7 +69,9 @@ const MessageDashboard = () => {
                   </td>
                   <td>{message.message}</td>
                   <th>
-                    <button className="btn btn-xs">Chat</button>
+                    <button className="btn btn-xs" onClick={()=>{
+                      navigate(`/conversation/${message.sender_name}/${message.receiver_name}/${message.product_id}`)
+                    }}>Chat</button>
                   </th>
                 </tr>
               );
@@ -109,8 +112,8 @@ const MessageDashboard = () => {
           <tr>
             <th></th>
             <th>Name</th>
-            <th>Job</th>
-            <th>Favorite Color</th>
+            <th>Product</th>
+            <th>Message</th>
             <th></th>
           </tr>
         </tfoot>
