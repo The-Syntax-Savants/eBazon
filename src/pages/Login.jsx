@@ -35,7 +35,7 @@ const Login = (props) => {
           loginUser();
         }}
       >
-        <div className="hero h-fit w-full bg-base-200">
+        <div className="hero h-fit w-full">
           <div className="hero-content flex flex-col w-screen">
             <div className="text-center lg:text-left">
               <h1 className="text-5xl font-bold mb-[3vh]">Login now!</h1>

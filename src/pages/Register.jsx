@@ -38,7 +38,7 @@ const Register = (props) => {
     }
   };
   return (
-    <div className="flex flex-col items-center justify-center h-fit w-[100vw]">
+    <div className="flex flex-col items-center justify-center h-fit">
       <form
         className=""
         onSubmit={(e) => {
@@ -46,7 +46,7 @@ const Register = (props) => {
           createUser();
         }}
       >
-        <div className="hero flex-1 h-fit w-[100vw] bg-base-200">
+        <div className="hero flex-1 h-fit">
           <div className="hero-content flex flex-col w-screen my-[5vh]">
             <div className="text-center lg:text-left">
               <h1 className="text-5xl font-bold">Register!</h1>
