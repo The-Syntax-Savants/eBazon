@@ -71,7 +71,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-fit w-screen my-[5vh]">
+    <div className="flex flex-col items-center justify-center h-fit my-[3vh]">
       <form
         className=""
         onSubmit={(e) => {
@@ -79,12 +79,12 @@ const Profile = () => {
           submitChanges();
         }}
       >
-        <div className="hero h-fit w-full bg-base-200">
+        <div className="hero h-fit">
           <div className="hero-content flex flex-col w-screen">
             <div className="text-center lg:text-left">
               <h1 className="text-5xl font-bold">Profile!</h1>
             </div>
-            <div className="card mb-[16vh] flex-shrink-0 w-full max-w-lg h-[60vh] shadow-2xl bg-base-100 overflow-y-auto">
+            <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
               <div className="card-body">
                 <div className="form-control">
                   <label className="label">
