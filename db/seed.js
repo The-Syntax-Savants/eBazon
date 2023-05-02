@@ -491,10 +491,13 @@ async function testDB() {
     })
     console.log("Result", conversation)
 
-    
-    // console.log("testing setMessageToRead")
-    // const readTest = await setMessageToRead(3)
-    // console.log("Result:", readTest)
+    console.log("testing getAllUnreadMessagesByUsername")
+    const unread2 = await getAllUnreadMessagesByUsername("DrizzyJ")
+    console.log("Result:", unread2)
+
+    console.log("testing setMessageToRead")
+    const readTest = await setMessageToRead({senderName: "topstown", receiverName: "DrizzyJ", productId: 45})
+    console.log("Result:", readTest)
     
     
     // console.log("testing createOffer")

@@ -48,19 +48,21 @@ export async function getConversationBetweenUsersForProduct({
   }
 }
 
-export async function setMessageToRead(id) {
+export async function setMessageToRead({senderName, receiverName, productId}) {
   try {
-    const { rows: message } = await client.query(
+    const { rows } = await client.query(
       `
-            UPDATE messages
-            SET read_at = CURRENT_TIMESTAMP
-            WHERE id = $1
-            RETURNING *;
+        UPDATE messages
+        SET read_at = NOW()
+        WHERE product_id = $3
+        AND (sender_name = $1 AND receiver_name = $2)
+        AND read_at IS NULL
+        RETURNING *;
         `,
-      [id]
+      [senderName, receiverName, productId]
     );
 
-    return message;
+    return rows;
   } catch (error) {
     console.log("Error in setMessageToRead in DB");
     throw error;
@@ -71,7 +73,7 @@ export async function getAllUnreadMessagesByUsername(receiverName) {
   try {
     const { rows } = await client.query(
       `
-        SELECT m.id, m.sender_name, m.receiver_name, m.product_id, m.message, m.sent_at, p.name AS product_name
+        SELECT m.id, m.sender_name, m.receiver_name, m.product_id, m.message, m.sent_at, m.read_at, p.name AS product_name
         FROM messages m
         INNER JOIN products p ON m.product_id = p.id
         WHERE m.receiver_name = $1 AND m.read_at IS NULL

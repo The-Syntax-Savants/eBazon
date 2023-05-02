@@ -1,9 +1,11 @@
 import express from "express";
 import { requireUser } from "./utils.js";
+import { getUser } from "../db/users.js"
 import {
   createMessage,
   getAllUnreadMessagesByUsername,
   getConversationBetweenUsersForProduct,
+  setMessageToRead,
 } from "../db/messages.js";
 
 export const messagesRouter = express.Router();
@@ -60,28 +62,49 @@ messagesRouter.post("/:productId", requireUser, async (req, res, next) => {
 messagesRouter.get("/:username", requireUser, async (req, res, next) => {
   try {
     const { username } = req.params;
-    if(req.user.username === username || req.user.is_admin){
-        const messages = await getAllUnreadMessagesByUsername(username);
-        if (messages.length) {
-          res.send(messages);
-        } else if (messages.length === 0 && !messages.name) {
-          res.send("This user has no messages");
-        } else {
+    const user = await getUser(username)
+    if(user.username){
+      if(req.user.username === username || req.user.is_admin){
+          const messages = await getAllUnreadMessagesByUsername(username);
+          if (messages.length) {
+            res.send(messages);
+          } 
+      }else{
           next({
-            name: "UserDoesNotExistError",
-            message: "This user does not exist",
-          });
-        }
+              name: "UserMustBeLoggedInError",
+              message: "You are either not logged in, or trying to get somebody's messages who is not you."
+          })
+      }
     }else{
-        next({
-            name: "UserMustBeLoggedInError",
-            message: "You are either not logged in, or trying to get somebody's messages who is not you."
-        })
+      next({
+        name: "UserDoesNotExistError",
+        message: `User: ${username} does not exist, please double check spelling and capitalization.`
+      })
     }
   } catch ({ name, message }) {
     next({ name, message });
   }
 });
+
+//Set ALL UNREAD Messages to read by conversation
+messagesRouter.post("/read/:productId", requireUser, async(req,res,next) => {
+  try {
+    const {productId} = req.params
+    const data = req.body
+    data.productId = productId
+    if(data.senderName && data.receiverName){
+      const read = await setMessageToRead(data)
+      res.send(read)
+    }else{
+      next({
+        name: "NoUserNameError",
+        message: "You must pass in 2 usernames in order to know which conversation to mark as read"
+      })
+    }
+  } catch ({name, message}) {
+    next({name, message})
+  }
+})
 
 
 //Get conversation between 2 users on a product
