@@ -111,12 +111,12 @@ const EditProduct = () => {
             await updateTagsFunc();
           }}
         >
-          <div className="hero h-fit w-full bg-base-200">
+          <div className="hero h-fit w-full">
             <div className="hero-content flex flex-col w-screen">
               <div className="text-center lg:text-left">
                 <h1 className="text-5xl font-bold">Edit Product!</h1>
               </div>
-              <div className="card mb-[16vh] flex-shrink-0 w-full max-w-lg h-[60vh] shadow-2xl bg-base-100 overflow-y-auto">
+              <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
                 <div className="card-body">
                   <div className="form-control">
                     <label className="label">
