@@ -123,7 +123,7 @@ const CreateProduct = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-fit w-[97vw] my-[5vh]">
+    <div className="flex flex-col items-center justify-center h-fit">
       <form
         className=""
         onSubmit={async (e) => {
@@ -138,7 +138,7 @@ const CreateProduct = () => {
           }
         }}
       >
-        <div className="hero h-fit w-full bg-base-200">
+        <div className="hero h-fit">
           <div className="hero-content flex flex-col w-screen">
             <div className="text-center lg:text-left">
               <h1 className="text-5xl font-bold">Create a Listing!</h1>
