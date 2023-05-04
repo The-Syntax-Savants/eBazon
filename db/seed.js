@@ -452,6 +452,36 @@ async function testDB() {
       messageText: "new test",
     })
     await createMessage({
+      senderName: "DrizzyJ",
+      receiverName: "crooney",
+      productId: 45,
+      messageText: "how does this look?",
+    })
+    await createMessage({
+      senderName: "crooney",
+      receiverName: "DrizzyJ",
+      productId: 45,
+      messageText: "really cool man",
+    })
+    await createMessage({
+      senderName: "crooney",
+      receiverName: "DrizzyJ",
+      productId: 45,
+      messageText: "new trying",
+    })
+    await createMessage({
+      senderName: "DrizzyJ",
+      receiverName: "crooney",
+      productId: 45,
+      messageText: "feels amazing never thought id get here",
+    })
+    await createMessage({
+      senderName: "DrizzyJ",
+      receiverName: "crooney",
+      productId: 45,
+      messageText: "beyond proud of myself",
+    })
+    await createMessage({
       senderName: "topstown",
       receiverName: "DrizzyJ",
       productId: 45,

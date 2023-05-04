@@ -15,6 +15,7 @@ import {
   Confirmation,
   SellerPage,
   MessageDashboard,
+  MessageConversation,
 } from "./pages";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -140,6 +141,10 @@ const App = () => {
           <Route 
           path="/messages/:username"
           element={<MessageDashboard isLoggedIn={isLoggedIn} />}
+          />
+          <Route 
+            path="/conversation/:user1Name/:user2Name/:productId"
+            element={<MessageConversation />}
           />
         </Routes>
       </div>

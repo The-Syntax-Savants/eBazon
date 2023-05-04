@@ -108,11 +108,9 @@ messagesRouter.post("/read/:productId", requireUser, async(req,res,next) => {
 
 
 //Get conversation between 2 users on a product
-messagesRouter.get("/conversation/:productId", requireUser, async(req,res,next) => {
+messagesRouter.get("/conversation/:user1Name/:user2Name/:productId", requireUser, async(req,res,next) => {
     try {
-        const {productId} = req.params
-        const info = req.body
-        info.productId = Number(productId)
+        const info = req.params
         if(req.user.username === info.user1Name || req.user.username === info.user2Name || req.user.is_admin){ 
             const conversation = await getConversationBetweenUsersForProduct(info)
             if(conversation.length){
