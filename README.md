@@ -3,7 +3,7 @@ The next generation E-commerce platform.
 
 ## Developer Setup
 
-The following instructions detail how to setup your environment for running the `tlahui` application locally.
+The following instructions detail how to setup your environment for running the `ebazon` application locally.
 
 ### Prerequisites
 
